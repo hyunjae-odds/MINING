@@ -1,0 +1,280 @@
+@charset "utf-8";
+
+/* Reset */
+*{margin:0; padding:0;}
+body {font-size:.75em; font-family:"맑은 고딕", Malgun Gothic, "돋움",Dotum,Helvetica,AppleGothic,Sans-serif; line-height:1.5em;color:#444;}
+@font-face {font-family:NanumGothic; src:url(font/NanumGothic.eot); src:local('☺'), src:url(font/NanumGothic.woff) format('woff')}
+img,fieldset{border:0; border-style:none;}
+ul,ol,li {list-style:none}
+caption,legend {visibility:hidden; height:0; font-size:0; line-height:0; width:0; overflow:hidden; text-align:left}
+table {border-collapse:collapse} 
+hr {display:none}
+
+
+
+/* html5 요소 정의 */
+article, aside, details, figcaption, figure,footer, header, hgroup, menu, nav, section {display:block}
+
+/* link */
+a:link, a:visited {color:#444; text-decoration:none;border:0; border-style:none;}
+a:active,a:hover,a:focus {color:#444; text-decoration:none}
+
+
+/* 아이폰 (가로/세로) ----------- */
+@media only screen and (max-width: 480px){
+/* Styles */
+}
+
+/* iPads (가로/세로) ----------- */
+@media only screen and (min-width : 768px) and (max-width : 1024px) {
+/* Styles */
+}
+
+/* 데스크탑 브라우저 (가로) ----------- */
+@media only screen and (min-width : 1224px) {
+/* Styles */
+}
+
+/* 큰 모니터 ----------- */
+@media only screen and (min-width : 1824px) {
+/* Styles */
+}
+
+/* iPhone4와 같은 높은 해상도 ----------- */
+@media
+only screen and (-webkit-min-device-pixel-ratio : 1.5),
+only screen and (min-device-pixel-ratio : 1.5) {
+/* Styles */
+}
+
+
+
+
+/* common */
+body {background:url("image/bg.jpg") no-repeat;background-size:cover; background-position:center top;}
+.wrap {width:1600px;height:900px;background:#fff;position:fixed;top:50%;left:50%; margin:-450px 0 0 -800px;}
+span.clear {display:block;clear:both;content:"";}
+
+/* login */
+.wrap.login {background:#fff url("image/bg_login.jpg") no-repeat;}
+.login_w {position:absolute;right:342px;top:325px;width:417px;}
+.Gbox {border:1px solid #ccc;background:#ddd;border-radius:5px;padding:20px;position:relative;margin-top:10px;}
+#userID {background:#fff url("image/bg_id.jpg") no-repeat;height:40px;width:243px;border:1px solid #bbb;margin-bottom:7px;display:block;padding:0 15px;color:#666;font-size:14px;}
+#userPW {background:#fff url("image/bg_pw.jpg") no-repeat;height:40px;width:243px;border:1px solid #bbb;display:block;padding:0 15px;color:#666;font-size:14px;}
+#userID.on, #userPW.on {background:#fff;}
+.Gbox input[type="submit"]{display:block;width:90px;height:90px;border:1px solid #bbb;font-family:Malgun Gothic;color:#666;position:absolute;top:20px;right:20px;font-size:14px;cursor:pointer;
+/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ffffff+43,eaeaea+100 */
+background: rgb(255,255,255); /* Old browsers */
+background: -moz-linear-gradient(top, rgba(255,255,255,1) 43%, rgba(234,234,234,1) 100%); /* FF3.6-15 */
+background: -webkit-linear-gradient(top, rgba(255,255,255,1) 43%,rgba(234,234,234,1) 100%); /* Chrome10-25,Safari5.1-6 */
+background: linear-gradient(to bottom, rgba(255,255,255,1) 43%,rgba(234,234,234,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#eaeaea',GradientType=0 ); /* IE6-9 */}
+.login_w p {float:left;color:#888; font-size:15px;width:45%;padding-left:20px;margin-top:10px;}
+.login_w p:nth-of-type(2) {text-align:right;padding:0 20px 0 0;}
+
+
+/* lineup */
+.wrap.lineup {background:#fff url("image/bg_lineup_lg.jpg") no-repeat right 0;}
+
+.VS {height:41px;margin:20px 0 0 20px;}
+.VS li {float:left;margin-right:20px;}
+.VS li a {color:#444;padding:0 30px;display:block;height:39px;line-height:37px;font-size:17px;border:1px solid #ccc;text-align:center;letter-spacing:0.05em;
+/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ffffff+43,eaeaea+100 */
+background: rgb(255,255,255); /* Old browsers */
+background: -moz-linear-gradient(top, rgba(255,255,255,1) 43%, rgba(234,234,234,1) 100%); /* FF3.6-15 */
+background: -webkit-linear-gradient(top, rgba(255,255,255,1) 43%,rgba(234,234,234,1) 100%); /* Chrome10-25,Safari5.1-6 */
+background: linear-gradient(to bottom, rgba(255,255,255,1) 43%,rgba(234,234,234,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#eaeaea',GradientType=0 ); /* IE6-9 */}
+.VS li.on a {color:#fff;border:1px solid #ccc;background:#888;}
+p.apply {position:absolute;right:290px;top:20px;}
+p.apply a {color:#444;padding:0 20px 0 25px;display:block;height:39px;line-height:37px;font-size:15px;border:1px solid #ccc;text-align:center;letter-spacing:0.05em; 
+/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ffffff+43,eaeaea+100 */
+background: rgb(255,255,255); /* Old browsers */
+background: -moz-linear-gradient(top, rgba(255,255,255,1) 43%, rgba(234,234,234,1) 100%); /* FF3.6-15 */
+background: -webkit-linear-gradient(top, rgba(255,255,255,1) 43%,rgba(234,234,234,1) 100%); /* Chrome10-25,Safari5.1-6 */
+background: linear-gradient(to bottom, rgba(255,255,255,1) 43%,rgba(234,234,234,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#eaeaea',GradientType=0 ); /* IE6-9 */}
+p.apply a span {background:url("image/bg_check.png") no-repeat; height:39px;display:inline-block;width:19px;vertical-align:top;}
+.VS li.on a {color:#fff;border:1px solid #ccc;background:#888;}
+
+.VS_view {margin:18px 20px;}
+.VS_view > li {display:none;}
+.VS_view > li.on {display:block;position:relative;}
+.VS_view > li > div {border:2px solid #22c3ff;width:593px;position:relative;height:798px;background:#fff;}
+.VS_view > li > div p.team {background:#22c3ff;color:#fff;font-weight:bold;font-size:14px;right:-35px;text-align:center;width:33px;height:30px;line-height:29px;position:absolute;top:-2px;}
+.VS_view > li > div.home p.team {right:-35px;}
+.VS_view > li > div.home {border:2px solid #ff225b; position:absolute; right:270px; top:0;}
+.VS_view > li > div.home p.team {left:-35px;background:#ff225b;}
+
+.selection,.player {margin:20px;float:left;}
+.selection .bench, .selection .lgray {margin-top:20px;}
+.dgray,.lgray,.bench {position:relative;}
+.VS_view ul.st {position:absolute;top:30px;}
+.bench ul.st {top:0;}
+.bench ul.st2 {right:22px;}
+.VS_view ul.st li {width:50px;text-align:center;color:#888;font-size:13px;font-weight:bold;height:30px;line-height:30px;}
+.VS_view div.th {background:#888; height:30px;}
+.VS_view div.th div {float:left;color:#fff;text-align:center;font-weight:bold;line-height:28px;font-size:13px;}
+.VS_view div.st {width:50px;}
+.VS_view div.num {width:50px;}
+.VS_view div.name {width:82px;}
+.VS_view div.position {width:95px;position:relative;}
+.VS_view div.position ul {display:none;}
+.selection .dgray div.position ul.active {display:block;position:absolute;border:1px solid #666;padding:3px 10px;background:#fff;left:63px;top:9px;width:60px;z-index:1;} 
+.selection .dgray div.position ul li {text-align:left;}
+.selection .dgray div.position ul li a {font-family:Dotum;font-weight:normal;font-size:11px;line-height:24px;color:#666;display:block;letter-spacing:-0.1em;}
+.selection .dgray div.position ul li a:hover {font-weight:bold;}
+.selection .dgray div.position ul li.on a {color:#ec1c24;font-weight:bold;background:url("image/bg_check.jpg") no-repeat right center; padding-right:15px;}
+
+.VS_view ul.td {background:url("image/bg_table01.jpg") repeat-x;height:271px;}
+.bench ul.td {background-position:0 -30px; height:181px;}
+.selection .lgray ul.td {height:211px;}
+.selection ul.td > li {padding-left:50px;height:30px;line-height:30px;font-weight:bold;color:#888;text-align:center;cursor:pointer;font-size:13px;}
+.player ul.td > li {height:30px;line-height:30px;font-weight:bold;color:#888;text-align:center;cursor:pointer;font-size:13px;}
+.VS_view .dgray ul.td > li div,.VS_view .lgray ul.td > li div {float:left;}
+.selection ul.td > li div.num {display:none;}
+.selection .dgray ul.td > li a.btn01 {display:inline-block; width:14px;height:13px;background:url("image/btn01.jpg") no-repeat;margin:0 0 2px 5px;vertical-align:text-bottom;}
+.player ul.td {height:721px;}
+.player .dgray ul.td > li {padding-left:0;}
+.player .dgray ul.td li div.position,.bench div.position {display:none;}
+
+.player .dgray,.player .lgray {float:left;}
+.player .lgray {margin-left:20px;}
+.lgray div.th {background:#e6e6e6; height:30px;}
+.lgray div.th div {float:left;color:#888;text-align:center;font-weight:bold;line-height:28px;font-size:13px;}
+.VS_view .lgray ul.td > li {height:30px;line-height:30px;font-weight:bold;color:#888;text-align:center;cursor:pointer;}
+
+
+
+
+/* input */
+
+.input {background:#fff url("image/bg_input.jpg") repeat-y;width:960px;height:880px;padding:20px 40px 0 20px;}
+
+.input .date {font-weight:bold;font-size:14px;height:21px;line-height:21px;margin-bottom:5px;}
+.input .date p {float:left;width:50%;}
+.input .date p:nth-of-type(1) span {padding:0 10px;border-left:1px solid #aaa;display:inline-block;height:14px;line-height:14px;}
+.input .date p:nth-of-type(1) span:nth-of-type(1) {border:none;padding-left:0;}
+.input .date p:nth-of-type(1) span:nth-last-of-type(1) {border:none;padding-left:30px;}
+.input .date p:nth-of-type(2) {text-align:right;height:14px;line-height:14px;}
+.input .date p:nth-of-type(2) a {vertical-align:top;border-radius:3px;display:inline-block;color:#444;height:21px;line-height:20px;font-size:10px;border:1px solid #ccc;text-align:center;width:68px; font-weight:bold; margin:-4px 0 0 10px;background:url("image/bg_btn01.jpg") repeat-x 0 bottom;}
+.input .date p:nth-of-type(2) a span {display:inline-block;width:5px;height:10px;background:url("image/bg_go.png") no-repeat;margin:0 0 2px 3px;vertical-align:middle;}
+
+.input table {width:960px;border:1px solid #ccc;text-align:center;font-weight:bold;font-size:14px;}
+.input th {background:#eee;border:1px solid #ccc;height:40px;line-height:40px;}
+.input td {border:1px solid #ccc;height:40px;line-height:40px;}
+.input td span {font-weight:normal;font-size:12px;}
+.input td span.red {color:#ff225b;font-weight:bold;}
+.input td span.green {color:green;font-weight:bold;}
+.input tr td:nth-of-type(2),.input tr td:nth-of-type(3) {border:none;border-bottom:1px solid #ccc;}
+.input tr td:nth-of-type(4) {border-left:none;}
+
+.input .game {}
+.input .ground {width:658px; height:658px; border:1px solid #ccc;margin-top:20px;position:relative;float:left;}
+
+.base {position:absolute;left:206px;top:371px;}
+.base li {position:absolute;display:none;}
+.base li.on {display:block;}
+.base li span {width:23px;height:23px;display:block;background:url("image/icon_base.png") no-repeat;}
+.base li.base1 {left:226px;top:104px;}
+.base li.base2 {left:112px;top:0;}
+.base li.base3 {left:0px;top:104px;}
+
+.gr_view {position:absolute;left:0; top:0;}
+.gr_view > li {display:none;position:absolute;}
+.gr_view > li.active {display:block;}
+.gr_view li.g01 {background:url("image/bg_ground01.png") no-repeat;width:179px;height:239px;top:0; left:0;}
+.gr_view li.g02 {background:url("image/bg_ground02.png") no-repeat;width:299px;height:120px;top:-1px; left:180px;}
+.gr_view li.g03 {background:url("image/bg_ground03.png") no-repeat;width:179px;height:239px;top:0; left:480px;}
+.gr_view li.g04 {background:url("image/bg_ground04.png") no-repeat;width:239px;height:299px;top:120px;left:0;}
+.gr_view li.g05 {background:url("image/bg_ground05.png") no-repeat;width:179px;height:239px;top:60px;left:240px;}
+.gr_view li.g06 {background:url("image/bg_ground06.png") no-repeat;width:239px;height:299px;top:120px;left:420px;}
+.gr_view li.g07 {background:url("image/bg_ground07.png") no-repeat;width:299px;height:358px;top:300px;left:0;}
+.gr_view li.g08 {background:url("image/bg_ground08.png") no-repeat;width:119px;height:119px;top:300px;left:180px;}
+.gr_view li.g09 {background:url("image/bg_ground09.png") no-repeat;width:59px;height:119px;top:300px;left:300px;}
+.gr_view li.g10 {background:url("image/bg_ground10.png") no-repeat;width:119px;height:119px;top:300px;left:360px;}
+.gr_view li.g11 {background:url("image/bg_ground11.png") no-repeat;width:119px;height:119px;top:420px;left:180px;}
+.gr_view li.g12 {background:url("image/bg_ground12.png") no-repeat;width:59px;height:119px;top:420px;left:300px;}
+.gr_view li.g13 {background:url("image/bg_ground13.png") no-repeat;width:119px;height:119px;top:420px;left:360px;}
+.gr_view li.g14 {background:url("image/bg_ground14.png") no-repeat;width:179px;height:119px;top:539px;left:240px;}
+.gr_view li.g15 {background:url("image/bg_ground15.png") no-repeat;width:299px;height:358px;top:300px;left:360px;}
+.gr_view li div {position:absolute;height:100%;width:100%;left:30%;top:25%;}
+.gr_view li div span {background:url("image/bg_gr_arrow.png") no-repeat;width:10px;height:16px;display:block;position:absolute;left:0;top:0;}
+.gr_view li div ul {position:absolute; border:2px solid #888;background:#eee;padding:0 3px;left:8px;top:-12px;}
+.gr_view li div ul li {border-bottom:1px solid #888;padding:0 6px;}
+.gr_view li div ul li:nth-last-of-type(1) {border:none;}
+.gr_view li div ul li a {display:block;padding:6px 10px;min-width:56px;color:#444;height:14px;line-height:14px;font-weight:bold;margin:6px 0;font-size:14px;text-align:center;}
+.gr_view li div ul li a:hover {border-radius:3px;background:#888;color:#fff;}
+.gr_view li:nth-of-type(4) div,.gr_view li:nth-of-type(6) div {left:50%;top:40%;}
+.gr_view li:nth-of-type(5) div {left:35%;top:60%;}
+.gr_view li:nth-of-type(7) div {left:30%;top:30%;}
+.gr_view li:nth-of-type(14) div {left:30%;top:10%;}
+.gr_view li:nth-of-type(15) div {left:60%;top:40%;}
+.gr_view li:nth-of-type(15) div ul {top:auto;bottom:228px;}
+.gr_view li:nth-of-type(15) div span {top:100px;}
+
+.game .view {float:right;width:280px;margin-top:20px;}
+.game .view ul.st {border-right:1px solid #ccc;height:19px;line-height:17px;}
+.game .view ul.st li {float:left;border:1px solid #ccc;border-right:none;height:17px;font-size:11px;background:#e6e6e6;text-align:center;width:27px;}
+.game .view ul.st li:nth-of-type(1) {width:26px;}
+.game .view ul.st li a {color:#999;}
+.game .view ul.st li.on {background:#fff;}
+
+.view .window {border:1px solid #ccc;border-top:none;padding:10px 13px;font-family:Dotum;font-size:11px;line-height:1.3;height:502px;overflow-y:scroll;letter-spacing:-0.05em;}
+.view .window p {color:#999;font-weight:normal;}
+.view .window p.bold {color:#666;font-weight:bold;}
+.view .window p.red {color:red;}
+.view .window p.green {color:green;}
+.view .window p.blue {color:blue;}
+.view .window p span {display:inline-block;vertical-align:top;}
+.view .window div {margin-bottom:13px;}
+.view .window div.now p {color:#ff9000;}
+.view .window div.now p.event {color:#ff0000;font-weight:bold;}
+
+.view .BSO {border-right:1px solid #ccc;margin:8px 0;height:40px;}
+.view .BSO li {border:1px solid #ccc;border-right:none;float:left;text-align:center;width:92px;height:38px;font-size:14px; font-weight:bold;line-height:38px;}
+.view .BSO li span {display:inline-block;height:12px;margin-left:5px;position:relative;top:1px;}
+.view .BSO li span.B_0 {width:45px;background:url("image/bg_BSO.png") no-repeat 0 -42px;}
+.view .BSO li span.B_1 {width:45px;background:url("image/bg_BSO.png") no-repeat 0 -28px;}
+.view .BSO li span.B_2 {width:45px;background:url("image/bg_BSO.png") no-repeat 0 -14px;}
+.view .BSO li span.B_3 {width:45px;background:url("image/bg_BSO.png") no-repeat 0 0;}
+.view .BSO li span.S_0 {width:28px;background:url("image/bg_BSO.png") no-repeat 0 -42px;}
+.view .BSO li span.S_1 {width:28px;background:url("image/bg_BSO.png") no-repeat 0 -70px;}
+.view .BSO li span.S_2 {width:28px;background:url("image/bg_BSO.png") no-repeat 0 -56px;}
+.view .BSO li span.O_0 {width:28px;background:url("image/bg_BSO.png") no-repeat 0 -42px;}
+.view .BSO li span.O_1 {width:28px;background:url("image/bg_BSO.png") no-repeat 0 -98px;}
+.view .BSO li span.O_2 {width:28px;background:url("image/bg_BSO.png") no-repeat 0 -84px;}
+
+.view p.btn {float:left;}
+.view p.btn a {height:59px;line-height:59px;display:inline-block;font-weight:bold;font-size:14px;border:1px solid #ccc;background:url("image/bg_btn01.jpg") repeat-x 0 bottom;text-align:center;padding:0 15px;}
+.view p.btn:nth-of-type(2) a {line-height:1.2;padding-top:14px;height:45px;margin-left:3px;}
+
+
+.click {position:absolute;right:0px;top:20px;width:580px;}
+.click .command {height:96px;width:525px;margin-left:35px;}
+.click .command p {border:1px solid #ccc;border-right:none; height:94px;width:74px;text-align:center;line-height:94px;font-size:14px;float:left;}
+.click .command div {border:1px solid #ccc; padding:27px 15px;font-size:14px;font-weight:bold;font-family:Malgun Gothic;float:left;height:40px;width:273px;}
+.click .command a.not {display:block;color:#666;height:29px;line-height:29px;font-weight:bold;font-size:12px;border:1px solid #ccc;text-align:center;letter-spacing:0.05em; float:left; width:138px; margin:0 0 5px 5px;background:url("image/bg_btn01.jpg") repeat-x 0 bottom;}
+.click .command a.not span {display:inline-block;width:18px;height:28px;background:url("image/bg_not.png") no-repeat;vertical-align:top;}
+.click .command a.apply {display:block;color:#444;height:58px;line-height:58px;font-size:18px;border:1px solid #ccc;text-align:center;letter-spacing:0.05em; float:left; width:138px; font-weight:bold; margin:0 0 0 5px;background:url("image/bg_btn01.jpg") repeat-x 0 bottom;}
+.click .command a.apply span {background:url("image/bg_check.png") no-repeat; height:39px;display:inline-block;width:19px;vertical-align:top;margin:10px 0 0 5px;}
+
+.click .gbox {background:#e6e6e6;margin-left:35px;margin-top:10px;padding:0 0 5px 5px;width:521px;}
+.click .gbox a {display:block; border:1px solid #ccc;margin:5px 5px 0 0; width:513px; height:53px; line-height:53px;font-weight:bold; font-size:18px; text-align:center;background:url("image/bg_btn01.jpg") repeat-x 0 bottom;float:left;}
+.click .gbox a.w273 {width:273px;}
+.click .gbox a.h123 {height:123px;line-height:123px;}
+.click .gbox a.w113 {width:113px;}
+.click .gbox a.h103 {height:103px;line-height:103px;}
+.click .gbox a.h83 {height:83px;line-height:83px;}
+.click .gbox a.h73 {height:73px;line-height:73px;}
+.click .gbox a.h105 {height:105px;line-height:105px;}
+.click .gbox a.btn2 {width:253px;}
+.click .gbox a.btn2.btn2_1 {width:254px;}
+.click .gbox a.btn3 {width:166px;}
+.click .gbox a.btn3.btn3_1 {width:167px;}
+.click .gbox a.btn4 {width:123px;}
+.click .gbox a span {color:#bbb;padding-left:7px;}
+.click .gbox.PB a.on {background:url("image/bg_btn_on01.jpg") no-repeat;}
+.click .gbox.PB a.h73.on {background:url("image/bg_btn_on02.jpg") no-repeat;}
+.click .gbox.PB a.h105.on {background:url("image/bg_btn_on03.jpg") no-repeat;}
+.click p.line {border-top:1px solid #e6e6e6;margin:10px 20px 10px 35px;}

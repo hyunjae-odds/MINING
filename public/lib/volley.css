@@ -1,0 +1,294 @@
+@charset "utf-8";
+
+/* Reset */
+*{margin:0; padding:0;}
+body {font-size:.75em; font-family:"맑은 고딕", Malgun Gothic, "돋움",Dotum,Helvetica,AppleGothic,Sans-serif; line-height:1.5em;color:#444;}
+@font-face {font-family:NanumGothic; src:url(font/NanumGothic.eot); src:local('☺'), src:url(font/NanumGothic.woff) format('woff')}
+img,fieldset{border:0; border-style:none;}
+ul,ol,li {list-style:none}
+caption,legend {visibility:hidden; height:0; font-size:0; line-height:0; width:0; overflow:hidden; text-align:left}
+table {border-collapse:collapse} 
+hr {display:none}
+
+
+
+/* html5 요소 정의 */
+article, aside, details, figcaption, figure,footer, header, hgroup, menu, nav, section {display:block}
+
+/* link */
+a:link, a:visited {color:#444; text-decoration:none;border:0; border-style:none;}
+a:active,a:hover,a:focus {color:#444; text-decoration:none}
+
+
+/* 아이폰 (가로/세로) ----------- */
+@media only screen and (max-width: 480px){
+/* Styles */
+}
+
+/* iPads (가로/세로) ----------- */
+@media only screen and (min-width : 768px) and (max-width : 1024px) {
+/* Styles */
+}
+
+/* 데스크탑 브라우저 (가로) ----------- */
+@media only screen and (min-width : 1224px) {
+/* Styles */
+}
+
+/* 큰 모니터 ----------- */
+@media only screen and (min-width : 1824px) {
+/* Styles */
+}
+
+/* iPhone4와 같은 높은 해상도 ----------- */
+@media
+only screen and (-webkit-min-device-pixel-ratio : 1.5),
+only screen and (min-device-pixel-ratio : 1.5) {
+/* Styles */
+}
+
+
+
+
+/* common */
+body {background:url("volleyball_image/bg.jpg") no-repeat;background-size:cover; background-position:center top;}
+.wrap {width:1600px;height:895px;background:#fff;position:absolute;top:25px;left:0;right:0;margin:0 auto;}
+.clear {display:block;clear:both;content:"";}
+
+
+/* login */
+.wrap.login {background:#fff url("volleyball_image/bg_login.jpg") no-repeat;}
+.login_w {position:absolute;right:342px;top:325px;width:417px;}
+.Gbox {border:1px solid #ccc;background:#ddd;border-radius:5px;padding:20px;position:relative;margin-top:10px;}
+#userID {background:#fff url("volleyball_image/bg_id.jpg") no-repeat;height:40px;width:243px;border:1px solid #bbb;margin-bottom:7px;display:block;padding:0 15px;color:#666;font-size:14px;}
+#userPW {background:#fff url("volleyball_image/bg_pw.jpg") no-repeat;height:40px;width:243px;border:1px solid #bbb;display:block;padding:0 15px;color:#666;font-size:14px;}
+#userID.on, #userPW.on {background:#fff;}
+.Gbox input[type="submit"]{display:block;width:90px;height:90px;border:1px solid #bbb;font-family:Malgun Gothic;color:#666;position:absolute;bottom:20px;right:20px;font-size:14px;cursor:pointer;
+/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ffffff+43,eaeaea+100 */
+background: rgb(255,255,255); /* Old browsers */
+background: -moz-linear-gradient(top, rgba(255,255,255,1) 43%, rgba(234,234,234,1) 100%); /* FF3.6-15 */
+background: -webkit-linear-gradient(top, rgba(255,255,255,1) 43%,rgba(234,234,234,1) 100%); /* Chrome10-25,Safari5.1-6 */
+background: linear-gradient(to bottom, rgba(255,255,255,1) 43%,rgba(234,234,234,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#eaeaea',GradientType=0 ); /* IE6-9 */}
+.login_w p {float:left;color:#888; font-size:15px;width:45%;padding-left:20px;margin-top:10px;}
+.login_w p:nth-of-type(2) {text-align:right;padding:0 20px 0 0;}
+.Gbox ul {height:42px;margin-bottom:10px;}
+.Gbox ul li {float:left;height:40px;background:#fff;text-align:center;border:1px solid #bbb;width:180px;line-height:39px;font-size:15px;cursor:pointer;color:#888;}
+.Gbox ul li:nth-of-type(1) {margin-right:11px;}
+.Gbox ul li.on {font-weight:bold;color:#fff;background:#c00000 url("volleyball_image/check_red.jpg") no-repeat 29px 17px;}
+
+
+
+/* lineup */
+.wrap.lineup {background:#fff url("volleyball_image/bg_lineup.jpg") no-repeat right -5px;width:1600px;}
+
+.VS {height:41px;margin:20px 0 0 20px;}
+.VS li {float:left;margin-right:20px;}
+.VS li a {color:#444;padding:0 30px;display:block;height:39px;line-height:37px;font-size:17px;border:1px solid #ccc;text-align:center;letter-spacing:0.05em;font-weight:bold;
+/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ffffff+43,eaeaea+100 */
+background: rgb(255,255,255); /* Old browsers */
+background: -moz-linear-gradient(top, rgba(255,255,255,1) 43%, rgba(234,234,234,1) 100%); /* FF3.6-15 */
+background: -webkit-linear-gradient(top, rgba(255,255,255,1) 43%,rgba(234,234,234,1) 100%); /* Chrome10-25,Safari5.1-6 */
+background: linear-gradient(to bottom, rgba(255,255,255,1) 43%,rgba(234,234,234,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#eaeaea',GradientType=0 ); /* IE6-9 */}
+.VS li.on a {color:#fff;border:1px solid #ccc;background:#888;}
+p.apply {position:absolute;right:297px;top:20px;}
+p.apply a {color:#444;padding:0 20px 0 25px;display:block;height:39px;line-height:37px;font-size:15px;border:1px solid #ccc;text-align:center;letter-spacing:0.05em; 
+/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ffffff+43,eaeaea+100 */
+background: rgb(255,255,255); /* Old browsers */
+background: -moz-linear-gradient(top, rgba(255,255,255,1) 43%, rgba(234,234,234,1) 100%); /* FF3.6-15 */
+background: -webkit-linear-gradient(top, rgba(255,255,255,1) 43%,rgba(234,234,234,1) 100%); /* Chrome10-25,Safari5.1-6 */
+background: linear-gradient(to bottom, rgba(255,255,255,1) 43%,rgba(234,234,234,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#eaeaea',GradientType=0 ); /* IE6-9 */}
+p.apply a span {background:url("volleyball_image/bg_check.png") no-repeat; height:39px;display:inline-block;width:19px;vertical-align:top;}
+.VS li.on a {color:#fff;border:1px solid #ccc;background:#888;}
+
+.VS_view {margin:10px 20px 20px;}
+.VS_view > li {display:none;}
+.VS_view > li.on {display:block;position:relative;}
+.VS_view > li > div {border:2px solid #ff225b;width:553px;position:relative;height:798px;background:#fff;padding:0 20px;}
+.VS_view > li > div > div {width:236px;}
+.VS_view > li > div > div h3 {font-size:20px;text-align:center;color:#888;height:20px;line-height:20px;margin-bottom:15px;}
+.VS_view > li > div p.team {background:#ff225b;color:#fff;font-weight:bold;font-size:14px;text-align:center;width:33px;height:30px;line-height:29px;position:absolute;top:-2px;}
+.VS_view > li > div.home p.team {right:-40px;}
+.VS_view > li > div.visit {border:2px solid #22c3ff; position:absolute; right:276px; top:0;}
+.VS_view > li > div.visit p.team {left:-35px;background:#22c3ff;}
+
+.selection,.player {margin:20px;float:left;}
+.selection .bench, .selection .lgray {margin-top:20px;}
+.dgray,.lgray,.bench {position:relative;}
+.VS_view ul.st {position:absolute;top:30px;left:160px;}
+.bench ul.st {top:0;}
+.bench ul.st2 {right:22px;}
+.VS_view ul.st li {width:70px;text-align:center;color:#888;font-size:13px;font-weight:bold;height:26px;line-height:30px;}
+.VS_view div.th {background:#888; height:30px;}
+.VS_view div.th div {float:left;color:#fff;text-align:center;font-weight:bold;line-height:28px;font-size:13px;}
+.VS_view div.st {width:50px;}
+.VS_view div.name {width:82px;height:30px;overflow:hidden;}
+.VS_view div.number {width:59px;}
+.VS_view div.position {width:95px;position:relative;}
+.VS_view div.position ul {display:none;}/**/
+.dgray div.position ul.active {display:block;position:absolute;border:1px solid #666;padding:3px 10px;background:#fff;left:63px;top:9px;width:60px;z-index:1;}
+.dgray div.position ul li {text-align:left;}
+.dgray div.position ul li a {font-family:Dotum;font-weight:normal;font-size:11px;line-height:24px;color:#666;display:block;letter-spacing:-0.1em;}
+.dgray div.position ul li a:hover {font-weight:bold;}
+.dgray div.position ul li.on a {color:#ec1c24;font-weight:bold;background:url("volleyball_image/bg_check.jpg") no-repeat right center; padding-right:15px;}
+div.position > p {position:relative;}
+
+
+.VS_view ul.td {background:url("volleyball_image/bg_table01.jpg") repeat;height:217px;}
+.VS_view .dgray01 ul.td {background:url("volleyball_image/bg_table01_g.jpg") repeat;}
+.bench ul.td {background-position:0 -30px; height:187px;}
+.selection .lgray ul.td {height:211px;}
+.selection ul.td > li {height:31px;line-height:30px;font-weight:bold;color:#888;text-align:center;cursor:pointer;font-size:13px;}
+.player ul.td > li {height:31px;line-height:30px;font-weight:bold;color:#888;text-align:center;cursor:pointer;font-size:13px;}
+.VS_view .dgray ul.td > li div,.VS_view .lgray ul.td > li div {float:left;}
+/*.selection ul.td > li div.num {display:none;}*/
+.dgray ul.td > li a.btn01 {display:inline-block; width:14px;height:13px;background:url("volleyball_image/btn01.jpg") no-repeat;margin:0 0 2px 5px;vertical-align:text-bottom;position:absolute;top:10px;right:7px;}
+.player ul.td {height:651px;}
+.player .dgray ul.td > li {padding-left:0;}
+/*.player .dgray ul.td li div.position,.bench div.position {display:none;}*/
+
+.player .dgray,.player .lgray {float:left;}
+.player .lgray {margin-left:20px;}
+.lgray div.th {background:#e6e6e6; height:30px;}
+.lgray div.th div {float:left;color:#888;text-align:center;font-weight:bold;line-height:28px;font-size:13px;}
+.VS_view .lgray ul.td > li {height:30px;line-height:30px;font-weight:bold;color:#888;text-align:center;cursor:pointer;}
+
+
+.selection .dgray01 ul.td > li .position p a {display:none;}
+
+
+
+/* input */
+
+.input {background:#fff url("volleyball_image/bg_input.jpg") repeat-y right 0;width:780px;height:855px;padding:20px 30px;float:left;}
+
+.input .date {font-weight:bold;font-size:14px;height:30px;line-height:30px;margin-bottom:5px;}
+.input .date.start {background:white;padding:0 10px;}
+.input .date p {float:left;}
+.input .date p:nth-of-type(1) span {padding:0 10px;border-left:1px solid #777;display:inline-block;height:14px;line-height:14px;margin-top:6px;}
+.input .date p:nth-of-type(1) span:nth-of-type(1) {border:none;padding-left:0;}
+.input .date p:nth-of-type(1) span:nth-last-of-type(1) {border:none;padding-left:20px;}
+.input .date p:nth-of-type(2) {float:right;text-align:right;height:14px;line-height:14px;margin-top:7px;}
+.input .date p:nth-of-type(2) a {vertical-align:middle;border-radius:3px;display:inline-block;color:#444;height:21px;line-height:20px;font-size:10px;border:1px solid #ccc;text-align:center;width:68px; font-weight:bold; margin:-4px 0 0 10px;background:url("volleyball_image/bg_btn01.jpg") repeat-x 0 bottom;}
+.input .date p:nth-of-type(2) a span {display:inline-block;width:5px;height:10px;background:url("volleyball_image/bg_go.png") no-repeat;margin:0 0 2px 3px;vertical-align:middle;}
+
+.input table {width:780px;border:1px solid #ccc;text-align:center;font-weight:bold;font-size:14px;}
+.input th {background:#eee;border:1px solid #ccc;height:40px;line-height:40px;}
+.input th.ing {background:#FAF4C0;}
+.input td {border:1px solid #ccc;height:36px;line-height:36px;}
+.input td span {font-weight:normal;font-size:12px;}
+.input td span.red {color:#ff225b;font-weight:bold;font-size:20px;}
+
+.ground {background:url("volleyball_image/ground_volley.jpg") no-repeat;margin-top:10px;position:relative;height:366px;width:780px;}
+.ground a.start {display:inline-block;width:90px;height:30px;line-height:29px;background:#fff;text-align:center;border:1px solid #bbb;position:absolute;top:10px;left:10px;}
+.ground a.start.on {background:#7bbcfe;}
+.ground ul {} 
+.ground ul li {position:absolute;width:70px;height:45px;text-align:center;padding-top:25px;border-radius:35px;cursor:pointer;}
+.ground ul.left li.p1 {left:123px;top:47px;}
+.ground ul.left li.p2 {left:123px;top:147px;}
+.ground ul.left li.p3 {left:123px;top:247px;}
+.ground ul.left li.p4 {left:293px;top:47px;}
+.ground ul.left li.p5 {left:293px;top:147px;}
+.ground ul.left li.p6 {left:293px;top:247px;}
+.ground ul.right li.p1 {left:416px;top:47px;}
+.ground ul.right li.p2 {left:416px;top:147px;}
+.ground ul.right li.p3 {left:416px;top:247px;}
+.ground ul.right li.p4 {left:586px;top:47px;}
+.ground ul.right li.p5 {left:586px;top:147px;}
+.ground ul.right li.p6 {left:586px;top:242px;}
+
+.click .gbox a {display:block; border:1px solid #ccc;margin-right:5px; height:53px; line-height:53px;font-weight:bold; font-size:18px; text-align:center;background:url("volleyball_image/bg_btn01.jpg") repeat-x 0 bottom;float:left;}
+.click .gbox a.bbox {background:#c4e2fc url("volleyball_image/bg_btn02.jpg") repeat-x 0 bottom;}
+
+.input .click {margin-bottom:7px;}
+.input .click .gbox a {width:166px;margin:0;margin-right:7px;height:45px;line-height:43px;font-size:16px;}
+.input .click .gbox a:nth-of-type(1),.input .click .gbox a:nth-of-type(2) {margin-right:8px;}
+.input .click .gbox a:nth-last-of-type(1) {margin-right:0;}
+
+.time_w {margin-top:10px;}
+.time_w .time {color:#384661;font-size:40px;height:70px;line-height:67px;text-align:center;border:1px solid #ccc;font-weight:bold;float:left;width:483px;margin-right:8px;}
+.time_w .click .gbox a {width:95px;color:#384661;font-size:40px;height:70px;line-height:67px;}
+.time_w .click .gbox a:nth-last-of-type(1) span {display:inline-block;width:20px;height:4px;background:#384661;margin-top:35px;}
+
+
+.team {width:345px;margin-right:5px;float:left;}
+.team:nth-of-type(2) {margin:0;}
+.team h3 {background:#384661;height:86px;color:#fff;line-height:86px;font-weight:bold;font-size:30px;width:270px;padding-right:75px;text-align:center;margin-bottom:5px;}
+.team h3.red {background:#a72129;}
+.team:nth-of-type(2) h3 {padding:0 0 0 75px;}
+.team h3.attack {background-image:url("volleyball_image/arro_b.png");background-repeat:no-repeat;background-position: right 0;}
+.team:nth-of-type(2) h3.attack {background-image:url("volleyball_image/arro_r.png");background-repeat:no-repeat;background-position: 0 0;}
+.team h3:hover {cursor:pointer;}
+
+.player_w {margin-top:5px;height:310px;}
+.player_w h3 {text-align:center;background:#313D56;color:#fff;height:58px;line-height:58px;font-size:28px;margin-bottom:5px;}
+.player_w > div {width:387px;float:left;}
+.player_w .team1 {margin-right:5px;width:388px;}
+.player_w .team1 h3 {background:#9D1E25;}
+.player_w > div > div,.player_w > div > img {float:left;}
+.player_w > div > div {width:100%;}
+.player_w > div > img {margin:95px 13px 0;}
+.player_w > div > div h4 {text-align:center;background:#4f5a63;height:27px;line-height:26px;color:#fff;}
+.player_w > div > div ul {border:1px solid #C5C5C5;height:233px;overflow-y:scroll;}
+.player_w > div > div ul li {height:38px;line-height:38px;border-bottom:1px solid #C5C5C5;}
+.player_w > div > div ul li span {display:inline-block;width:40px;text-align:center;}
+.player_w > div > div ul li span.pp {width:99px;margin-left:10px;text-align:left;}
+.player_w > div > div.table02 ul li span.pp {width:116px;}
+.player_w > div > div.table02 ul {height:227px;overflow-y:hidden;}
+.player_w > div > div > ul > li:hover {box-sizing:border-box;border:1px solid darkgray;}
+.home_side {filter:grayscale(100%);}
+.away_side {filter:grayscale(100%);}
+.home_side:hover{filter:none;}
+.away_side:hover{filter:none;}
+
+
+.input_right {width:710px;height:841px;padding:27px 25px;float:left;background:#fff;}
+
+.view_w {margin-bottom:20px;}
+.view_w p {float:left;text-align:center;font-weight:bold;font-size:14px;}
+.view_w .title {background:url("volleyball_image/bg_btn01.jpg") repeat-x scroll 0 bottom;height:40px;line-height:40px;border:1px solid #ccc;}
+.view_w p.home {width:292px;border-right:1px solid #ccc;}
+.view_w p.qt {width:104px;border-right:1px solid #ccc;}
+.view_w p.away {width:292px;}
+.view_w p.qt span {display:block;background:url("volleyball_image/score.png") no-repeat 15px 12px;}
+.view_w p.qt span.r_s {background-position:78px 12px;}
+.view_w .view {clear:both;border:1px solid #ccc;height:330px;border-top:none;overflow-y:scroll;}
+.view_w .view li {height:30px;line-height:30px;}
+.view_w .view li:nth-of-type(odd) {background:#f1f1f1;}
+.view_w .view li:hover {cursor:pointer;}
+.view_w .view li:hover p {background:#7bbcfe;}
+.view_w .view p {font-size:12px;height:30px;line-height:29px;font-weight:normal;color:#999;}
+.view_w .view p.home b {color:#9D1E25;}
+.view_w .view p.away b {color:#4f5a63}
+
+.input_right .command {height:96px;width:710px;clear:both;padding-bottom:7px;margin-bottom:7px;border-bottom:1px solid #eee;}
+.input_right .command p {border:1px solid #ccc;border-right:none; height:94px;width:74px;text-align:center;line-height:94px;font-size:14px;float:left;}
+.input_right .command div {border:1px solid #ccc; padding:38px 15px;font-size:13px;font-weight:bold;font-family:Malgun Gothic;float:left;height:18px;width:458px;}
+.input_right .command div span.home {color:#017fff;} 
+.input_right .command div span.away {color:#fe0000;} 
+.input_right .command a.not {display:block;color:#666;height:29px;line-height:29px;font-weight:bold;font-size:12px;border:1px solid #ccc;text-align:center;letter-spacing:0.05em; float:left; width:138px; margin:0 0 5px 5px;background:url("volleyball_image/bg_btn01.jpg") repeat-x 0 bottom;}
+.input_right .command a.not span {display:inline-block;width:18px;height:28px;background:url("volleyball_image/bg_not.png") no-repeat;vertical-align:top;}
+.input_right .command a.apply {display:block;color:#444;height:58px;line-height:58px;font-size:18px;border:1px solid #ccc;text-align:center;letter-spacing:0.05em; float:left; width:138px; font-weight:bold; margin:0 0 0 5px;background:url("volleyball_image/bg_btn01.jpg") repeat-x 0 bottom;}
+.input_right .command a.apply span {background:url("volleyball_image/bg_check.png") no-repeat; height:39px;display:inline-block;width:19px;vertical-align:top;margin:10px 0 0 5px;}
+
+.input_right .gbox {background:#e6e6e6;padding:7px 7px 2px;width:338px;float:left;}
+.input_right .gbox:nth-last-of-type(1) {margin-left:5px;}
+.input_right .gbox a {margin-bottom:5px;height:75px;line-height:75px;font-size:19px;}
+.input_right .gbox:nth-last-of-type(2) a.btn1 {width:336px;}
+.input_right .gbox:nth-last-of-type(2) a.btn2 {width:203px;}
+.input_right .gbox:nth-last-of-type(2) a.btn3 {width:107px;}
+.input_right .gbox:nth-last-of-type(1) a.btn1 {width:335px;}
+.input_right .gbox:nth-last-of-type(1) a.btn2 {width:164px;}
+.input_right .gbox a.mr0 {margin-right:0;}
+.input_right .gbox a.l2 {line-height:1.2;padding-top:10px;height:60px;}
+.input_right .gbox a span {color:#aaa;font-size:16px;}
+
+
+
+
+
+
+
+
