@@ -14,16 +14,16 @@ class Volleyball extends CI_Controller{
 	    $this->load->view('/volleyball/login');
     }
 
-    function lineup(){
+    function lineup($sex){
 	    $this->auth();
 
 	    $date=($this->input->get('date')==null)? date('Y-m-d'): $this->input->get('date');
 
-	    $schedule=$this->volley_model->get_schedule('schedule', array('date'=>$date, 'sex'=>$this->input->get('sex')));
+	    $schedule=$this->volley_model->get_schedule('schedule', array('date'=>$date, 'sex'=>$sex));
 	    $line_up=($schedule->is_schedule=='G')? $this->volley_model->get_lineup($schedule->no, 'starting'):'';
 	    $players=($schedule->is_schedule=='T')? $this->volley_model->get_this_days_players($schedule->home, $schedule->away):'';
 
-        $this->load->view('/volleyball/lineup', array('date'=>$date,'schedule'=>$schedule,'line_up'=>$line_up,'players'=>$players));
+        $this->load->view('/volleyball/lineup', array('sex'=>$sex,'date'=>$date,'schedule'=>$schedule,'line_up'=>$line_up,'players'=>$players));
     }
 
     function input($schedule_no, $set){
@@ -62,7 +62,7 @@ class Volleyball extends CI_Controller{
     }
 
     function insert_event_ajax(){
-        $this->volley_model->insert_event(json_decode($this->input->post('data')));
+        echo $this->volley_model->insert_event(json_decode($this->input->post('data')));
     }
 
     function del_event_ajax(){
@@ -94,5 +94,20 @@ class Volleyball extends CI_Controller{
 
     function update_ajax(){
         $this->volley_model->update($this->input->post('table'), array('status'=>$this->input->post('status')), array('no'=>$this->input->post('schedule_no')));
+    }
+
+    function insert_ajax(){
+        $data=json_decode($this->input->post('data'));
+        $area=array('hm','hb','am','ab');
+        foreach ($data as $key=>$item):
+            foreach ($item as $keys=>$items):
+                $obj['schedule_no']=$this->input->post('schedule_no');
+                $obj['p_no']=$items->p_no;
+                $obj['area']=$area[$key];
+                $obj['status']='set';
+
+                $this->volley_model->insert('line_up', $obj);
+            endforeach;
+        endforeach;
     }
 }

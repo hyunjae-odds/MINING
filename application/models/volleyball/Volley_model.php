@@ -54,6 +54,10 @@
 
         $MINING->set('insert_dt', 'NOW()', false);
         $MINING->insert('event', $data);
+
+        $MINING->order_by('score_no', 'DESC');
+        $MINING->order_by('rallying_no', 'DESC');
+        return $MINING->get_where('event', array('schedule_no'=>$data->schedule_no))->row()->no;
     }
 
     /* GET */

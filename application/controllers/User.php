@@ -60,7 +60,7 @@ class User extends CI_Controller {
             $this->session->set_userdata($user_profile);
 
             if($site=='baseball') redirect('/baseball/schedule/'.date('Y-m-d').'/0/0');
-			elseif($site=='volleyball') redirect('/volleyball/lineup?sex='.$sex);
+			elseif($site=='volleyball') redirect('/volleyball/lineup/'.$sex);
 		}else{
 			$this->session->set_flashdata('message', '로그인에 실패 하였습니다.');
 

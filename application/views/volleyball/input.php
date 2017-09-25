@@ -195,8 +195,9 @@
                 </div>
             </div>
         </div>
-        <p style="position:absolute;left:200px;top:800px;color:white;font-size:300%;">홈</p><img src="/public/lib/volleyball_image/home_side.jpg" width="387px" style="margin-top:7px;box-sizing:border-box;border:1px solid #4f5a63;<?php if($attack_side=='home') echo 'filter:none;';?>" class="home_side" onclick="attack_side_click(this);">
-        <p style="position:absolute;left:600px;top:800px;color:white;font-size:300%;">원정</p><img src="/public/lib/volleyball_image/away_side.jpg" width="387px" style="margin-top:7px;box-sizing:border-box;border:1px solid #4f5a63;margin-left:2px;<?php if($attack_side=='away') echo 'filter:none;';?>" class="away_side" onclick="attack_side_click(this);">
+        <p style="position:absolute;left:200px;top:800px;color:white;font-size:300%;" id="home_word">홈</p><img src="/public/lib/volleyball_image/home_side.jpg" width="387px" style="margin-top:7px;box-sizing:border-box;border:1px solid #4f5a63;<?php if($attack_side=='home') echo 'filter:none;';?>" class="home_side" onclick="attack_side_click(this);">
+        <p style="position:absolute;left:600px;top:800px;color:white;font-size:300%;" id="away_word">원정</p><img src="/public/lib/volleyball_image/away_side.jpg" width="386px" style="margin-top:7px;box-sizing:border-box;border:1px solid #4f5a63;margin-left:2px;<?php if($attack_side=='away') echo 'filter:none;';?>" class="away_side" onclick="attack_side_click(this);">
+        <span style="position:absolute;border:1px solid #4f5a63;left:600px;top:300px;<?=($status!=='set')? 'display:inline':'display:none;';?>" id="vic_pic"><img src="/public/lib/volleyball_image/victory.png" width="386px"><button style="position:absolute;" onclick="document.getElementById('vic_pic').style.display='none';"> 닫기 </button></span>
 
         <iframe src="http://www.kovo.co.kr/main.asp" width="777" height="580" style="display:none;position:absolute;left:30px;top:175px;background-color:white;" frameborder='1' scrolling="yes" id="frame"></iframe>
         <div style="display:none;position:absolute;left:30px;top:518px;background-color:white;width:386px;height:233px;border:1px solid black;background-image:url(/public/lib/volleyball_image/simpan.png);background-size:contain;" id="challenge">
@@ -315,18 +316,21 @@
             <ul class="view">
                 <?php foreach($message as $item): ?>
                     <li onclick="del_event(this);" id="<?=$item->no;?>">
-                        <p class="home"><b><?php if($item->attack_side=='home') echo $item->message;?></b></p>
-                        <?php if($item->point_str==''): ?>
-                            <p class="qt"><?=$item->home_score;?>:<?=$item->away_score;?></p>
-                        <?php else: ?>
-                            <p class="qt"><span class="<?=$item->point_str;?>"><?=$item->home_score;?>:<?=$item->away_score;?></span></p>
-                        <?php endif;?>
-                        <p class="away"><b><?php if($item->attack_side=='away') echo $item->message;?></b></p>
+                        <?php if($item->attack_side=='home'): ?>
+                            <p class="home"><b><?=$item->message;?></b></p>
+                            <p class="qt"><?php if($item->point_str!='') echo '<span class="'.$item->point_str.'">';?><?=$item->home_score;?>:<?=$item->away_score;?><?php if($item->point_str!='') echo '</span>';?></p>
+                            <p class="away"><b><?php if($item->message=='터치 아웃' || $item->message=='벌칙' || $item->message=='반칙' || $item->message=='서브 실패' || $item->message=='블로킹 실패' || $item->message=='리시브 실패' || $item->message=='공격 실패' || $item->message=='디그 실패') echo '득점 성공';?></b></p>
+                        <?php elseif($item->attack_side=='away'): ?>
+                            <p class="home"><b><?php if($item->message=='터치 아웃' || $item->message=='벌칙' || $item->message=='반칙' || $item->message=='서브 실패' || $item->message=='블로킹 실패' || $item->message=='리시브 실패' || $item->message=='공격 실패' || $item->message=='디그 실패') echo '득점 성공';?></b></p>
+                            <p class="qt"><?php if($item->point_str!='') echo '<span class="'.$item->point_str.'">';?><?=$item->home_score;?>:<?=$item->away_score;?><?php if($item->point_str!='') echo '</span>';?></p>
+                            <p class="away"><b><?=$item->message;?></b></p>
+                        <?php endif; ?>
                     </li>
                 <?php endforeach; ?>
             </ul>
             <div class="claer"></div>
         </div>
+
         <div class="command">
             <p>커맨드</p>
             <div><span></span></div>
@@ -348,7 +352,7 @@
             <a href="javascript:run_keymap(81);" class="btn2">안정 <span>(Q)</span></a>
             <a href="javascript:run_keymap(87);" class="btn2 mr0">불안 <span>(W)</span></a>
             <a href="javascript:run_keymap(69);" class="btn2">타임 <span>(E)</span></a>
-            <a href="javascript:run_keymap(78);" class="btn2 mr0">네트 <span>(N)</span></a>
+            <a href="javascript:run_keymap(71);" class="btn2 mr0">벌칙 <span>(G)</span></a>
             <a href="javascript:run_keymap(67);" class="btn2">챌린지 <span>(C)</span></a>
             <a href="javascript:run_keymap(70);" class="btn2 mr0">반칙 <span>(F)</span></a>
             <a href="javascript:run_keymap(88);" class="btn1">실패 <span>(X)</span></a>
@@ -356,6 +360,7 @@
         </div>
     </div>
 </div>
+
 <script>
     function game_start() {
         prototype.set=<?=$last_set;?>;
@@ -400,11 +405,19 @@
         else document.getElementById('frame').style.display='none';
     }
 
-    function send_ajax(func, data) {
+    function send_ajax(func, data, bool) {
+        let id=0;
+
         $.ajax({
             type:'POST',
             url:'/volleyball/'+func,
-            data:{data:data}
+            data:{data:data},
+            success: function(d) {
+                if(bool) id=d;
+            },
+            complete: function() {
+                if(bool) document.getElementsByClassName('view')[0].children[0].id=id;
+            }
         });
     }
 
@@ -420,14 +433,16 @@
     }
 
     function run_keymap(e) {
-        if(event==undefined) {
-            if(e==73) show_i_frame();
-            else if(e==81 || e==87 || e==88 || e==90) combo_checker(event.keyCode);
-            else command_checker(e);
-        }else {
-            if(event.keyCode==73) show_i_frame();
-            else if(event.keyCode==81 || event.keyCode==87 || event.keyCode==88 || event.keyCode==90) combo_checker(event.keyCode);
-            else command_checker(event.keyCode);
+        if('<?=$status;?>'!=='set') {
+            if (e === undefined) {
+                if (event.keyCode === 73) show_i_frame();
+                else if (event.keyCode === 81 || event.keyCode === 87 || event.keyCode === 88 || event.keyCode === 90) combo_checker(event.keyCode);
+                else command_checker(event.keyCode);
+            } else {
+                if (e === 73) show_i_frame();
+                else if (e === 81 || e === 87 || e === 88 || e === 90) combo_checker(e);
+                else command_checker(e);
+            }
         }
     }
 
@@ -435,7 +450,7 @@
         let message='';
 
         switch(key_code) {
-//                  서브
+//          서브
             case 83 :
                 message='서브 시도';
                 prototype.command=key_code;
@@ -445,7 +460,7 @@
                 prototype.focus = 'T';
                 prototype.point_str = '';
                 break;
-//                  공격
+//          공격
             case 65 :
                 message='공격 시도';
                 prototype.command=key_code;
@@ -455,17 +470,17 @@
                 prototype.focus = 'T';
                 prototype.point_str = '';
                 break;
-//                  리시브
+//          리시브
             case 82 :
-                message='리시브';
+                message=(prototype.message==='리시브')? '리시브 볼 넘김':'리시브';
                 prototype.command=key_code;
                 prototype.combo=0;
-                prototype.message='리시브';
-                prototype.type = 'yet';
-                prototype.focus = 'F';
+                prototype.message=message;
+                prototype.type =(prototype.message==='리시브 볼 넘김')? 'message':'yet';
+                prototype.focus =(prototype.message==='리시브 볼 넘김')? 'T':'F';
                 prototype.point_str = '';
                 break;
-//                  디그
+//          디그
             case 68 :
                 message='디그';
                 prototype.command=key_code;
@@ -475,7 +490,7 @@
                 prototype.focus = 'F';
                 prototype.point_str = '';
                 break;
-//                  블로킹
+//          블로킹
             case 66 :
                 message='유효 블로킹';
                 prototype.command=key_code;
@@ -485,7 +500,7 @@
                 prototype.focus = 'T';
                 prototype.point_str = '';
                 break;
-//                  리바운드
+//          리바운드
             case 86 :
                 message='블로킹 리바운드';
                 prototype.command=key_code;
@@ -495,7 +510,7 @@
                 prototype.focus = 'F';
                 prototype.point_str = '';
                 break;
-//                  터치 아웃
+//          터치 아웃
             case 84 :
                 message='터치 아웃';
                 prototype.command=key_code;
@@ -505,15 +520,16 @@
                 prototype.focus='T';
                 prototype.point_str = '';
                 break;
-//                  네트 터치
-            case 78 :
-                message='네트 터치';
+//          벌칙
+            case 71 :
+                message='벌칙';
                 prototype.command=key_code;
                 prototype.combo=1;
-                prototype.message='네트 터치';
+                prototype.message='벌칙';
+                prototype.focus='T';
                 prototype.type='message';
                 break;
-//                  타임
+//          타임
             case 69 :
                 message='타임';
                 prototype.command=key_code;
@@ -522,16 +538,17 @@
                 prototype.type='message';
                 prototype.point_str = '';
                 break;
-//                  반칙
+//          반칙
             case 70 :
                 message = '반칙';
                 prototype.command = key_code;
                 prototype.combo = 0;
                 prototype.message = '반칙';
                 prototype.type = 'message';
+                prototype.focus='T';
                 prototype.point_str = '';
                 break;
-//                  챌린지
+//          챌린지
             case 67 :
                 if(prototype.attack_side==='home') document.getElementById('challenge').style.left='30px';
                 else document.getElementById('challenge').style.left='423px';
@@ -540,18 +557,18 @@
                 else document.getElementById('challenge').style.display='none';
                 break;
 
-//                  ESC
+//          ESC
             case 27 :
                 prototype.command = '';
                 prototype.message = '';
                 document.getElementsByClassName('command')[0].children[1].children[0].textContent='';
                 break;
-//                  SPACE BAR
+//          SPACE BAR
             case 32 :
                 if(validate(prototype)) {
                     prototype.rallying_no++;
                     insert_event(score_changer());
-                    send_ajax('insert_event_ajax', JSON.stringify(prototype));
+                    send_ajax('insert_event_ajax', JSON.stringify(prototype), true);
                     count_reset();
                     game_set_checker();
 
@@ -569,7 +586,7 @@
         let message='';
 
         switch(key_code) {
-//                  성공
+//          성공
             case 90 :
                 if(prototype.command === 83) {
                     message = '서브 득점 성공';
@@ -591,7 +608,7 @@
                     prototype.focus = 'F';
                 }
                 break;
-//                  실패
+//          실패
             case 88 :
                 if(prototype.command === 83) {
                     message = '서브 실패';
@@ -620,15 +637,15 @@
                     prototype.type = 'message';
                 }
                 break;
-//                  안정
+//          안정
             case 81 :
-//                      리시브
+//              리시브
                 if(prototype.command === 82) {
                     message = '리시브 안정';
                     prototype.combo = key_code;
                     prototype.message = '리시브 안정';
                     prototype.type = 'message';
-//                      디그
+//              디그
                 } else if(prototype.command === 68) {
                     message = '디그 안정';
                     prototype.combo = key_code;
@@ -636,15 +653,15 @@
                     prototype.type = 'message';
                 }
                 break;
-//                  불안
+//          불안
             case 87 :
-//                      리시브
+//              리시브
                 if(prototype.command === 82) {
                     message = '리시브 불안';
                     prototype.combo=key_code;
                     prototype.message='리시브 불안';
                     prototype.type = 'message';
-//                      디그
+//              디그
                 } else if(prototype.command === 68) {
                     message = '디그 불안';
                     prototype.combo = key_code;
@@ -666,7 +683,7 @@
         else if((prototype.home_score == end_num && prototype.away_score < end_num_minus || prototype.away_score == end_num && prototype.home_score < end_num_minus)) get_reset();
     }
 
-    function get_reset(){
+    function get_reset() {
         let win=(prototype.home_score > prototype.set.away_score)? 'home':'away' ;
         let win_team=(win==='home')? '<?=$schedule->home;?>':'<?=$schedule->away;?>';
         prototype.message=prototype.set+'세트 종료 '+win_team+' 승';
@@ -704,7 +721,52 @@
                             data:{schedule_no:<?=$schedule->no;?>,home_score:home_score,away_score:away_score},
                             complete: function() {
                                 if(prototype.message!=='경기 종료') location.href="/volleyball/input/<?=$schedule->no;?>/<?=$set+1;?>?team_side=<?=$team_side;?>";
-                                else update_ajax('schedule', <?=$schedule->no;?>, 'set', true);
+                                else {
+                                    $.ajax({
+                                        type:'POST',
+                                        url:'/volleyball/update_ajax',
+                                        data:{table:'schedule',schedule_no:<?=$schedule->no;?>,'status':'set'},
+                                        complete: function() {
+                                            let all=[];
+                                            let hm=[];
+                                            let hb=[];
+                                            let am=[];
+                                            let ab=[];
+                                            let player=[];
+                                            for(let i=0; i<6; i++) {
+                                                player={'p_no':document.getElementsByClassName('table02')[0].children[0].children[i].value,'name':document.getElementsByClassName('table02')[0].children[0].children[i].children[0].textContent};
+                                                hm.push(player);
+                                            }
+                                            all.push(hm);
+                                            hm.push({'p_no':document.getElementsByClassName('table02')[2].children[0].children[0].value,'name':document.getElementsByClassName('table02')[2].children[0].children[0].children[0].textContent});
+                                            for(let j=0; j<6; j++) {
+                                                player={'p_no':document.getElementsByClassName('table01')[0].children[0].children[j].value,'name':document.getElementsByClassName('table01')[0].children[0].children[j].children[0].textContent};
+                                                hb.push(player);
+                                            }
+                                            all.push(hb);
+                                            for(let i=0; i<6; i++) {
+                                                player={'p_no':document.getElementsByClassName('table02')[1].children[0].children[i].value,'name':document.getElementsByClassName('table02')[1].children[0].children[i].children[0].textContent};
+                                                am.push(player);
+                                            }
+                                            all.push(am);
+                                            am.push({'p_no':document.getElementsByClassName('table02')[3].children[0].children[0].value,'name':document.getElementsByClassName('table02')[3].children[0].children[0].children[0].textContent});
+                                            for(let j=0; j<6; j++) {
+                                                player={'p_no':document.getElementsByClassName('table01')[0].children[0].children[j].value,'name':document.getElementsByClassName('table01')[0].children[0].children[j].children[0].textContent};
+                                                ab.push(player);
+                                            }
+                                            all.push(ab);
+
+                                            $.ajax({
+                                                type:'POST',
+                                                url:'/volleyball/insert_ajax',
+                                                data:{schedule_no:<?=$schedule->no;?>, data:JSON.stringify(all)},
+                                                complete: function() {
+                                                    location.reload();
+                                                }
+                                            });
+                                        }
+                                    });
+                                }
                             }
                         });
                     }
@@ -718,18 +780,18 @@
 
         if(prototype.attack_side==='home') {
             home_message='<p class="home"><b>'+prototype.message+'</b></p>';
-            away_message='<p class="away"><b></b></p>';
+            away_message=(prototype.message==='터치 아웃' || prototype.message==='벌칙' || prototype.message==='반칙' || prototype.message==='서브 실패' || prototype.message==='블로킹 실패' || prototype.message==='리시브 실패' || prototype.message==='공격 실패' || prototype.message==='디그 실패')? '<p class="away"><b>득점 성공</b></p>':'<p class="away"><b></b></p>';
         } else if(prototype.attack_side==='away') {
-            home_message='<p class="home"><b></b></p>';
+            home_message=(prototype.message==='터치 아웃' || prototype.message==='벌칙' || prototype.message==='반칙' || prototype.message==='서브 실패' || prototype.message==='블로킹 실패' || prototype.message==='리시브 실패' || prototype.message==='공격 실패' || prototype.message==='디그 실패')? '<p class="home"><b>득점 성공</b></p>':'<p class="home"><b></b></p>';
             away_message='<p class="away"><b>'+prototype.message+'</b></p>';
         }
         let score=(str==='')? '<p class="qt">'+prototype.home_score+':'+prototype.away_score+'</p>':'<p class="qt"><span class="'+str+'">'+prototype.home_score+':'+prototype.away_score+'</span></p>';
 
-//              메세지
-        if($('.view > li').length===0) $('.view').append('<li>'+home_message+score+away_message+'</li>');
-        else $('.view > li').eq(0).before('<li>'+home_message+score+away_message+'</li>');
+//      메세지
+        if($('.view > li').length===0) $('.view').append('<li onclick="del_event(this)">'+home_message+score+away_message+'</li>');
+        else $('.view > li').eq(0).before('<li onclick="del_event(this)">'+home_message+score+away_message+'</li>');
 
-//              전광판
+//      전광판
         document.getElementById('home_<?=$last_set;?>').textContent=prototype.home_score;
         document.getElementById('away_<?=$last_set;?>').textContent=prototype.away_score;
     }
@@ -749,7 +811,7 @@
     }
 
     function attack_side_changer() {
-        if(prototype.combo===0 || prototype.combo===88) {
+        if(prototype.combo===0 || prototype.combo===88 || prototype.command===84 || prototype.command===70 || prototype.command===71) {
             if(prototype.attack_side==='home') prototype.attack_side='away';
             else prototype.attack_side='home';
         }
@@ -776,6 +838,7 @@
 
     function score_changer() {
         let str='';
+        let home_away_str='';
 //      성공
         if(prototype.combo===90) {
             if(prototype.attack_side==='home') {
@@ -783,34 +846,39 @@
                 document.getElementById('home_total').textContent=document.getElementById('home_total').textContent*1+1;
                 prototype.point_str='l_s';
                 str = 'l_s';
+                home_away_str='홈 서브';
             } else {
                 prototype.away_score++;
                 document.getElementById('away_total').textContent=document.getElementById('away_total').textContent*1+1;
                 prototype.point_str='r_s';
                 str = 'r_s';
+                home_away_str='원정 서브';
             }
 //      실패
-        } else if(prototype.combo===88 || prototype.command===84 || prototype.command===78 || prototype.command===70) {
+        } else if(prototype.combo===88 || prototype.command===84 || prototype.command===71 || prototype.command===70) {
             if(prototype.attack_side==='away') {
                 prototype.home_score++;
                 document.getElementById('away_total').textContent=document.getElementById('away_total').textContent*1+1;
                 prototype.point_str='l_s';
                 str = 'l_s';
+                home_away_str='홈 서브';
             } else {
                 prototype.away_score++;
                 document.getElementById('home_total').textContent=document.getElementById('home_total').textContent*1+1;
                 prototype.point_str='r_s';
                 str = 'r_s';
+                home_away_str='원정 서브';
             }
 
             prototype.focus = 'T';
         }
+        document.getElementById(prototype.attack_side+'_word').textContent=home_away_str;
 
         return str;
     }
 
-    function count_reset(){
-        if(prototype.combo===90 || prototype.combo===88 || prototype.command===84 || prototype.command===78 || prototype.command===70) {
+    function count_reset() {
+        if(prototype.combo===90 || prototype.combo===88 || prototype.command===84 || prototype.command===71 || prototype.command===70) {
             prototype.rallying_no = 0;
             prototype.score_no++;
             prototype.point_str = '';
@@ -1060,7 +1128,7 @@
             prototype.attack_side=home_away;
             prototype.message=bench_player.name+' IN / '+major_player.name+' OUT';
             prototype.type='player_change';
-            send_ajax('insert_event_ajax', JSON.stringify(prototype));
+            send_ajax('insert_event_ajax', JSON.stringify(prototype), false);
             insert_event('');
             prototype.rallying_no++;
 
@@ -1082,7 +1150,7 @@
 
     function del_event(obj) {
         if(confirm('삭제 하시겠습니까?')){
-            send_ajax('del_event_ajax', obj.id);
+            send_ajax('del_event_ajax', obj.id, false);
             document.getElementById(obj.id).remove();
         }
     }
@@ -1105,7 +1173,7 @@
         document.getElementsByClassName('command')[0].children[1].children[0].textContent=prototype.message;
     }
 
-    function edit_score(){
+    function edit_score() {
         prototype.type = 'challenge';
         prototype.command = '67';
         prototype.combo = '0';
@@ -1116,15 +1184,15 @@
         document.getElementsByClassName('command')[0].children[1].children[0].textContent=prototype.message;
     }
 
-    $(function(){
+    $(function() {
         $("a").attr("onfocus","this.blur();")
     });
 
-    $(document).ready(function(){
+    $(document).ready(function() {
         event_setter();
     });
 
-    window.onkeydown=function(){
+    window.onkeydown=function() {
         run_keymap();
     };
 </script>

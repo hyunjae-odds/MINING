@@ -317,6 +317,7 @@ $taja=explode(";",$aa);
 								<li><a href="javascript:controller_click('유격수 앞 땅볼');">유땅</a></li>
 								<li><a href="javascript:controller_click('유격수 앞 뜬볼');">유비</a></li>
 								<li><a href="javascript:controller_click('유격수 앞 번트');">유번</a></li>
+                                <li><a href="javascript:controller_click('유격수 앞 내야안타');">유안</a></li>
 								<li><a href="javascript:controller_click('좌중간 안타');">좌중안</a></li>
 								<li><a href="javascript:controller_click('유격수 실책');">유실</a></li>
 							</ul>
@@ -343,6 +344,7 @@ $taja=explode(";",$aa);
 								<li><a href="javascript:controller_click('2루수 앞 땅볼');">2땅</a></li>
 								<li><a href="javascript:controller_click('2루수 앞 뜬볼');">2비</a></li>
 								<li><a href="javascript:controller_click('2루수 앞 번트');">2번</a></li>
+								<li><a href="javascript:controller_click('2루수 앞 내야안타');">2안</a></li>
 								<li><a href="javascript:controller_click('우중간 안타');">우중안</a></li>
 								<li><a href="javascript:controller_click('2루수 실책');">2실</a></li>
 							</ul>

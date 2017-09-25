@@ -221,7 +221,7 @@
             });
             $(function() {
                 $("#date_picker").datepicker();
-                $("#date_picker").datepicker("option", "onClose", function (date){location.href="/volleyball/lineup?date="+date;});
+                $("#date_picker").datepicker("option", "onClose", function (date){location.href="/volleyball/lineup/<?=$sex;?>?date="+date;});
             });
 
             function saveLineUp(){
@@ -269,7 +269,7 @@
                 var away_libero_cnt=0;
                 for(var i=0; i<7; i++) if(home_major[i].getElementsByClassName('position')[0].children[0].textContent=='LIBERO') home_libero_cnt++;
                 for(var j=0; j<7; j++) if(away_major[j].getElementsByClassName('position')[0].children[0].textContent=='LIBERO') away_libero_cnt++;
-                if(home_libero_cnt == 0){
+                if(home_libero_cnt == 0) {
                     alert('홈 선발에 "리베로" 가 없습니다.');
                     return false;
                 }
