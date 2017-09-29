@@ -26,7 +26,8 @@ class User extends CI_Controller {
 			$this->user_model->add(array(
 					'email'=>$this->input->post('email'),
 					'nickname'=>$this->input->post('nickname'),
-					'password'=>$hash
+					'password'=>$hash,
+                    'level'=>3
 			));
 
 			$this->session->set_flashdata('message', '회원가입에 성공했습니다.');
@@ -48,14 +49,15 @@ class User extends CI_Controller {
         $this->load->helper('url');
 		if(!function_exists('password_hash')) $this->load->helper('password');
 
-		$sex=($this->input->post('sex')=='')? 'M' : $this->input->post('sex');
+		$sex=($this->input->post('sex')==null)? 'M' : $this->input->post('sex');
         $user=$this->user_model->getByEmail($this->input->post('userID'));
 
 		if(isset($user) && password_verify($this->input->post('userPW'), $user->password)){
 			$user_profile=array(
 				'is_login'=>true,
 				'email'=>$user->email,
-				'nickname'=>$user->nickname
+				'nickname'=>$user->nickname,
+                'level'=>$user->level
 			);
             $this->session->set_userdata($user_profile);
 

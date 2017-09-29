@@ -231,7 +231,7 @@ div.position > p {position:relative;}
 .player_w > div > div {width:100%;}
 .player_w > div > img {margin:95px 13px 0;}
 .player_w > div > div h4 {text-align:center;background:#4f5a63;height:27px;line-height:26px;color:#fff;}
-.player_w > div > div ul {border:1px solid #C5C5C5;height:233px;overflow-y:scroll;}
+.player_w > div > div ul {border:1px solid #C5C5C5;height:233px;}
 .player_w > div > div ul li {height:38px;line-height:38px;border-bottom:1px solid #C5C5C5;}
 .player_w > div > div ul li span {display:inline-block;width:40px;text-align:center;}
 .player_w > div > div ul li span.pp {width:99px;margin-left:10px;text-align:left;}

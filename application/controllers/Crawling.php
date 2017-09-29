@@ -130,51 +130,53 @@ class Crawling extends CI_Controller{
     }
 
     function schedule($season_no){
-	    $season_data=$this->volley_model->get_where_row('season', array('no'=>$season_no));
+	    $data=$this->volley_model->get_where_row('season', array('no'=>$season_no));
 
-	    if(sizeof($season_data) > 0):
-            $season_date=date('Y-m', strtotime($season_data->start_dt));
-            $end_date=date('Y-m', strtotime($season_data->end_dt.'+1 month'));
+	    if(sizeof($data) > 0):
+            $season_date=date('Y-m', strtotime($data->start_dt));
+            $end_date=date('Y-m', strtotime($data->end_dt.'+1 month'));
 
             while(TRUE):
                 $date_static='';
-                $source=$this->curl->simple_get('http://www.kovo.co.kr/game/v-league/11110_schedule_list.asp?season=013&yymm='.$season_date);
+                $source=$this->curl->simple_get('http://www.kovo.co.kr/game/v-league/11110_schedule_list.asp?season='.$data->season_num.'&yymm='.$season_date);
 
-                $exp_tbody=explode('<tbody>', $source);
-                $exp=explode('</tbody>', $exp_tbody[3]);
-                $exp_tr=explode('</tr>', $exp[0]);
-                foreach($exp_tr as $item):
-                    $result=array('season'=>$season_no);
-                    if(strlen($item) > 188):
-                        $exp_td=explode('<td>', $item);
+                if($source!=''):
+                    $exp_tbody=explode('<tbody>', $source);
+                    $exp=explode('</tbody>', $exp_tbody[3]);
+                    $exp_tr=explode('</tr>', $exp[0]);
+                    foreach($exp_tr as $item):
+                        $result=array('season'=>$season_no);
+                        if(strlen($item) > 188):
+                            $exp_td=explode('<td>', $item);
 
-                        /* DATE */
-                        $date=strip_tags(preg_replace("/\s+/", "", $exp_td[0]));
-                        $exp_date=explode('(', $date);
-                        if($exp_date[0]!='') $date_static=$exp_date[0];
-                        $explode_date=explode('.', $date_static);
-                        $result['date']=$season_date.'-'.$explode_date[1];
+                            /* DATE */
+                            $date=strip_tags(preg_replace("/\s+/", "", $exp_td[0]));
+                            $exp_date=explode('(', $date);
+                            if($exp_date[0]!='') $date_static=$exp_date[0];
+                            $explode_date=explode('.', $date_static);
+                            $result['date']=$season_date.'-'.$explode_date[1];
 
-                        if(sizeof($exp_td) > 2):
-                            $exp_nbsp=explode('&nbsp;&nbsp;', $exp_td[2]);
-                            if(sizeof($exp_nbsp) > 1):
-                                $exp_home=explode('<td class="tright">', $exp_nbsp[0]);
-                                $result['home']=$exp_home[1];
-                                $result['away']=strip_tags(preg_replace("/\s+/", "", $exp_nbsp[2]));
-                                $exp_score=explode(':&nbsp;', strip_tags(preg_replace("/\s+/", "", $exp_nbsp[1])));
-                                $result['home_score']=$exp_score[0];
-                                $result['away_score']=$exp_score[1];
-                                $result['time']=str_replace('</td>', '', trim($exp_td[3]));
-                                $result['stadium']=str_replace('</td>', '', trim($exp_td[4]));
-                                $result['status']='set';
-                                $explode_sex=explode('</td>', $exp_td[2]);
-                                $result['sex']=($explode_sex[0]=='남자')? 'M' : 'W';
+                            if(sizeof($exp_td) > 2):
+                                $exp_nbsp=explode('&nbsp;&nbsp;', $exp_td[2]);
+                                if(sizeof($exp_nbsp) > 1):
+                                    $exp_home=explode('<td class="tright">', $exp_nbsp[0]);
+                                    $result['home']=$exp_home[1];
+                                    $result['away']=strip_tags(preg_replace("/\s+/", "", $exp_nbsp[3]));
+                                    $exp_score=explode(':&nbsp;', strip_tags(preg_replace("/\s+/", "", $exp_nbsp[1])));
+                                    $result['home_score']=(isset($exp_score[0]))? $exp_score[0] : 0;
+                                    $result['away_score']=(isset($exp_score[1]))? $exp_score[1] : 0;
+                                    $result['time']=str_replace('</td>', '', trim($exp_td[3]));
+                                    $result['stadium']=str_replace('</td>', '', trim($exp_td[4]));
+                                    $result['status']='ready';
+                                    $explode_sex=explode('</td>', $exp_td[2]);
+                                    $result['sex']=($explode_sex[0]=='남자')? 'M' : 'W';
 
-                                $this->volley_model->insert_or_update('schedule', $result, array('date'=>$result['date'], 'away'=>$result['away']));
+                                    $this->volley_model->insert_or_update('schedule', $result, array('date'=>$result['date'], 'away'=>$result['away']));
+                                endif;
                             endif;
                         endif;
-                    endif;
-                endforeach;
+                    endforeach;
+                endif;
 
                 $season_date=date('Y-m', strtotime($season_date.'+1 month'));
                 if($season_date==$end_date) break;
