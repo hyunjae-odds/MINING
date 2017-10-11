@@ -366,10 +366,12 @@
         </div>
     </div>
 </div>
+
+<!-- 팝업 -->
 <div id="dialog-confirm" title="이벤트 메세지 수정/삭제" style="display:none;">
     <p><span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>수정 : 이벤트 메세지를 수정합니다.<br>삭제 : 이벤트 메세지를 삭제합니다.<br>닫기 : 창을 닫습니다.</p>
 </div>
-<div id="dialog-form" title="메세지 입력 후 변경 버튼을 누르면 메세지가 수정됩니다." style="display:none;">
+<div id="dialog-form" title="변경 버튼을 누르면 메세지가 수정됩니다." style="display:none;">
     <label for="home_score">홈 점수&nbsp;&nbsp;&nbsp; : </label>
     <input type="text" name="home_score" id="home_score" class="text ui-widget-content ui-corner-all" size="3"><br>
     <label for="away_score">원정 점수 : </label>

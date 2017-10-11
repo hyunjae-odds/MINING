@@ -230,7 +230,7 @@
             </div>
         </div>
 
-        <!-- 홈 선수교체 OUT -->
+        <!-- 홈 -->
         <div id="home_players_out" style="display:none;position:absolute;left:<?=($team_side=='typeA')?'423':'31';?>px;top:241px;background-color:white;width:385px;height:227px;border:1px solid black;background-size:contain;background-repeat:no-repeat;background-position:right;">
             <div style="padding:3%;">
                 <h2>OUT</h2><br>
@@ -247,12 +247,10 @@
                 <span style="position:absolute;top:10px;right:10px;"><button onclick="close_this_box(this, 'hm');"> 닫기 </button></span>
             </div>
         </div>
-        <!-- 홈 선수교체 BUTTON -->
         <div id="home_player_change_button" style="display:none;">
             <a style="position:absolute;left:<?=($team_side=='typeA')?'423':'30';?>px;top:475px;background-color:#FAF4C0;width:192.5px;height:26px;border:1px solid black;text-align:center;font-size:16pt;padding-top:10px;" href="javascript:player_change('home');">선수 교체</a>
             <a style="position:absolute;left:<?=($team_side=='typeA')?'615':'223';?>px;top:475px;background-color:#FAF4C0;width:192.5px;height:26px;border:1px solid black;text-align:center;font-size:16pt;padding-top:10px;" href="javascript:player_change_cancel();">취소</a>
         </div>
-        <!-- 홈 선수교체 IN -->
         <div id="home_players_in" style="display:none;position:absolute;left:<?=($team_side=='typeA')?'423':'31';?>px;top:518px;background-color:white;width:385px;height:234px;border:1px solid black;background-size:contain;background-repeat:no-repeat;background-position:right;">
             <div style="padding:3%;">
                 <h2>IN</h2><br>
@@ -269,8 +267,7 @@
                 <span style="position:absolute;top:10px;right:10px;"><button onclick="close_this_box(this, 'hb');"> 닫기 </button></span>
             </div>
         </div>
-
-        <!-- 원정 선수교체 OUT -->
+        <!-- 원정  -->
         <div id="away_players_out" style="display:none;position:absolute;left:<?=($team_side=='typeA')?'31':'423';?>px;top:241px;background-color:white;width:385px;height:227px;border:1px solid black;background-size:contain;background-repeat:no-repeat;background-position:right;">
             <div style="padding:3%;">
                 <h2>OUT</h2><br>
@@ -287,12 +284,10 @@
                 <span style="position:absolute;top:10px;right:10px;"><button onclick="close_this_box(this, 'am');"> 닫기 </button></span>
             </div>
         </div>
-        <!-- 원정 선수교체 BUTTON -->
         <div id="away_player_change_button" style="display:none;">
             <a style="position:absolute;left:<?=($team_side=='typeA')?'30':'423';?>px;top:475px;background-color:#FAF4C0;width:192.5px;height:26px;border:1px solid black;text-align:center;font-size:16pt;padding-top:10px;" href="javascript:player_change('away');">선수 교체</a>
             <a style="position:absolute;left:<?=($team_side=='typeA')?'223':'615';?>px;top:475px;background-color:#FAF4C0;width:192.5px;height:26px;border:1px solid black;text-align:center;font-size:16pt;padding-top:10px;" href="javascript:player_change_cancel();">취소</a>
         </div>
-        <!-- 원정 선수교체 IN -->
         <div id="away_players_in" style="display:none;position:absolute;left:<?=($team_side=='typeA')?'31':'423';?>px;top:518px;background-color:white;width:385px;height:234px;border:1px solid black;background-size:contain;background-repeat:no-repeat;background-position:right;">
             <div style="padding:3%;">
                 <h2>IN</h2><br>
@@ -320,7 +315,7 @@
             </div>
             <ul class="view">
                 <?php foreach($message as $item): ?>
-                    <li onclick="del_event(this);" id="<?=$item->no;?>">
+                    <li onclick="edit_event(this);" id="<?=$item->no;?>">
                         <?php if($item->attack_side=='home'): ?>
                             <p class="home"><b><?=$item->message;?></b></p>
                             <p class="qt"><?php if($item->point_str!='') echo '<span class="'.$item->point_str.'">';?><?=$item->home_score;?>:<?=$item->away_score;?><?php if($item->point_str!='') echo '</span>';?></p>
@@ -364,6 +359,18 @@
             <span class="clear"></span>
         </div>
     </div>
+</div>
+
+<div id="dialog-confirm" title="이벤트 메세지 수정/삭제" style="display:none;">
+    <p><span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>수정 : 이벤트 메세지를 수정합니다.<br>삭제 : 이벤트 메세지를 삭제합니다.<br>닫기 : 창을 닫습니다.</p>
+</div>
+<div id="dialog-form" title="변경 버튼을 누르면 메세지가 수정됩니다." style="display:none;">
+    <label for="home_score">홈 점수&nbsp;&nbsp;&nbsp; : </label>
+    <input type="text" name="home_score" id="home_score" class="text ui-widget-content ui-corner-all" size="3"><br>
+    <label for="away_score">원정 점수 : </label>
+    <input type="text" name="away_score" id="away_score" class="text ui-widget-content ui-corner-all" size="3"><br>
+    <label for="message_edited">메세지 : </label>
+    <input type="text" name="message_edited" id="message_edited" class="text ui-widget-content ui-corner-all">
 </div>
 
 <script>
@@ -575,7 +582,7 @@
                     insert_event(score_changer());
                     send_ajax('insert_event_ajax', JSON.stringify(prototype), true);
                     count_reset();
-                    game_set_checker();
+                    set_end_checker();
 
                     attack_side_changer();
                     side_sign_changer();
@@ -679,13 +686,21 @@
         document.getElementsByClassName('command')[0].children[1].children[0].textContent=message;
     }
 
-    function game_set_checker() {
+    function set_end_checker() {
         /* 듀스 체크 */
         let end_num=(<?=$set;?>===5)? 15 : 25;
         let end_num_minus=(<?=$set;?>===5)? 14 : 24;
 
         if((prototype.home_score > end_num || prototype.away_score > end_num) && (prototype.home_score*1 === prototype.away_score*1+2 || prototype.home_score*1+2 === prototype.away_score*1)) get_reset();
         else if((prototype.home_score == end_num && prototype.away_score < end_num_minus || prototype.away_score == end_num && prototype.home_score < end_num_minus)) get_reset();
+    }
+
+    function game_set_checker() {
+        let win=(prototype.home_score > prototype.away_score)? 'home':'away' ;
+        let home_set_score=document.getElementById('home_set_score').children[0].textContent;
+        let away_set_score=document.getElementById('away_set_score').children[0].textContent;
+
+        return ((home_set_score === '2' && win === 'home') || (away_set_score === '2' && win === 'away'));
     }
 
     function get_reset() {
@@ -793,8 +808,8 @@
         let score=(str==='')? '<p class="qt">'+prototype.home_score+':'+prototype.away_score+'</p>':'<p class="qt"><span class="'+str+'">'+prototype.home_score+':'+prototype.away_score+'</span></p>';
 
 //      메세지
-        if($('.view > li').length===0) $('.view').append('<li onclick="del_event(this)">'+home_message+score+away_message+'</li>');
-        else $('.view > li').eq(0).before('<li onclick="del_event(this)">'+home_message+score+away_message+'</li>');
+        if($('.view > li').length===0) $('.view').append('<li onclick="edit_event(this)">'+home_message+score+away_message+'</li>');
+        else $('.view > li').eq(0).before('<li onclick="edit_event(this)">'+home_message+score+away_message+'</li>');
 
 //      전광판
         document.getElementById('home_<?=$last_set;?>').textContent=prototype.home_score;
@@ -901,7 +916,7 @@
             prototype.away_score = 0;
             prototype.attack_side = ('<?=$served_side;?>'==='home')? 'away':'home';
             side_sign_changer();
-//              페이지 새로고침 했을 때 객체값 선언
+//      페이지 새로고침 했을 때 객체값 선언
         } else if(prototype.set==undefined) {
             let event=<?=json_encode($message);?>;
 
@@ -1148,11 +1163,61 @@
         });
     }
 
-    function del_event(obj) {
-        if(confirm('삭제 하시겠습니까?')){
-            send_ajax('del_event_ajax', obj.id, false);
-            document.getElementById(obj.id).remove();
-        }
+    function edit_event(obj) {
+        $( "#dialog-confirm" ).dialog({
+            resizable: false,
+            height: "auto",
+            width: 400,
+            modal: true,
+            buttons: {
+                '수정': function() {
+                    $( this ).dialog( "close" );
+
+                    let message = (obj.children[0].children[0].textContent === '' || obj.children[0].children[0].textContent === '득점 성공')? obj.children[2].children[0].textContent : obj.children[0].children[0].textContent;
+                    let score = (obj.children[1].children.length === 0)? obj.children[1].textContent : obj.children[1].children[0].textContent;
+                    $('#message_edited').val(message);
+                    $('#home_score').val(score[0]);
+                    $('#away_score').val(score[2]);
+
+                    update_event(obj);
+                },
+                '삭제': function() {
+                    send_ajax('del_event_ajax', obj.id, 're');
+                },
+                '닫기': function() {
+                    $( this ).dialog( "close" );
+                }
+            }
+        });
+    }
+
+    function update_event(obj) {
+        $( "#dialog-form" ).dialog({
+            resizable: false,
+            height: "auto",
+            width: 400,
+            modal: true,
+            buttons: {
+                '변경': function() {
+                    let table = 'event';
+                    let home_score = $('#home_score').val();
+                    let away_score = $('#away_score').val();
+                    let message = $('#message_edited').val();
+
+                    $.ajax({
+                        type:'POST',
+                        url:'/volleyball/update_event/'+table,
+                        data:{id:obj.id, home_score:home_score, away_score:away_score, message:message},
+                        complete: function() {
+                            location.reload();
+                        }
+                    });
+                },
+                '취소': function() {
+                    $( this ).dialog( "close" );
+                }
+            }
+        });
     }
 
     function challenging_setter() {
