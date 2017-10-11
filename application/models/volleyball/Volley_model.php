@@ -149,7 +149,8 @@
             $MINING->order_by('set', 'DESC');
             $result=$MINING->get_where('event', array('schedule_no'=>$schedule->no,'type'=>'notice'))->row();
 
-            return $result->set;
+            if($result) return $result->set;
+            else return 1;
         endif;
     }
 
@@ -215,6 +216,24 @@
         return $MINING->get_where('test_line_up', array('schedule_no'=>$schedule_no, 'status'=>'set'))->num_rows();
     }
 
+    function get_schedule_on_month($table, $date) {
+        $MINING=$this->get_mining_db();
+        $dates=explode('-', $date);
+
+        $MINING->select('date');
+        $MINING->distinct();
+        $MINING->like('date', $dates[0].'-'.$dates[1], 'after');
+        $games=$MINING->get_where($table)->result();
+
+        $result=array();
+        foreach ($games as $game):
+            $exp=explode('-', $game->date);
+            array_push($result, $exp[2]);
+        endforeach;
+
+        return $result;
+    }
+
     /* UPDATE */
     function update($table, $data, $where){
         $MINING=$this->get_mining_db();
@@ -239,6 +258,13 @@
         $this->db->update('user', array('level'=>$level), array('id'=>$id));
     }
 
+    function update_event($table, $schedule_no, $arr) {
+        $MINING=$this->get_mining_db();
+
+        $MINING->set('update_dt', 'NOW()', false);
+        $MINING->update($table, $arr, array('no'=>$schedule_no));
+    }
+
     /* TEST */
     function get_last_set_test($schedule){
         if(sizeof($schedule)==0):
@@ -251,7 +277,7 @@
             $MINING->order_by('set', 'DESC');
             $result=$MINING->get_where('test_event', array('schedule_no'=>$schedule->no,'type'=>'notice'))->row();
 
-            return $result->set;
+            return (isset($result->set))? $result->set : 1;
         endif;
     }
 

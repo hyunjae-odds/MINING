@@ -10158,3 +10158,68 @@ DEBUG - 2017-09-29 08:14:55 --> Model Class Initialized
 DEBUG - 2017-09-29 08:14:55 --> Database Driver Class Initialized
 DEBUG - 2017-09-29 08:14:56 --> Final output sent to browser
 DEBUG - 2017-09-29 08:14:56 --> Total execution time: 0.0752
+DEBUG - 2017-09-29 09:17:12 --> Config Class Initialized
+DEBUG - 2017-09-29 09:17:12 --> Hooks Class Initialized
+DEBUG - 2017-09-29 09:17:12 --> Utf8 Class Initialized
+DEBUG - 2017-09-29 09:17:12 --> UTF-8 Support Enabled
+DEBUG - 2017-09-29 09:17:12 --> URI Class Initialized
+DEBUG - 2017-09-29 09:17:12 --> Router Class Initialized
+DEBUG - 2017-09-29 09:17:12 --> Output Class Initialized
+DEBUG - 2017-09-29 09:17:12 --> Security Class Initialized
+DEBUG - 2017-09-29 09:17:12 --> Input Class Initialized
+DEBUG - 2017-09-29 09:17:12 --> Global POST and COOKIE data sanitized
+DEBUG - 2017-09-29 09:17:12 --> Language Class Initialized
+DEBUG - 2017-09-29 09:17:12 --> Loader Class Initialized
+DEBUG - 2017-09-29 09:17:12 --> Helper loaded: url_helper
+DEBUG - 2017-09-29 09:17:12 --> Database Driver Class Initialized
+DEBUG - 2017-09-29 09:17:12 --> cURL Class Initialized
+DEBUG - 2017-09-29 09:17:12 --> Session Class Initialized
+DEBUG - 2017-09-29 09:17:12 --> Helper loaded: string_helper
+DEBUG - 2017-09-29 09:17:12 --> Session routines successfully run
+DEBUG - 2017-09-29 09:17:12 --> Controller Class Initialized
+DEBUG - 2017-09-29 09:17:12 --> Model Class Initialized
+DEBUG - 2017-09-29 09:17:12 --> Model Class Initialized
+DEBUG - 2017-09-29 09:17:12 --> Database Driver Class Initialized
+DEBUG - 2017-09-29 09:17:12 --> Database Driver Class Initialized
+DEBUG - 2017-09-29 09:17:12 --> Database Driver Class Initialized
+ERROR - 2017-09-29 09:17:12 --> Severity: Notice  --> Trying to get property of non-object /Users/hyunjae/Sites/MINING/application/models/volleyball/volley_model.php 254
+DEBUG - 2017-09-29 09:17:12 --> Database Driver Class Initialized
+DEBUG - 2017-09-29 09:17:12 --> Database Driver Class Initialized
+DEBUG - 2017-09-29 09:17:12 --> Database Driver Class Initialized
+DEBUG - 2017-09-29 09:17:12 --> Database Driver Class Initialized
+DEBUG - 2017-09-29 09:17:12 --> Database Driver Class Initialized
+DEBUG - 2017-09-29 09:17:12 --> File loaded: application/views//volleyball/input_test.php
+DEBUG - 2017-09-29 09:17:12 --> Final output sent to browser
+DEBUG - 2017-09-29 09:17:12 --> Total execution time: 0.2764
+DEBUG - 2017-09-29 09:18:13 --> Config Class Initialized
+DEBUG - 2017-09-29 09:18:13 --> Hooks Class Initialized
+DEBUG - 2017-09-29 09:18:13 --> Utf8 Class Initialized
+DEBUG - 2017-09-29 09:18:13 --> UTF-8 Support Enabled
+DEBUG - 2017-09-29 09:18:13 --> URI Class Initialized
+DEBUG - 2017-09-29 09:18:13 --> Router Class Initialized
+DEBUG - 2017-09-29 09:18:13 --> Output Class Initialized
+DEBUG - 2017-09-29 09:18:13 --> Security Class Initialized
+DEBUG - 2017-09-29 09:18:13 --> Input Class Initialized
+DEBUG - 2017-09-29 09:18:13 --> Global POST and COOKIE data sanitized
+DEBUG - 2017-09-29 09:18:13 --> Language Class Initialized
+DEBUG - 2017-09-29 09:18:13 --> Loader Class Initialized
+DEBUG - 2017-09-29 09:18:13 --> Helper loaded: url_helper
+DEBUG - 2017-09-29 09:18:13 --> Database Driver Class Initialized
+DEBUG - 2017-09-29 09:18:13 --> cURL Class Initialized
+DEBUG - 2017-09-29 09:18:13 --> Session Class Initialized
+DEBUG - 2017-09-29 09:18:13 --> Helper loaded: string_helper
+DEBUG - 2017-09-29 09:18:13 --> Session routines successfully run
+DEBUG - 2017-09-29 09:18:13 --> Controller Class Initialized
+DEBUG - 2017-09-29 09:18:13 --> Model Class Initialized
+DEBUG - 2017-09-29 09:18:13 --> Model Class Initialized
+DEBUG - 2017-09-29 09:18:13 --> Database Driver Class Initialized
+DEBUG - 2017-09-29 09:18:13 --> Database Driver Class Initialized
+DEBUG - 2017-09-29 09:18:13 --> Database Driver Class Initialized
+DEBUG - 2017-09-29 09:18:13 --> Database Driver Class Initialized
+DEBUG - 2017-09-29 09:18:13 --> Database Driver Class Initialized
+DEBUG - 2017-09-29 09:18:13 --> Database Driver Class Initialized
+DEBUG - 2017-09-29 09:18:13 --> Database Driver Class Initialized
+DEBUG - 2017-09-29 09:18:13 --> Database Driver Class Initialized
+DEBUG - 2017-09-29 09:18:13 --> File loaded: application/views//volleyball/input_test.php
+DEBUG - 2017-09-29 09:18:13 --> Final output sent to browser
+DEBUG - 2017-09-29 09:18:13 --> Total execution time: 0.2800

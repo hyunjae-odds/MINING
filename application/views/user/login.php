@@ -10,8 +10,7 @@
 		$("a").attr("onfocus","this.blur();")
 	});
 
-	//login input
-	$(document).ready(function(){ 
+	$(document).ready(function(){
 		$("#userID").click(function(){ 
 			var state = $(".Gbox").css("display"); 
 			if(state == "none"){ 
@@ -49,8 +48,6 @@
 					</fieldset>
 				</form>
 			</div>
-			<p>현재 접속자 수 : 3</p>
-			<p><b>NEXT MATCH : 18:30</b></p>
 		</div>
 	</div>
 </body>

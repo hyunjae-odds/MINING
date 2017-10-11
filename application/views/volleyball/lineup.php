@@ -252,34 +252,34 @@
         });
         $(function() {
             $("#date_picker").datepicker();
-            $("#date_picker").datepicker("option", "onClose", function (date){location.href="/volleyball/lineup/<?=$sex;?>?date="+date;});
+            $("#date_picker").datepicker("option", "onClose", function (date){location.href="/volleyball/<?=$segment;?>/<?=$sex;?>?date="+date;});
 //            $("#date_picker").datepicker("option", "maxDate", "+0d");
         });
 
         function saveLineUp(segment) {
-            var home_major = document.getElementById('selection_home').children;
-            var home_bench = document.getElementById('player_home');
-            var away_major = document.getElementById('selection_away').children;
-            var away_bench = document.getElementById('player_away');
-            var home_minor = document.getElementById('selection1_home').children;
-            var away_minor = document.getElementById('selection1_away').children;
+            let home_major = document.getElementById('selection_home').children;
+            let home_bench = document.getElementById('player_home');
+            let away_major = document.getElementById('selection_away').children;
+            let away_bench = document.getElementById('player_away');
+            let home_minor = document.getElementById('selection1_home').children;
+            let away_minor = document.getElementById('selection1_away').children;
 
-            var result=[];
+            let result=[];
             if(validatePlayerSet(home_major, away_major)) {
-                var result_hm=[],result_am=[],result_hb=[],result_ab=[],result_hn=[],result_an=[];
+                let result_hm=[],result_am=[],result_hb=[],result_ab=[],result_hn=[],result_an=[];
 
-                for(var i=0; i<7; i++) {
+                for(let i=0; i<7; i++) {
                     result_hm.push(home_major[i].getElementsByClassName('name')[0].id);
                     result_am.push(away_major[i].getElementsByClassName('name')[0].id);
                 }
-                for(var i=0; i<6; i++) {
+                for(let i=0; i<6; i++) {
                     result_hb.push(home_bench.getElementsByClassName('name')[i].id);
                     result_ab.push(away_bench.getElementsByClassName('name')[i].id);
                 }
-                for(var j=0; j<document.getElementById('selection1_home').children.length; j++) {
+                for(let j=0; j<document.getElementById('selection1_home').children.length; j++) {
                     result_hn.push(home_minor[j].getElementsByClassName('name')[0].id);
                 }
-                for(var k=0; k<document.getElementById('selection1_away').children.length; k++) {
+                for(let k=0; k<document.getElementById('selection1_away').children.length; k++) {
                     result_an.push(away_minor[k].getElementsByClassName('name')[0].id);
                 }
                 result.push({'schedule_no':<?=($status=='none')? 0:$schedule->no;?>},{'hm':result_hm},{'am':result_am},{'hb':result_hb},{'ab':result_ab},{'hn':result_hn},{'an':result_an});
@@ -297,10 +297,18 @@
                 return false;
             }
 
-            var home_libero_cnt=0;
-            var away_libero_cnt=0;
-            for(var i=0; i<7; i++) if(home_major[i].getElementsByClassName('position')[0].children[0].textContent=='LIBERO') home_libero_cnt++;
-            for(var j=0; j<7; j++) if(away_major[j].getElementsByClassName('position')[0].children[0].textContent=='LIBERO') away_libero_cnt++;
+            if(document.getElementById('player_home').children.length !== 6) {
+                alert('홈 후보 선수를 6명 등록하세요.');
+                return false;
+            } else if(document.getElementById('player_away').children.length !== 6) {
+                alert('원정 후보 선수를 6명 등록하세요.');
+                return false;
+            }
+
+            let home_libero_cnt=0;
+            let away_libero_cnt=0;
+            for(let i=0; i<7; i++) if(home_major[i].getElementsByClassName('position')[0].children[0].textContent=='LIBERO') home_libero_cnt++;
+            for(let j=0; j<7; j++) if(away_major[j].getElementsByClassName('position')[0].children[0].textContent=='LIBERO') away_libero_cnt++;
             if(home_libero_cnt == 0) {
                 alert('홈 선발에 "리베로" 가 없습니다.');
                 return false;
@@ -321,7 +329,6 @@
         }
 
         function sendAjax(segment, data) {
-            let ss='';
             $.ajax({
                 type: 'POST',
                 url: '/volleyball/' + segment,
@@ -340,7 +347,7 @@
 
         function showAdminMode() {
             if(document.getElementById('admin_mode').style.display === 'inline') document.getElementById('admin_mode').style.display='none';
-            else  document.getElementById('admin_mode').style.display='inline';
+            else document.getElementById('admin_mode').style.display='inline';
         }
 
         function deleteTestMode(flag) {
@@ -368,6 +375,16 @@
                 }
             }
         }
+
+        $('#date_picker').click(function() {
+            <?php foreach ($games as $game): ?>
+                for(let i = 0; i < $('.ui-datepicker-calendar > tbody > tr > td').size(); i++) {
+                    if($('.ui-datepicker-calendar > tbody > tr > td').eq(i).text() === '<?=$game;?>') {
+                        $('.ui-datepicker-calendar > tbody > tr > td').eq(i).css('box-sizing', 'border-box');
+                        $('.ui-datepicker-calendar > tbody > tr > td').eq(i).css('border', '1px solid red');
+                    }
+                }
+            <?php endforeach; ?>
+        });
     </script>
 </body>
-</html>

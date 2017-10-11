@@ -831,7 +831,7 @@
         }
     }
 
-    function attack_side_click(e){
+    function attack_side_click(e) {
         e.style.filter='none';
 
         if(e.className==='home_side') prototype.attack_side='home';
@@ -876,8 +876,6 @@
 
             prototype.focus = 'T';
         }
-//        document.getElementById(prototype.attack_side+'_word').textContent=home_away_str;
-        console.log(home_away_str);
 
         return str;
     }

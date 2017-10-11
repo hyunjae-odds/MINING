@@ -4,6 +4,7 @@
     <meta http-equiv="content-type" content="text/html; charset-utf-8"/>
     <title> ODDS CONNECT - DataMining </title>
     <link href="/public/lib/volley.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="/public/lib/js/jquery-1.12.4.js"></script>
     <script src="/public/lib/js/ui/1.12.1/jquery-ui.js"></script>
     <script type="text/javascript">
@@ -320,7 +321,7 @@
             </div>
             <ul class="view">
                 <?php foreach($message as $item): ?>
-                    <li onclick="del_event(this);" id="<?=$item->no;?>">
+                    <li onclick="edit_event(this);" id="<?=$item->no;?>">
                         <?php if($item->attack_side=='home'): ?>
                             <p class="home"><b><?=$item->message;?></b></p>
                             <p class="qt"><?php if($item->point_str!='') echo '<span class="'.$item->point_str.'">';?><?=$item->home_score;?>:<?=$item->away_score;?><?php if($item->point_str!='') echo '</span>';?></p>
@@ -364,6 +365,17 @@
             <span class="clear"></span>
         </div>
     </div>
+</div>
+<div id="dialog-confirm" title="이벤트 메세지 수정/삭제" style="display:none;">
+    <p><span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>수정 : 이벤트 메세지를 수정합니다.<br>삭제 : 이벤트 메세지를 삭제합니다.<br>닫기 : 창을 닫습니다.</p>
+</div>
+<div id="dialog-form" title="메세지 입력 후 변경 버튼을 누르면 메세지가 수정됩니다." style="display:none;">
+    <label for="home_score">홈 점수&nbsp;&nbsp;&nbsp; : </label>
+    <input type="text" name="home_score" id="home_score" class="text ui-widget-content ui-corner-all" size="3"><br>
+    <label for="away_score">원정 점수 : </label>
+    <input type="text" name="away_score" id="away_score" class="text ui-widget-content ui-corner-all" size="3"><br>
+    <label for="message_edited">메세지 : </label>
+    <input type="text" name="message_edited" id="message_edited" class="text ui-widget-content ui-corner-all">
 </div>
 
 <script>
@@ -802,8 +814,8 @@
         let score=(str==='')? '<p class="qt">'+prototype.home_score+':'+prototype.away_score+'</p>' : '<p class="qt"><span class="'+str+'">'+prototype.home_score+':'+prototype.away_score+'</span></p>';
 
 //      메세지
-        if($('.view > li').length===0) $('.view').append('<li onclick="del_event(this);">'+home_message+score+away_message+'</li>');
-        else $('.view > li').eq(0).before('<li onclick="del_event(this);">'+home_message+score+away_message+'</li>');
+        if($('.view > li').length===0) $('.view').append('<li onclick="edit_event(this);">'+home_message+score+away_message+'</li>');
+        else $('.view > li').eq(0).before('<li onclick="edit_event(this);">'+home_message+score+away_message+'</li>');
 
 //      전광판
         document.getElementById('home_<?=$last_set;?>').textContent=prototype.home_score;
@@ -927,8 +939,6 @@
                 }
             }
         }
-
-        console.log(prototype);
     }
 
     function player_change_cancel() {
@@ -1154,10 +1164,61 @@
         });
     }
 
-    function del_event(obj) {
-        if(confirm('삭제 하시겠습니까?')){
-            send_ajax('del_test_event_ajax', obj.id, 're');
-        }
+    function edit_event(obj) {
+        $( "#dialog-confirm" ).dialog({
+            resizable: false,
+            height: "auto",
+            width: 400,
+            modal: true,
+            buttons: {
+                '수정': function() {
+                    $( this ).dialog( "close" );
+
+                    let message = (obj.children[0].children[0].textContent === '' || obj.children[0].children[0].textContent === '득점 성공')? obj.children[2].children[0].textContent : obj.children[0].children[0].textContent;
+                    let score = (obj.children[1].children.length === 0)? obj.children[1].textContent : obj.children[1].children[0].textContent;
+                    $('#message_edited').val(message);
+                    $('#home_score').val(score[0]);
+                    $('#away_score').val(score[2]);
+
+                    update_event(obj);
+                },
+                '삭제': function() {
+                    send_ajax('del_test_event_ajax', obj.id, 're');
+                },
+                '닫기': function() {
+                    $( this ).dialog( "close" );
+                }
+            }
+        });
+    }
+
+    function update_event(obj) {
+        $( "#dialog-form" ).dialog({
+            resizable: false,
+            height: "auto",
+            width: 400,
+            modal: true,
+            buttons: {
+                '변경': function() {
+                    let table = 'test_event';
+                    let home_score = $('#home_score').val();
+                    let away_score = $('#away_score').val();
+                    let message = $('#message_edited').val();
+
+                    $.ajax({
+                        type:'POST',
+                        url:'/volleyball/update_event/'+table,
+                        data:{id:obj.id, home_score:home_score, away_score:away_score, message:message},
+                        complete: function() {
+                            location.reload();
+                        }
+                    });
+                },
+                '취소': function() {
+                    $( this ).dialog( "close" );
+                }
+            }
+        });
     }
 
     function challenging_setter() {
@@ -1199,7 +1260,7 @@
 
     window.onkeydown=function() {
         run_keymap();
-    };
+    }
 </script>
 </body>
 </html>

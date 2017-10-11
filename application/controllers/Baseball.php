@@ -6,10 +6,18 @@ class Baseball extends CI_Controller{
 		$this->load->model('/baseball/game_model');
 	}
 
+	function index() {
+        $this->load->view('/baseball/login');
+    }
+
 	function auth(){
         $this->load->helper('url');
 		if(!$this->session->userdata('is_login')) redirect("/");
 	}
+
+    function login(){
+        $this->load->view('/baseball/login');
+    }
 
 	function schedule($date, $game_no, $inning){
 		$this->auth();

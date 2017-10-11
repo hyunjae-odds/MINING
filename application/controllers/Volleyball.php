@@ -26,8 +26,9 @@ class Volleyball extends CI_Controller{
         $operators=$this->volley_model->get_operators();
         $segment=$this->uri->segment(2);
         $last_set=$this->volley_model->get_last_set($schedule);
+        $games=$this->volley_model->get_schedule_on_month('schedule', $date);
 
-        $this->load->view('/volleyball/lineup', array('session'=>$session,'sex'=>$sex,'date'=>$date,'schedule'=>$schedule,'line_up'=>$line_up,'players'=>$players,'status'=>$status,'operators'=>$operators,'segment'=>$segment,'last_set'=>$last_set));
+        $this->load->view('/volleyball/lineup', array('session'=>$session,'sex'=>$sex,'date'=>$date,'schedule'=>$schedule,'line_up'=>$line_up,'players'=>$players,'status'=>$status,'operators'=>$operators,'segment'=>$segment,'last_set'=>$last_set,'games'=>$games));
     }
     function lineup_test($sex){
         $this->auth();
@@ -41,8 +42,9 @@ class Volleyball extends CI_Controller{
         $operators=$this->volley_model->get_operators();
         $segment=$this->uri->segment(2);
         $last_set=$this->volley_model->get_last_set_test($schedule);
+        $games=$this->volley_model->get_schedule_on_month('test_schedule', $date);
 
-        $this->load->view('/volleyball/lineup', array('session'=>$session,'sex'=>$sex,'date'=>$date,'schedule'=>$schedule,'line_up'=>$line_up,'players'=>$players,'status'=>$status,'operators'=>$operators,'segment'=>$segment,'last_set'=>$last_set));
+        $this->load->view('/volleyball/lineup', array('session'=>$session,'sex'=>$sex,'date'=>$date,'schedule'=>$schedule,'line_up'=>$line_up,'players'=>$players,'status'=>$status,'operators'=>$operators,'segment'=>$segment,'last_set'=>$last_set,'games'=>$games));
     }
 
     function input($schedule_no, $set){
@@ -257,5 +259,14 @@ class Volleyball extends CI_Controller{
 
     function delete_test_mode_ajax($all_or_one) {
         $this->volley_model->delete_test_mode($all_or_one, $this->input->post('schedule_no'));
+    }
+
+    function update_event($table) {
+        $home_score = $this->input->post('home_score');
+        $away_score = $this->input->post('away_score');
+        $message = $this->input->post('message');
+        $id = $this->input->post('id');
+
+        $this->volley_model->update_event($table, $id, array('home_score'=>$home_score, 'away_score'=>$away_score, 'message'=>$message));
     }
 }
