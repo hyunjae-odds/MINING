@@ -71,7 +71,7 @@ class Volleyball extends CI_Controller{
 
         $attack_side=($this->input->get('attack_side')==null)? $this->volley_model->get_last_attack_side($schedule):$this->input->get('attack_side');
         $last_set=($this->input->get('last_set')==null)? $this->volley_model->get_last_set_test($schedule) : $this->input->get('last_set');
-        $served_side=$this->volley_model->get_first_attack_side($schedule_no, $last_set);
+        $served_side=$this->volley_model->get_first_attack_side_test($schedule_no, $last_set);
         $team_side=($this->input->get('team_side')==null)? 'typeA' : $this->input->get('team_side');
 
         $line_up=$this->volley_model->get_lineup_test($schedule, 'ing');

@@ -4,6 +4,7 @@
     <meta http-equiv="content-type" content="text/html; charset-utf-8"/>
     <title> ODDS CONNECT - DataMining </title>
     <link href="/public/lib/volley.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="/public/lib/js/jquery-1.12.4.js"></script>
     <script src="/public/lib/js/ui/1.12.1/jquery-ui.js"></script>
     <script type="text/javascript">
@@ -696,7 +697,7 @@
     }
 
     function game_set_checker() {
-        let win=(prototype.home_score > prototype.away_score)? 'home':'away' ;
+        let win=(document.getElementById('home_<?=$last_set;?>').textContent*1 > document.getElementById('away_<?=$last_set;?>').textContent*1)? 'home':'away';
         let home_set_score=document.getElementById('home_set_score').children[0].textContent;
         let away_set_score=document.getElementById('away_set_score').children[0].textContent;
 
@@ -704,8 +705,8 @@
     }
 
     function get_reset() {
-        let win=(prototype.home_score > prototype.set.away_score)? 'home':'away' ;
-        let win_team=(win==='home')? '<?=$schedule->home;?>':'<?=$schedule->away;?>';
+        let win=(document.getElementById('home_<?=$last_set;?>').textContent*1 > document.getElementById('away_<?=$last_set;?>').textContent*1)? 'home':'away' ;
+        let win_team=(win === 'home')? '<?=$schedule->home;?>':'<?=$schedule->away;?>';
         prototype.message=prototype.set+'세트 종료 '+win_team+' 승';
         prototype.score_no=0;
         prototype.rallying_no=0;
@@ -840,7 +841,7 @@
         if(event_obj.prototype.attack_side==='home') {
             document.getElementsByClassName('home_side')[0].style.filter='none';
             document.getElementsByClassName('away_side')[0].style.filter='grayscale(100%)';
-        }else {
+        } else {
             document.getElementsByClassName('home_side')[0].style.filter='grayscale(100%)';
             document.getElementsByClassName('away_side')[0].style.filter='none';
         }
@@ -928,15 +929,8 @@
             prototype.home_score = event[0].home_score;
             prototype.away_score = event[0].away_score;
 
-            if(event[0].focus==='T'){
-                if(prototype.attack_side==='home') {
-                    prototype.attack_side='away';
-                    side_sign_changer();
-                } else {
-                    prototype.attack_side='home';
-                    side_sign_changer();
-                }
-            }
+            if(event[0].focus==='T') prototype.attack_side=(prototype.attack_side==='home')? prototype.attack_side='away' : prototype.attack_side='home';
+            side_sign_changer();
         }
     }
 

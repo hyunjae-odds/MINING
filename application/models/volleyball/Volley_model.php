@@ -189,7 +189,17 @@
         $MINING->order_by('rallying_no', 'ASC');
         $result=$MINING->get_where('event', array('schedule_no'=>$schedule_no,'type'=>'message','set'=>$last_set-1))->row();
 
-        return (sizeof($result)==0)? '':$result->attack_side;
+        return (empty($result))? '':$result->attack_side;
+    }
+    function get_first_attack_side_test($schedule_no, $last_set){
+        $MINING=$this->get_mining_db();
+
+        $MINING->select('attack_side');
+        $MINING->order_by('score_no', 'ASC');
+        $MINING->order_by('rallying_no', 'ASC');
+        $result=$MINING->get_where('test_event', array('schedule_no'=>$schedule_no,'type'=>'message','set'=>$last_set-1))->row();
+
+        return (empty($result))? '':$result->attack_side;
     }
 
     function get_player_detail_with_name($id){

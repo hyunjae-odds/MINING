@@ -406,15 +406,15 @@
                     });
                 }
             });
-        } else if ('<?=$status;?>'==='begin') {
-            if(prototype.attack_side==undefined) prototype.attack_side='home';
-            else if(prototype.attack_side==='home') prototype.attack_side='away';
-            else if(prototype.attack_side==='away') prototype.attack_side='home';
+        } else if ('<?=$status;?>' === 'begin') {
+            if(prototype.attack_side == undefined) prototype.attack_side='home';
+            else if(prototype.attack_side === 'home') prototype.attack_side='away';
+            else if(prototype.attack_side === 'away') prototype.attack_side='home';
 
             side_sign_changer();
-        } else if ('<?=$status;?>'==='set') {
+        } else if ('<?=$status;?>' === 'set') {
         } else {
-            if('<?=$team_side;?>'==='typeA') location.href='/volleyball/input_test/<?=$schedule->no;?>/<?=$set;?>?team_side=typeB';
+            if('<?=$team_side;?>' === 'typeA') location.href='/volleyball/input_test/<?=$schedule->no;?>/<?=$set;?>?team_side=typeB';
             else location.href='/volleyball/input_test/<?=$schedule->no;?>/<?=$set;?>?team_side=typeA';
         }
     }
@@ -695,16 +695,14 @@
     }
 
     function set_end_checker() {
-        /* 듀스 체크 */
-        let end_num=(<?=$set;?>===5)? 15 : 25;
-        let end_num_minus=(<?=$set;?>===5)? 14 : 24;
+        let end_num=(<?=$set;?> === 5)? 15 : 25;
 
         if((prototype.home_score > end_num || prototype.away_score > end_num) && (prototype.home_score*1 === prototype.away_score*1+2 || prototype.home_score*1+2 === prototype.away_score*1)) get_reset();
-        else if((prototype.home_score == end_num && prototype.away_score < end_num_minus || prototype.away_score == end_num && prototype.home_score < end_num_minus)) get_reset();
+        else if((prototype.home_score == end_num && prototype.away_score < end_num-1) || (prototype.away_score == end_num && prototype.home_score < end_num-1)) get_reset();
     }
 
     function game_set_checker() {
-        let win=(prototype.home_score > prototype.away_score)? 'home':'away' ;
+        let win=(document.getElementById('home_<?=$last_set;?>').textContent*1 > document.getElementById('away_<?=$last_set;?>').textContent*1)? 'home':'away';
         let home_set_score=document.getElementById('home_set_score').children[0].textContent;
         let away_set_score=document.getElementById('away_set_score').children[0].textContent;
 
@@ -712,8 +710,8 @@
     }
 
     function get_reset() {
-        let win=(prototype.home_score > prototype.away_score)? 'home':'away' ;
-        let win_team=(win==='home')? '<?=$schedule->home;?>':'<?=$schedule->away;?>';
+        let win=(document.getElementById('home_<?=$last_set;?>').textContent*1 > document.getElementById('away_<?=$last_set;?>').textContent*1)? 'home':'away' ;
+        let win_team=(win === 'home')? '<?=$schedule->home;?>' : '<?=$schedule->away;?>';
         prototype.message=prototype.set+'세트 종료 '+win_team+' 승';
         prototype.score_no=0;
         prototype.rallying_no=0;
@@ -723,8 +721,8 @@
         prototype.combo=0;
         prototype.type='notice';
 
-        let home_score=(win_team==='<?=$schedule->home;?>')? <?=$schedule->home_score;?>+1:<?=$schedule->home_score;?>;
-        let away_score=(win_team==='<?=$schedule->away;?>')? <?=$schedule->away_score;?>+1:<?=$schedule->away_score;?>;
+        let home_score=(win_team === '<?=$schedule->home;?>')? <?=$schedule->home_score;?>+1:<?=$schedule->home_score;?>;
+        let away_score=(win_team === '<?=$schedule->away;?>')? <?=$schedule->away_score;?>+1:<?=$schedule->away_score;?>;
 
         $.ajax({
             type:'POST',
@@ -789,7 +787,7 @@
                                                 url:'/volleyball/insert_or_update_test_ajax',
                                                 data:{schedule_no:<?=$schedule->no;?>, data:JSON.stringify(all)},
                                                 complete: function() {
-                                                    location.reload();
+//                                                    location.reload();
                                                 }
                                             });
                                         }
@@ -919,7 +917,7 @@
             prototype.away_score = 0;
             prototype.attack_side = ('<?=$served_side;?>'==='home')? 'away':'home';
             side_sign_changer();
-//              페이지 새로고침 했을 때 객체값 선언
+//      페이지 새로고침 했을 때 객체값 선언
         } else if(prototype.set==undefined) {
             let event=<?=json_encode($message);?>;
 
@@ -931,15 +929,8 @@
             prototype.home_score = event[0].home_score;
             prototype.away_score = event[0].away_score;
 
-            if(event[0].focus==='T'){
-                if(prototype.attack_side==='home') {
-                    prototype.attack_side='away';
-                    side_sign_changer();
-                } else {
-                    prototype.attack_side='home';
-                    side_sign_changer();
-                }
-            }
+            if(event[0].focus==='T') prototype.attack_side=(prototype.attack_side==='home')? prototype.attack_side='away' : prototype.attack_side='home';
+            side_sign_changer();
         }
     }
 

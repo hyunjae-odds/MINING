@@ -19,21 +19,30 @@ class Crawling extends CI_Controller{
                 if(strlen($items)!=10 && strlen($items)!=239):
                     /* TEAM_NO */
                     $exp_team_no1=explode('t_code=', $items);
-                    $exp_team_no2=explode('&', $exp_team_no1[1]);
-                    $player['team_no']=$exp_team_no2[0];
+                    if(sizeof($exp_team_no1) == 2):
+                        $exp_team_no2=explode('&', $exp_team_no1[1]);
+                        $player['team_no']=$exp_team_no2[0];
+                    else:
+                        $player['team_no']='';
+                    endif;
+                    $player['season']=2;
 
                     /* PLAYER_NO */
                     $exp_player_no1=explode('p_code=', $items);
-                    $exp_player_no2=explode('">', $exp_player_no1[1]);
-                    $player['id']=$exp_player_no2[0];
+                    if(sizeof($exp_player_no1) == 2):
+                        $exp_player_no2=explode('">', $exp_player_no1[1]);
+                        $player['id']=$exp_player_no2[0];
+                    else:
+                        $player['id']='';
+                    endif;
 
                     /* PLAYER_NAME */
                     $exp_strip_tags=strip_tags($items);
                     $exp_name_team=explode('[', $exp_strip_tags);
                     $player['name']=trim($exp_name_team[0]);
-                    $player['team']=str_replace(']', '', $exp_name_team[1]);
+                    $player['team']=(sizeof($exp_name_team) == 2)? str_replace(']', '', $exp_name_team[1]) : '';
 
-                    if(sizeof($player)!=0) $this->volley_model->insert_or_update('players', $player, array('id'=>$player['id']));
+                    if(strlen($player['name']) < 16) $this->volley_model->insert_or_update('players', $player, array('id'=>$player['id']));
                 endif;
             endforeach;
         endforeach;
@@ -49,8 +58,8 @@ class Crawling extends CI_Controller{
                 if(strlen($items)!=10 && strlen($items)!=239 && strlen($items)!=237):
                     /* TEAM_NO */
                     $exp_team_no1=explode('t_code=', $items);
-                    $exp_team_no2=explode('&', $exp_team_no1[1]);
-                    $player['team_no']=$exp_team_no2[0];
+                    $exp_team_no2=(sizeof($exp_team_no1) == 2)? explode('&', $exp_team_no1[1]) : '';
+                    $player['team_no']=($exp_team_no2 != '')? $exp_team_no2[0] : '';
 
                     /* PLAYER_NO */
                     $exp_player_no1=explode('p_code=', $items);
@@ -62,8 +71,9 @@ class Crawling extends CI_Controller{
                     $exp_name_team=explode('[', $exp_strip_tags);
                     $player['name']=trim($exp_name_team[0]);
                     $player['team']=str_replace(']', '', $exp_name_team[1]);
+                    $player['season']=2;
 
-                    if(sizeof($player)!=0) $this->volley_model->insert_or_update('players', $player, array('id'=>$player['id']));
+                    if(strlen($player['name']) < 16) $this->volley_model->insert_or_update('players', $player, array('id'=>$player['id']));
                 endif;
             endforeach;
         endforeach;
