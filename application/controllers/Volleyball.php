@@ -187,6 +187,21 @@ class Volleyball extends CI_Controller{
         $this->volley_model->update('test_schedule', array('home_score'=>$home_score,'away_score'=>$away_score), array('no'=>$schedule_no));
     }
 
+    function insert_ajax(){
+        $table=$this->input->post('table');
+        $data=json_decode($this->input->post('data'));
+        $area=array('hm','hb','am','ab');
+        foreach ($data as $key=>$item):
+            foreach ($item as $keys=>$items):
+                $obj['schedule_no']=$this->input->post('schedule_no');
+                $obj['p_no']=$items->p_no;
+                $obj['area']=$area[$key];
+                $obj['status']='set';
+
+                $this->volley_model->insert($table, $obj);
+            endforeach;
+        endforeach;
+    }
     function update_ajax(){
         $this->volley_model->update($this->input->post('table'), array('status'=>$this->input->post('status')), array('no'=>$this->input->post('schedule_no')));
     }
@@ -268,5 +283,54 @@ class Volleyball extends CI_Controller{
         $id = $this->input->post('id');
 
         $this->volley_model->update_event($table, $id, array('home_score'=>$home_score, 'away_score'=>$away_score, 'message'=>$message));
+    }
+
+    function get_player_ajax() {
+        $source=$this->curl->simple_get('http://www.kovo.co.kr/team/21132_player_view.asp?t_code=2005&s_part=2&p_code='.$this->input->post('id'));
+
+        $exp1=explode('<p class="name">', $source);
+        $exp2=explode('</p>', $exp1[1]);
+
+        $exp3=explode('" selected>', $source);
+        $exp4=explode('</option>', $exp3[1]);
+        $exp5=explode('<option value="', $exp3[0]);
+
+        $exp6=explode('/</span><strong>', $source);
+        $exp7=explode('</strong>', $exp6[1]);
+        $sex=($exp7[0] == '남자부') ? 'M' : 'W';
+
+        $result=array('season'=>2,'sex'=>$sex,'id'=>$this->input->post('id'),'name'=>$exp2[0],'team'=>$exp4[0],'team_no'=>$exp5[sizeof($exp5)-1],'useable'=>'Y','history'=>'N');
+
+        echo json_encode($result);
+    }
+
+    function add_player_ajax() {
+        $data=json_decode($this->input->post('data'));
+        $this->volley_model->insert_or_update('players', $data, array('id'=>$data->id));
+    }
+
+    function get_teams_ajax() {
+        echo json_encode($this->volley_model->get_teams($this->input->post('sex')));
+    }
+
+    function get_players_by_team_ajax() {
+        echo json_encode($this->volley_model->get_where('players', array('team_no'=>$this->input->post('team_no'))));
+    }
+
+    function get_player_position_ajax() {
+        echo $this->volley_model->get_player_position($this->input->post('id'));
+    }
+
+    function update_player_position_ajax() {
+        echo $this->volley_model->update_player_position($this->input->post('id'), $this->input->post('position'));
+    }
+
+    function update_player_history() {
+        echo json_encode($this->volley_model->update_player_history($this->input->post('id')));
+    }
+
+    function insert_player_ajax() {
+        $data = json_decode($this->input->post('data'));
+        $this->volley_model->insert('players', $data);
     }
 }

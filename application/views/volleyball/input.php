@@ -5,6 +5,24 @@
     <title> ODDS CONNECT - DataMining </title>
     <link href="/public/lib/volley.css" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <style>
+        .frame {
+            width: 1000px;
+            height: 680px;
+            border: 0;
+            -ms-transform: scale(0.78);
+            -moz-transform: scale(0.78);
+            -o-transform: scale(0.78);
+            -webkit-transform: scale(0.78);
+            transform: scale(0.78);
+
+            -ms-transform-origin: 0 0;
+            -moz-transform-origin: 0 0;
+            -o-transform-origin: 0 0;
+            -webkit-transform-origin: 0 0;
+            transform-origin: 0 0;
+        }
+    </style>
     <script src="/public/lib/js/jquery-1.12.4.js"></script>
     <script src="/public/lib/js/ui/1.12.1/jquery-ui.js"></script>
     <script type="text/javascript">
@@ -73,14 +91,14 @@
                 <?php for($i=0; $i<sizeof($score); $i++): ?><td id="home_<?=$i+1;?>"><?=$score[$i]->home_score; $home_total+=$score[$i]->home_score?></td><?php endfor; ?>
                 <?php for($i=0; $i<5-sizeof($score); $i++): ?><td id="home_<?=sizeof($score)+$i+1;?>"></td><?php endfor; ?>
                 <td id="home_total"><?=$home_total;?></td>
-                <td><span class="red"><?=$schedule->home_score;?></span></td>
+                <td id="home_set_score"><span class="red"><?=$schedule->home_score;?></span></td>
             </tr>
             <tr>
                 <td><?=$schedule->away;?></td>
                 <?php for($i=0; $i<sizeof($score); $i++): ?><td id="away_<?=$i+1;?>"><?=$score[$i]->away_score; $away_total+=$score[$i]->away_score?></td><?php endfor; ?>
                 <?php for($i=0; $i<5-sizeof($score); $i++): ?><td id="away_<?=sizeof($score)+$i+1;?>"></td><?php endfor; ?>
                 <td id="away_total"><?=$away_total;?></td>
-                <td><span class="red"><?=$schedule->away_score;?></span></td>
+                <td id="away_set_score"><span class="red"><?=$schedule->away_score;?></span></td>
             </tr>
         </table>
 
@@ -205,7 +223,7 @@
         <?php endif;?>
         <span style="position:absolute;left:600px;top:300px;<?=($status=='set')? 'display:inline':'display:none;';?>" id="vic_pic"><h2 style="position:absolute;left:200px;top:800px;color:white;font-size:300%;" id="home_word">경기 끝</h2><img src="/public/lib/volleyball_image/victory.png" width="386px"><button style="position:absolute;" onclick="document.getElementById('vic_pic').style.display='none';"> 닫기 </button></span>
 
-        <iframe src="http://www.kovo.co.kr/main.asp" width="777" height="580" style="display:none;position:absolute;left:30px;top:175px;background-color:white;" frameborder='1' scrolling="yes" id="frame"></iframe>
+        <iframe src="http://www.kovo.co.kr/media/popup_result.asp?season=014&g_part=201&r_round=1&g_num=<?=$schedule->no;?>" class="frame" width="777" height="580" style="display:none;position:absolute;left:30px;top:175px;background-color:white;" frameborder='1' scrolling="yes" id="frame"></iframe>
         <div style="display:none;position:absolute;left:30px;top:518px;background-color:white;width:386px;height:233px;border:1px solid black;background-image:url(/public/lib/volleyball_image/simpan.png);background-size:contain;" id="challenge">
             <div style="margin:5%;">
                 <p style="color:white;">MESSAGE</p>
@@ -268,7 +286,8 @@
                 <span style="position:absolute;top:10px;right:10px;"><button onclick="close_this_box(this, 'hb');"> 닫기 </button></span>
             </div>
         </div>
-        <!-- 원정  -->
+
+        <!-- 원정 -->
         <div id="away_players_out" style="display:none;position:absolute;left:<?=($team_side=='typeA')?'31':'423';?>px;top:241px;background-color:white;width:385px;height:227px;border:1px solid black;background-size:contain;background-repeat:no-repeat;background-position:right;">
             <div style="padding:3%;">
                 <h2>OUT</h2><br>
@@ -329,7 +348,7 @@
                     </li>
                 <?php endforeach; ?>
             </ul>
-            <div class="claer"></div>
+            <div class="clear"></div>
         </div>
 
         <div class="command">
@@ -400,15 +419,15 @@
                     });
                 }
             });
-        } else if ('<?=$status;?>'==='begin') {
-            if(prototype.attack_side==undefined) prototype.attack_side='home';
-            else if(prototype.attack_side==='home') prototype.attack_side='away';
-            else if(prototype.attack_side==='away') prototype.attack_side='home';
+        } else if ('<?=$status;?>' === 'begin') {
+            if(prototype.attack_side == undefined) prototype.attack_side='home';
+            else if(prototype.attack_side === 'home') prototype.attack_side='away';
+            else if(prototype.attack_side === 'away') prototype.attack_side='home';
 
             side_sign_changer();
-        } else if ('<?=$status;?>'==='set') {
+        } else if ('<?=$status;?>' === 'set') {
         } else {
-            if('<?=$team_side;?>'==='typeA') location.href='/volleyball/input/<?=$schedule->no;?>/<?=$set;?>?team_side=typeB';
+            if('<?=$team_side;?>' === 'typeA') location.href='/volleyball/input/<?=$schedule->no;?>/<?=$set;?>?team_side=typeB';
             else location.href='/volleyball/input/<?=$schedule->no;?>/<?=$set;?>?team_side=typeA';
         }
     }
@@ -418,18 +437,19 @@
         else document.getElementById('frame').style.display='none';
     }
 
-    function send_ajax(func, data, bool) {
+    function send_ajax(segment, data, bool) {
         let id=0;
 
         $.ajax({
             type:'POST',
-            url:'/volleyball/'+func,
+            url:'/volleyball/'+segment,
             data:{data:data},
             success: function(d) {
                 if(bool) id=d;
             },
             complete: function() {
-                if(bool) document.getElementsByClassName('view')[0].children[0].id=id;
+                if(bool==='re') location.reload();
+                else if(bool) document.getElementsByClassName('view')[0].children[0].id=id;
             }
         });
     }
@@ -688,12 +708,10 @@
     }
 
     function set_end_checker() {
-        /* 듀스 체크 */
-        let end_num=(<?=$set;?>===5)? 15 : 25;
-        let end_num_minus=(<?=$set;?>===5)? 14 : 24;
+        let end_num=(<?=$set;?> === 5)? 15 : 25;
 
         if((prototype.home_score > end_num || prototype.away_score > end_num) && (prototype.home_score*1 === prototype.away_score*1+2 || prototype.home_score*1+2 === prototype.away_score*1)) get_reset();
-        else if((prototype.home_score == end_num && prototype.away_score < end_num_minus || prototype.away_score == end_num && prototype.home_score < end_num_minus)) get_reset();
+        else if((prototype.home_score == end_num && prototype.away_score < end_num-1) || (prototype.away_score == end_num && prototype.home_score < end_num-1)) get_reset();
     }
 
     function game_set_checker() {
@@ -701,12 +719,13 @@
         let home_set_score=document.getElementById('home_set_score').children[0].textContent;
         let away_set_score=document.getElementById('away_set_score').children[0].textContent;
 
+        console.log(((home_set_score === '2' && win === 'home') || (away_set_score === '2' && win === 'away')));
         return ((home_set_score === '2' && win === 'home') || (away_set_score === '2' && win === 'away'));
     }
 
     function get_reset() {
         let win=(document.getElementById('home_<?=$last_set;?>').textContent*1 > document.getElementById('away_<?=$last_set;?>').textContent*1)? 'home':'away' ;
-        let win_team=(win === 'home')? '<?=$schedule->home;?>':'<?=$schedule->away;?>';
+        let win_team=(win === 'home')? '<?=$schedule->home;?>' : '<?=$schedule->away;?>';
         prototype.message=prototype.set+'세트 종료 '+win_team+' 승';
         prototype.score_no=0;
         prototype.rallying_no=0;
@@ -716,19 +735,19 @@
         prototype.combo=0;
         prototype.type='notice';
 
-        let home_score=(win_team==='<?=$schedule->home;?>')? <?=$schedule->home_score;?>+1:<?=$schedule->home_score;?>;
-        let away_score=(win_team==='<?=$schedule->away;?>')? <?=$schedule->away_score;?>+1:<?=$schedule->away_score;?>;
+        let home_score=(win_team === '<?=$schedule->home;?>')? <?=$schedule->home_score;?>+1:<?=$schedule->home_score;?>;
+        let away_score=(win_team === '<?=$schedule->away;?>')? <?=$schedule->away_score;?>+1:<?=$schedule->away_score;?>;
 
         $.ajax({
             type:'POST',
             url:'/volleyball/insert_event_ajax',
             data:{data:JSON.stringify(prototype)},
             complete: function() {
-                if(prototype.set < 5) {
+                if(game_set_checker()) {
+                    prototype.message='경기 종료';
+                } else {
                     prototype.set++;
                     prototype.message=prototype.set+'세트 시작';
-                } else {
-                    prototype.message='경기 종료';
                 }
 
                 $.ajax({
@@ -746,7 +765,7 @@
                                     $.ajax({
                                         type:'POST',
                                         url:'/volleyball/update_ajax',
-                                        data:{table:'schedule',schedule_no:<?=$schedule->no;?>,'status':'set'},
+                                        data:{table:'schedule', schedule_no:<?=$schedule->no;?>, 'status':'set'},
                                         complete: function() {
                                             let all=[];
                                             let hm=[];
@@ -780,7 +799,7 @@
                                             $.ajax({
                                                 type:'POST',
                                                 url:'/volleyball/insert_ajax',
-                                                data:{schedule_no:<?=$schedule->no;?>, data:JSON.stringify(all)},
+                                                data:{table:'line_up',schedule_no:<?=$schedule->no;?>, data:JSON.stringify(all)},
                                                 complete: function() {
                                                     location.reload();
                                                 }
@@ -806,11 +825,11 @@
             home_message=(prototype.message==='터치 아웃' || prototype.message==='벌칙' || prototype.message==='범실' || prototype.message==='서브 실패' || prototype.message==='블로킹 실패' || prototype.message==='리시브 실패' || prototype.message==='공격 실패' || prototype.message==='디그 실패')? '<p class="home"><b>득점 성공</b></p>':'<p class="home"><b></b></p>';
             away_message='<p class="away"><b>'+prototype.message+'</b></p>';
         }
-        let score=(str==='')? '<p class="qt">'+prototype.home_score+':'+prototype.away_score+'</p>':'<p class="qt"><span class="'+str+'">'+prototype.home_score+':'+prototype.away_score+'</span></p>';
+        let score=(str==='')? '<p class="qt">'+prototype.home_score+':'+prototype.away_score+'</p>' : '<p class="qt"><span class="'+str+'">'+prototype.home_score+':'+prototype.away_score+'</span></p>';
 
 //      메세지
-        if($('.view > li').length===0) $('.view').append('<li onclick="edit_event(this)">'+home_message+score+away_message+'</li>');
-        else $('.view > li').eq(0).before('<li onclick="edit_event(this)">'+home_message+score+away_message+'</li>');
+        if($('.view > li').length===0) $('.view').append('<li onclick="edit_event(this);">'+home_message+score+away_message+'</li>');
+        else $('.view > li').eq(0).before('<li onclick="edit_event(this);">'+home_message+score+away_message+'</li>');
 
 //      전광판
         document.getElementById('home_<?=$last_set;?>').textContent=prototype.home_score;
@@ -858,7 +877,6 @@
 
     function score_changer() {
         let str='';
-        let home_away_str='';
 //      성공
         if(prototype.combo===90) {
             if(prototype.attack_side==='home') {
@@ -866,13 +884,11 @@
                 document.getElementById('home_total').textContent=document.getElementById('home_total').textContent*1+1;
                 prototype.point_str='l_s';
                 str = 'l_s';
-                home_away_str='홈 서브';
             } else {
                 prototype.away_score++;
                 document.getElementById('away_total').textContent=document.getElementById('away_total').textContent*1+1;
                 prototype.point_str='r_s';
                 str = 'r_s';
-                home_away_str='원정 서브';
             }
 //      실패
         } else if(prototype.combo===88 || prototype.command===84 || prototype.command===71 || prototype.command===70) {
@@ -881,13 +897,11 @@
                 document.getElementById('away_total').textContent=document.getElementById('away_total').textContent*1+1;
                 prototype.point_str='l_s';
                 str = 'l_s';
-                home_away_str='홈 서브';
             } else {
                 prototype.away_score++;
                 document.getElementById('home_total').textContent=document.getElementById('home_total').textContent*1+1;
                 prototype.point_str='r_s';
                 str = 'r_s';
-                home_away_str='원정 서브';
             }
 
             prototype.focus = 'T';

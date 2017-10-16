@@ -172,7 +172,7 @@
         for($i=1; $i<=$last_set; $i++):
             $MINING->select('home_score, away_score');
             $MINING->order_by('no', 'DESC');
-            $event=$MINING->get_where('event', array('schedule_no'=>$schedule_no, 'set'=>$i,'type'=>'message'))->row();
+            $event=$MINING->get_where('event', array('schedule_no'=>$schedule_no, 'set'=>$i,'type'=>'message','delete_yn'=>'N'))->row();
             if(sizeof($event) == 0) $event=(object)array('home_score'=>'0','away_score'=>'0');
 
             array_push($result, $event);
@@ -244,6 +244,21 @@
         return $result;
     }
 
+    function get_teams($sex) {
+        $MINING=$this->get_mining_db();
+
+        $MINING->select('team, team_no');
+        $MINING->distinct();
+        return $MINING->get_where('players', array('sex'=>$sex))->result();
+    }
+
+    function get_player_position($id) {
+        $MINING=$this->get_mining_db();
+
+        $MINING->select('position');
+        return $MINING->get_where('player_detail', array('id'=>$id))->row()->position;
+    }
+
     /* UPDATE */
     function update($table, $data, $where){
         $MINING=$this->get_mining_db();
@@ -273,6 +288,21 @@
 
         $MINING->set('update_dt', 'NOW()', false);
         $MINING->update($table, $arr, array('no'=>$schedule_no));
+    }
+
+    function update_player_position($id, $position) {
+        $MINING=$this->get_mining_db();
+
+        $MINING->update('player_detail', array('position'=>$position), array('id'=>$id));
+    }
+
+    function update_player_history($id) {
+        $MINING=$this->get_mining_db();
+
+        $MINING->set('update_dt', 'NOW()', false);
+        $MINING->update('players', array('history'=>'Y'), array('id'=>$id));
+
+        return $this->get_where_row('players', array('id'=>$id));
     }
 
     /* TEST */

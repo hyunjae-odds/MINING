@@ -25,6 +25,7 @@
             color:white;
         }
     </style>
+    <script src="/public/lib/js/jquery-1.12.4.js"></script>
 </head>
 <body>
     <div class="wrap lineup" style="<?php if($segment=='lineup_test') echo 'background-color:#ffffdf;';?>">
@@ -205,9 +206,9 @@
         </ul>
     </div>
     <div id="loading" style="display:none;position:absolute;left:1320px;top:50px;"><img src="/public/lib/volleyball_image/ajax_loader4.gif" style="width:30px;height:30px;"></div>
-    <div id="admin_mode" style="display:none;position:fixed;width:280px;height:500px;left:1470px;top:97px;background-color:white;border:1px solid black;">
+    <div id="admin_mode" style="display:none;position:fixed;width:280px;height:800px;left:1470px;top:97px;background-color:white;border:1px solid black;">
         <div style="padding: 20px;">
-            <h2>권한 관리</h2><br>
+            <h2>마이너 권한 관리</h2><br>
                 <?php foreach($operators as $operator): ?>
                     <div>
                         <?=$operator->nickname;?>
@@ -217,10 +218,232 @@
                         </select>
                         <button onclick="sendAjax('update_user_level_ajax', JSON.stringify({id:<?=$operator->id;?>,'level':$('#level_selector_<?=$operator->id;?> option:selected').val()}));">저장</button>
                     </div>
-                <?php endforeach; ?><br><br>
+                <?php endforeach; ?>
+            <br>===================================<br><br>
+
             <h2>스케쥴(연습)</h2><br>
             <button onclick="deleteTestMode('this');">현재 초기화</button>
             <button onclick="deleteTestMode('all');">전체 초기화</button>
+            <br><br>===================================<br><br>
+
+            <h2>신규 선수 추가</h2><br>
+            <input type="text" id="find_id">
+            <button onclick="find_player();">조회</button>
+            <script>
+                function find_player(){
+                    if($('#find_id').val().length === 7) {
+                        $.ajax({
+                            type: 'POST',
+                            url: '/volleyball/get_player_ajax',
+                            data: {id: $('#find_id').val()},
+                            success: function(d) {
+                                data=JSON.parse(d);
+                                if(confirm(data.name+'선수를 등록합니다.')) {
+                                    $.ajax({
+                                        type: 'POST',
+                                        url: '/volleyball/add_player_ajax',
+                                        data: {data: JSON.stringify(data)},
+                                        success: function (d) {
+                                            alert('등록 완료!');
+                                            location.replace('/crawling/player_detail/'+player['id']);
+                                        }
+                                    });
+                                } else {
+                                    alert('취소 되었습니다.');
+                                }
+                            }
+                        });
+                    } else {
+                        alert('7자리 숫자를 입력하세요');
+                    }
+                }
+            </script>
+            <br><br>===================================<br><br>
+
+            <h2>선수 포지션 변경</h2><br>
+            <select id="select_sex"><option>남자</option><option>여자</option></select>
+            <select id="select_team" style="display:none;"></select>
+            <select id="select_player" style="display:none;"></select>
+            <select id="select_position" style="display:none;"></select><br>
+            <button id="select_button" onclick="update_position();" style="display:none;">저장</button>
+
+            <script>
+                $('#select_sex').click(function(){
+                    let sex=($(this).val() === '남자')? 'M' : 'W';
+                    let teams=[];
+
+                    $.ajax({
+                        type: 'POST',
+                        url: '/volleyball/get_teams_ajax',
+                        data: {sex: sex},
+                        beforeSend: function() {
+                            $('#select_team').empty();
+                        },
+                        success: function(d) {
+                            teams=eval(d);
+                        },
+                        complete: function() {
+                            for(let i=0; i<teams.length; i++) {
+                                $('#select_team').append('<option id="'+teams[i]['team_no']+'">'+teams[i]['team']+'</option>');
+                            }
+                            $('#select_team').show();
+                        }
+                    });
+                });
+
+                $('#select_team').click(function(){
+                    team_no=$(this).children(":selected").attr("id");
+                    $.ajax({
+                        type: 'POST',
+                        url: '/volleyball/get_players_by_team_ajax',
+                        data: {team_no: team_no},
+                        beforeSend: function() {
+                            $('#select_player').empty();
+                        },
+                        success: function(d) {
+                            let players=JSON.parse(d);
+                            for(let j=0; j<players.length; j++) {
+                                $('#select_player').append('<option id="'+players[j]['id']+'">'+players[j]['name']+'</option>');
+                            }
+                            $('#select_player').show();
+                        }
+                    });
+                });
+
+                $('#select_player').click(function(){
+                    $.ajax({
+                        type: 'POST',
+                        url: '/volleyball/get_player_position_ajax',
+                        data: {id: $(this).children(":selected").attr("id")},
+                        beforeSend: function() {
+                            $('#select_position').empty();
+                        },
+                        success: function(d) {
+                            let arr=['LEFT','RIGHT','CENTER','LIBERO','SETTER'];
+                            for(let z=0; z<arr.length; z++) {
+                                let slt = (arr[z] === d)? 'selected' : '';
+                                $('#select_position').append('<option ' + slt + '>'+arr[z]+'</option>');
+                            }
+                            $('#select_position').show();
+                            $('#select_button').show();
+                        }
+                    });
+                });
+
+                function update_position() {
+                    $.ajax({
+                        type: 'POST',
+                        url: '/volleyball/update_player_position_ajax',
+                        data: {id: $('#select_player').children(":selected").attr("id"), position: $('#select_position').children(":selected").val()},
+                        success: function() {
+                            alert('변경 완료!');
+                            location.reload();
+                        }
+                    });
+                }
+            </script>
+            <br><br>===================================<br><br>
+
+            <h2>선수 이적</h2><br>
+            <select id="select_sex2"><option>남자</option><option>여자</option></select>
+            <select id="select_team2" style="display:none;"></select>
+            <select id="select_player2" style="display:none;"></select>
+            <select id="select_team_to" style="display:none;"></select><br>
+            <button id="select_button2" onclick="update_position();" style="display:none;">저장</button>
+
+            <script>
+                $('#select_sex2').click(function(){
+                    let sex=($(this).val() === '남자')? 'M' : 'W';
+                    let teams=[];
+
+                    $.ajax({
+                        type: 'POST',
+                        url: '/volleyball/get_teams_ajax',
+                        data: {sex: sex},
+                        beforeSend: function() {
+                            $('#select_team2').empty();
+                        },
+                        success: function(d) {
+                            teams=eval(d);
+                        },
+                        complete: function() {
+                            for(let i=0; i<teams.length; i++) {
+                                $('#select_team2').append('<option id="'+teams[i]['team_no']+'">'+teams[i]['team']+'</option>');
+                            }
+                            $('#select_team2').show();
+                        }
+                    });
+                });
+
+                $('#select_team2').click(function(){
+                    let team_no=$(this).children(":selected").attr("id");
+
+                    $.ajax({
+                        type: 'POST',
+                        url: '/volleyball/get_players_by_team_ajax',
+                        data: {team_no: team_no},
+                        beforeSend: function() {
+                            $('#select_player2').empty();
+                        },
+                        success: function(d) {
+                            let players=JSON.parse(d);
+                            for(let j=0; j<players.length; j++) {
+                                $('#select_player2').append('<option id="'+players[j]['id']+'">'+players[j]['name']+'</option>');
+                            }
+                            $('#select_player2').show();
+                        }
+                    });
+                });
+
+                $('#select_player2').click(function(){
+                    let sex=($('#select_sex2').children(":selected").val() === '남자')? 'M' : 'W';
+                    let teams=[];
+
+                    $.ajax({
+                        type: 'POST',
+                        url: '/volleyball/get_teams_ajax',
+                        data: {sex:sex},
+                        beforeSend: function() {
+                            $('#select_team_to').empty();
+                        },
+                        success: function(d) {
+                            teams=eval(d);
+                        },
+                        complete: function() {
+                            for(let i=0; i<teams.length; i++) {
+                                if(teams[i]['team'] !== $('#select_team2').children(":selected").val()) $('#select_team_to').append('<option id="'+teams[i]['team_no']+'">'+teams[i]['team']+'</option>');
+                            }
+                            $('#select_team_to').show();
+                            $('#select_button2').show();
+                        }
+                    });
+                });
+
+                function update_position() {
+                    $.ajax({
+                        type: 'POST',
+                        url: '/volleyball/update_player_history',
+                        data: {id: $('#select_player2').children(":selected").attr("id")},
+                        success: function(e) {
+                            player = JSON.parse(e);
+                            delete player['insert_dt'];
+                            delete player['update_dt'];
+                            delete player['no'];
+                            player['history']='N';
+                            player['team']=$('#select_team_to').children(":selected").val();
+
+                            $.ajax({
+                                type: 'POST',
+                                url: '/volleyball/insert_player_ajax',
+                                data: {data: JSON.stringify(player)},
+                                success: function() {
+                                    location.replace('/crawling/player_detail/'+player['id']);
+                                }
+                            });
+                        }
+                    });
+                }
+            </script>
         </div>
     </div>
 

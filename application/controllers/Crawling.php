@@ -79,8 +79,8 @@ class Crawling extends CI_Controller{
         endforeach;
 	}
 
-	function player_detail(){
-	    $players=$this->volley_model->get('players');
+	function player_detail($all_or_one){
+	    $players=($all_or_one == 'all')? $this->volley_model->get('players') : array($this->volley_model->get_where_row('players', array('id'=>$all_or_one)));
 
         foreach($players as $player):
             if($player->sex=='M') $source=$this->curl->simple_get('http://www.kovo.co.kr/team/21132_player_view.asp?t_code=1001&s_part=1&p_code='.$player->id);
@@ -137,6 +137,8 @@ class Crawling extends CI_Controller{
 
             $this->volley_model->insert_or_update('player_detail', $player_detail, array('id'=>$player_detail['id']));
         endforeach;
+
+        if($all_or_one != 'all') echo '<script>location.replace("/volleyball/lineup_test/M?date='.date('Y-m-d').'")</script>';
     }
 
     function schedule($season_no){

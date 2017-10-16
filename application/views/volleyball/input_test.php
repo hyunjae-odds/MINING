@@ -5,6 +5,24 @@
     <title> ODDS CONNECT - DataMining </title>
     <link href="/public/lib/volley.css" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <style>
+        .frame {
+            width: 1000px;
+            height: 680px;
+            border: 0;
+            -ms-transform: scale(0.78);
+            -moz-transform: scale(0.78);
+            -o-transform: scale(0.78);
+            -webkit-transform: scale(0.78);
+            transform: scale(0.78);
+
+            -ms-transform-origin: 0 0;
+            -moz-transform-origin: 0 0;
+            -o-transform-origin: 0 0;
+            -webkit-transform-origin: 0 0;
+            transform-origin: 0 0;
+        }
+    </style>
     <script src="/public/lib/js/jquery-1.12.4.js"></script>
     <script src="/public/lib/js/ui/1.12.1/jquery-ui.js"></script>
     <script type="text/javascript">
@@ -205,7 +223,7 @@
         <?php endif;?>
         <span style="position:absolute;left:600px;top:300px;<?=($status=='set')? 'display:inline':'display:none;';?>" id="vic_pic"><h2 style="position:absolute;left:200px;top:800px;color:white;font-size:300%;" id="home_word">경기 끝</h2><img src="/public/lib/volleyball_image/victory.png" width="386px"><button style="position:absolute;" onclick="document.getElementById('vic_pic').style.display='none';"> 닫기 </button></span>
 
-        <iframe src="http://www.kovo.co.kr/main.asp" width="777" height="580" style="display:none;position:absolute;left:30px;top:175px;background-color:white;" frameborder='1' scrolling="yes" id="frame"></iframe>
+        <iframe src="http://www.kovo.co.kr/media/popup_result.asp?season=014&g_part=201&r_round=1&g_num=<?=$schedule->no;?>" class="frame" width="777" height="580" style="display:none;position:absolute;left:30px;top:175px;background-color:white;" frameborder='1' scrolling="yes" id="frame"></iframe>
         <div style="display:none;position:absolute;left:30px;top:518px;background-color:white;width:386px;height:233px;border:1px solid black;background-image:url(/public/lib/volleyball_image/simpan.png);background-size:contain;" id="challenge">
             <div style="margin:5%;">
                 <p style="color:white;">MESSAGE</p>
@@ -231,7 +249,7 @@
             </div>
         </div>
 
-        <!-- 홈 선수교체 OUT -->
+        <!-- 홈 -->
         <div id="home_players_out" style="display:none;position:absolute;left:<?=($team_side=='typeA')?'423':'31';?>px;top:241px;background-color:white;width:385px;height:227px;border:1px solid black;background-size:contain;background-repeat:no-repeat;background-position:right;">
             <div style="padding:3%;">
                 <h2>OUT</h2><br>
@@ -248,12 +266,10 @@
                 <span style="position:absolute;top:10px;right:10px;"><button onclick="close_this_box(this, 'hm');"> 닫기 </button></span>
             </div>
         </div>
-        <!-- 홈 선수교체 BUTTON -->
         <div id="home_player_change_button" style="display:none;">
             <a style="position:absolute;left:<?=($team_side=='typeA')?'423':'30';?>px;top:475px;background-color:#FAF4C0;width:192.5px;height:26px;border:1px solid black;text-align:center;font-size:16pt;padding-top:10px;" href="javascript:player_change('home');">선수 교체</a>
             <a style="position:absolute;left:<?=($team_side=='typeA')?'615':'223';?>px;top:475px;background-color:#FAF4C0;width:192.5px;height:26px;border:1px solid black;text-align:center;font-size:16pt;padding-top:10px;" href="javascript:player_change_cancel();">취소</a>
         </div>
-        <!-- 홈 선수교체 IN -->
         <div id="home_players_in" style="display:none;position:absolute;left:<?=($team_side=='typeA')?'423':'31';?>px;top:518px;background-color:white;width:385px;height:234px;border:1px solid black;background-size:contain;background-repeat:no-repeat;background-position:right;">
             <div style="padding:3%;">
                 <h2>IN</h2><br>
@@ -271,7 +287,7 @@
             </div>
         </div>
 
-        <!-- 원정 선수교체 OUT -->
+        <!-- 원정 -->
         <div id="away_players_out" style="display:none;position:absolute;left:<?=($team_side=='typeA')?'31':'423';?>px;top:241px;background-color:white;width:385px;height:227px;border:1px solid black;background-size:contain;background-repeat:no-repeat;background-position:right;">
             <div style="padding:3%;">
                 <h2>OUT</h2><br>
@@ -288,12 +304,10 @@
                 <span style="position:absolute;top:10px;right:10px;"><button onclick="close_this_box(this, 'am');"> 닫기 </button></span>
             </div>
         </div>
-        <!-- 원정 선수교체 BUTTON -->
         <div id="away_player_change_button" style="display:none;">
             <a style="position:absolute;left:<?=($team_side=='typeA')?'30':'423';?>px;top:475px;background-color:#FAF4C0;width:192.5px;height:26px;border:1px solid black;text-align:center;font-size:16pt;padding-top:10px;" href="javascript:player_change('away');">선수 교체</a>
             <a style="position:absolute;left:<?=($team_side=='typeA')?'223':'615';?>px;top:475px;background-color:#FAF4C0;width:192.5px;height:26px;border:1px solid black;text-align:center;font-size:16pt;padding-top:10px;" href="javascript:player_change_cancel();">취소</a>
         </div>
-        <!-- 원정 선수교체 IN -->
         <div id="away_players_in" style="display:none;position:absolute;left:<?=($team_side=='typeA')?'31':'423';?>px;top:518px;background-color:white;width:385px;height:234px;border:1px solid black;background-size:contain;background-repeat:no-repeat;background-position:right;">
             <div style="padding:3%;">
                 <h2>IN</h2><br>
@@ -367,7 +381,6 @@
     </div>
 </div>
 
-<!-- 팝업 -->
 <div id="dialog-confirm" title="이벤트 메세지 수정/삭제" style="display:none;">
     <p><span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>수정 : 이벤트 메세지를 수정합니다.<br>삭제 : 이벤트 메세지를 삭제합니다.<br>닫기 : 창을 닫습니다.</p>
 </div>
@@ -784,10 +797,10 @@
 
                                             $.ajax({
                                                 type:'POST',
-                                                url:'/volleyball/insert_or_update_test_ajax',
-                                                data:{schedule_no:<?=$schedule->no;?>, data:JSON.stringify(all)},
+                                                url:'/volleyball/insert_ajax',
+                                                data:{table:'test_line_up',schedule_no:<?=$schedule->no;?>, data:JSON.stringify(all)},
                                                 complete: function() {
-//                                                    location.reload();
+                                                    location.reload();
                                                 }
                                             });
                                         }
@@ -846,13 +859,13 @@
         if(event_obj.prototype.attack_side==='home') {
             document.getElementsByClassName('home_side')[0].style.filter='none';
             document.getElementsByClassName('away_side')[0].style.filter='grayscale(100%)';
-        }else {
+        } else {
             document.getElementsByClassName('home_side')[0].style.filter='grayscale(100%)';
             document.getElementsByClassName('away_side')[0].style.filter='none';
         }
     }
 
-    function attack_side_click(e){
+    function attack_side_click(e) {
         e.style.filter='none';
 
         if(e.className==='home_side') prototype.attack_side='home';
@@ -1253,7 +1266,7 @@
 
     window.onkeydown=function() {
         run_keymap();
-    }
+    };
 </script>
 </body>
 </html>
