@@ -222,21 +222,21 @@ div.position > p {position:relative;}
 .team:nth-of-type(2) h3.attack {background-image:url("volleyball_image/arro_r.png");background-repeat:no-repeat;background-position: 0 0;}
 .team h3:hover {cursor:pointer;}
 
-.player_w {margin-top:5px;height:310px;}
+.player_w {margin-top:5px;height:582px;}
 .player_w h3 {text-align:center;background:#313D56;color:#fff;height:58px;line-height:58px;font-size:28px;margin-bottom:5px;}
 .player_w > div {width:387px;float:left;}
-.player_w .team1 {margin-right:5px;width:388px;}
+.player_w .team1 {margin-right:5px;width:388px;height:100%;}
 .player_w .team1 h3 {background:#9D1E25;}
 .player_w > div > div,.player_w > div > img {float:left;}
 .player_w > div > div {width:100%;}
 .player_w > div > img {margin:95px 13px 0;}
 .player_w > div > div h4 {text-align:center;background:#4f5a63;height:27px;line-height:26px;color:#fff;}
-.player_w > div > div ul {border:1px solid #C5C5C5;height:233px;}
+.player_w > div > div ul {border:1px solid #C5C5C5;height:100%;}
 .player_w > div > div ul li {height:38px;line-height:38px;border-bottom:1px solid #C5C5C5;}
 .player_w > div > div ul li span {display:inline-block;width:40px;text-align:center;}
 .player_w > div > div ul li span.pp {width:99px;margin-left:10px;text-align:left;}
-.player_w > div > div.table02 ul li span.pp {width:116px;}
-.player_w > div > div.table02 ul {height:227px;overflow-y:hidden;}
+.player_w > div > div.table02 ul li span.pp {width:116px;height:100%;}
+.player_w > div > div.table02 ul {height:510px;overflow-y:scroll;}
 .player_w > div > div > ul > li:hover {box-sizing:border-box;border:1px solid darkgray;}
 .home_side {filter:grayscale(100%);}
 .away_side {filter:grayscale(100%);}

@@ -57,12 +57,13 @@ class Volleyball extends CI_Controller{
         $served_side=$this->volley_model->get_first_attack_side($schedule_no, $last_set);
         $team_side=($this->input->get('team_side')==null)? 'typeA':$this->input->get('team_side');
 
-        $line_up=$this->volley_model->get_lineup($schedule, 'ing');
+        $players=$this->volley_model->get_today_players($schedule);
+//        $line_up=$this->volley_model->get_lineup($schedule, 'ing');
         $status=$this->volley_model->get_where_row('schedule', array('no'=>$schedule->no))->status;
         $message=$this->volley_model->get_message($schedule, $set);
         $score=$this->volley_model->get_score($schedule->no, $last_set);
 
-        $this->load->view('/volleyball/input', array('schedule'=>$schedule,'line_up'=>$line_up,'session'=>$session,'status'=>$status,'message'=>$message,'attack_side'=>$attack_side,'last_set'=>$last_set,'score'=>$score,'served_side'=>$served_side,'set'=>$set,'team_side'=>$team_side));
+        $this->load->view('/volleyball/input', array('schedule'=>$schedule,'players'=>$players,'session'=>$session,'status'=>$status,'message'=>$message,'attack_side'=>$attack_side,'last_set'=>$last_set,'score'=>$score,'served_side'=>$served_side,'set'=>$set,'team_side'=>$team_side));
     }
     function input_test($schedule_no, $set){
         $schedule=$this->volley_model->get_schedule('test_schedule', array('no'=>$schedule_no));
@@ -74,12 +75,13 @@ class Volleyball extends CI_Controller{
         $served_side=$this->volley_model->get_first_attack_side_test($schedule_no, $last_set);
         $team_side=($this->input->get('team_side')==null)? 'typeA' : $this->input->get('team_side');
 
-        $line_up=$this->volley_model->get_lineup_test($schedule, 'ing');
+        $players=$this->volley_model->get_today_players($schedule);
+//        $line_up=$this->volley_model->get_lineup_test($schedule, 'ing');
         $status=$this->volley_model->get_where_row('test_schedule', array('no'=>$schedule->no))->status;
         $message=$this->volley_model->get_message_test($schedule, $set);
         $score=$this->volley_model->get_score_test($schedule->no, $last_set);
 
-        $this->load->view('/volleyball/input_test', array('schedule'=>$schedule,'line_up'=>$line_up,'session'=>$session,'status'=>$status,'message'=>$message,'attack_side'=>$attack_side,'last_set'=>$last_set,'score'=>$score,'served_side'=>$served_side,'set'=>$set,'team_side'=>$team_side));
+        $this->load->view('/volleyball/input_test', array('schedule'=>$schedule,'players'=>$players,'session'=>$session,'status'=>$status,'message'=>$message,'attack_side'=>$attack_side,'last_set'=>$last_set,'score'=>$score,'served_side'=>$served_side,'set'=>$set,'team_side'=>$team_side));
     }
 
     /* COMMON */
@@ -332,5 +334,9 @@ class Volleyball extends CI_Controller{
     function insert_player_ajax() {
         $data = json_decode($this->input->post('data'));
         $this->volley_model->insert('players', $data);
+    }
+
+    function update_game_status_ajax() {
+        $this->volley_model->update_schedule_status($this->input->post('table'), $this->input->post('schedule_no'));
     }
 }

@@ -50,7 +50,7 @@
         </ul>
         <p class="apply">
             <?php if($status=='set' || $status=='ing' || $status=='begin'): ?><a href="javascript:location.href='/volleyball/<?=($segment==='lineup_test')? 'input_test' : 'input';?>/<?=$schedule->no;?>/<?=$last_set;?>'" id="confirm_btn">이동<span></span></a>
-            <?php else: ?><a href="javascript:<?=($segment==='lineup_test')? 'saveLineUp(\'insert_test_line_up_ajax\');' : 'saveLineUp(\'insert_line_up_ajax\')';?>" id="confirm_btn">적용<span></span></a><?php endif;?>
+            <?php else: ?><a href="javascript:<?=($segment==='lineup_test')? 'saveLineUp(\'insert_test_line_up_ajax\');' : 'saveLineUp(\'insert_line_up_ajax\')';?>" id="confirm_btn">이동<span></span></a><?php endif;?>
         </p>
         <ul class="VS_view">
             <li class="on">
@@ -481,91 +481,95 @@
 
         function saveLineUp(segment) {
             let home_major = document.getElementById('selection_home').children;
-            let home_bench = document.getElementById('player_home');
+//            let home_bench = document.getElementById('player_home');
             let away_major = document.getElementById('selection_away').children;
-            let away_bench = document.getElementById('player_away');
-            let home_minor = document.getElementById('selection1_home').children;
-            let away_minor = document.getElementById('selection1_away').children;
+//            let away_bench = document.getElementById('player_away');
+//            let home_minor = document.getElementById('selection1_home').children;
+//            let away_minor = document.getElementById('selection1_away').children;
 
             let result=[];
             if(validatePlayerSet(home_major, away_major)) {
-                let result_hm=[],result_am=[],result_hb=[],result_ab=[],result_hn=[],result_an=[];
-
-                for(let i=0; i<7; i++) {
-                    result_hm.push(home_major[i].getElementsByClassName('name')[0].id);
-                    result_am.push(away_major[i].getElementsByClassName('name')[0].id);
-                }
-                for(let i=0; i<6; i++) {
-                    result_hb.push(home_bench.getElementsByClassName('name')[i].id);
-                    result_ab.push(away_bench.getElementsByClassName('name')[i].id);
-                }
-                for(let j=0; j<document.getElementById('selection1_home').children.length; j++) {
-                    result_hn.push(home_minor[j].getElementsByClassName('name')[0].id);
-                }
-                for(let k=0; k<document.getElementById('selection1_away').children.length; k++) {
-                    result_an.push(away_minor[k].getElementsByClassName('name')[0].id);
-                }
-                result.push({'schedule_no':<?=($status=='none')? 0:$schedule->no;?>},{'hm':result_hm},{'am':result_am},{'hb':result_hb},{'ab':result_ab},{'hn':result_hn},{'an':result_an});
+//                let result_hm=[],result_am=[],result_hb=[],result_ab=[],result_hn=[],result_an=[];
+//
+//                for(let i=0; i<7; i++) {
+//                    result_hm.push(home_major[i].getElementsByClassName('name')[0].id);
+//                    result_am.push(away_major[i].getElementsByClassName('name')[0].id);
+//                }
+//                for(let i=0; i<6; i++) {
+//                    result_hb.push(home_bench.getElementsByClassName('name')[i].id);
+//                    result_ab.push(away_bench.getElementsByClassName('name')[i].id);
+//                }
+//                for(let j=0; j<document.getElementById('selection1_home').children.length; j++) {
+//                    result_hn.push(home_minor[j].getElementsByClassName('name')[0].id);
+//                }
+//                for(let k=0; k<document.getElementById('selection1_away').children.length; k++) {
+//                    result_an.push(away_minor[k].getElementsByClassName('name')[0].id);
+//                }
+//                result.push({'schedule_no':<?//=($status=='none')? 0:$schedule->no;?>//},{'hm':result_hm},{'am':result_am},{'hb':result_hb},{'ab':result_ab},{'hn':result_hn},{'an':result_an});
 
                 sendAjax(segment, JSON.stringify(result));
             }
         }
 
         function validatePlayerSet(home_major, away_major) {
-            if(home_major.length!==7){
-                alert('홈 선발 선수를 7명 등록하세요.');
-                return false;
-            }else if(away_major.length!==7){
-                alert('원정 선발 선수를 7명 등록하세요.');
-                return false;
-            }
-
-            if(document.getElementById('player_home').children.length !== 6) {
-                alert('홈 후보 선수를 6명 등록하세요.');
-                return false;
-            } else if(document.getElementById('player_away').children.length !== 6) {
-                alert('원정 후보 선수를 6명 등록하세요.');
-                return false;
-            }
-
-            let home_libero_cnt=0;
-            let away_libero_cnt=0;
-            for(let i=0; i<7; i++) if(home_major[i].getElementsByClassName('position')[0].children[0].textContent=='LIBERO') home_libero_cnt++;
-            for(let j=0; j<7; j++) if(away_major[j].getElementsByClassName('position')[0].children[0].textContent=='LIBERO') away_libero_cnt++;
-            if(home_libero_cnt == 0) {
-                alert('홈 선발에 "리베로" 가 없습니다.');
-                return false;
-            }
-            else if(away_libero_cnt == 0) {
-                alert('원정 선발에 "리베로" 가 없습니다.');
-                return false;
-            }else if(home_libero_cnt > 1) {
-                alert('홈 선발에 "리베로" 는 한 명만 등록 가능합니다. (현재 : '+home_libero_cnt+')');
-                return false;
-            }
-            else if(away_libero_cnt > 1) {
-                alert('원정 선발에 "리베로" 는 한 명만 등록 가능합니다. (현재 : '+away_libero_cnt+')');
-                return false;
-            }
+//            if(home_major.length!==7){
+//                alert('홈 선발 선수를 7명 등록하세요.');
+//                return false;
+//            }else if(away_major.length!==7){
+//                alert('원정 선발 선수를 7명 등록하세요.');
+//                return false;
+//            }
+//
+//            if(document.getElementById('player_home').children.length !== 6) {
+//                alert('홈 후보 선수를 6명 등록하세요.');
+//                return false;
+//            } else if(document.getElementById('player_away').children.length !== 6) {
+//                alert('원정 후보 선수를 6명 등록하세요.');
+//                return false;
+//            }
+//
+//            let home_libero_cnt=0;
+//            let away_libero_cnt=0;
+//            for(let i=0; i<7; i++) if(home_major[i].getElementsByClassName('position')[0].children[0].textContent=='LIBERO') home_libero_cnt++;
+//            for(let j=0; j<7; j++) if(away_major[j].getElementsByClassName('position')[0].children[0].textContent=='LIBERO') away_libero_cnt++;
+//            if(home_libero_cnt == 0) {
+//                alert('홈 선발에 "리베로" 가 없습니다.');
+//                return false;
+//            }
+//            else if(away_libero_cnt == 0) {
+//                alert('원정 선발에 "리베로" 가 없습니다.');
+//                return false;
+//            }else if(home_libero_cnt > 1) {
+//                alert('홈 선발에 "리베로" 는 한 명만 등록 가능합니다. (현재 : '+home_libero_cnt+')');
+//                return false;
+//            }
+//            else if(away_libero_cnt > 1) {
+//                alert('원정 선발에 "리베로" 는 한 명만 등록 가능합니다. (현재 : '+away_libero_cnt+')');
+//                return false;
+//            }
 
             return true;
         }
 
         function sendAjax(segment, data) {
-            $.ajax({
-                type: 'POST',
-                url: '/volleyball/' + segment,
-                data: {data: data},
-                beforeSend: function() {
-                    $('#loading').show();
-                    $("#confirm_btn").css({'pointer-events': 'none'});
-                },
-                complete: function() {
-                    if(segment==='insert_line_up_ajax') location.href="/volleyball/input/<?=($status=='none')? 0 : $schedule->no;?>/1";
-                    else if(segment==='update_user_level_ajax') location.href='/volleyball/lineup/<?=$sex;?>';
-                    else location.href="/volleyball/input_test/<?=($status=='none')? 0 : $schedule->no;?>/1";
-                }
-            });
+            if(segment==='insert_line_up_ajax') location.href="/volleyball/input/<?=($status=='none')? 0 : $schedule->no;?>/1";
+            else if(segment==='update_user_level_ajax') location.href='/volleyball/lineup/<?=$sex;?>';
+            else location.href="/volleyball/input_test/<?=($status=='none')? 0 : $schedule->no;?>/1";
+
+//            $.ajax({
+//                type: 'POST',
+//                url: '/volleyball/' + segment,
+//                data: {data: data},
+//                beforeSend: function() {
+//                    $('#loading').show();
+//                    $("#confirm_btn").css({'pointer-events': 'none'});
+//                },
+//                complete: function() {
+//                    if(segment==='insert_line_up_ajax') location.href="/volleyball/input/<?//=($status=='none')? 0 : $schedule->no;?>///1";
+//                    else if(segment==='update_user_level_ajax') location.href='/volleyball/lineup/<?//=$sex;?>//';
+//                    else location.href="/volleyball/input_test/<?//=($status=='none')? 0 : $schedule->no;?>///1";
+//                }
+//            });
         }
 
         function showAdminMode() {

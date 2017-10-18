@@ -104,117 +104,47 @@
 
         <div class="player_w">
             <div class="team1">
-                <h3  style="<?=($team_side=='typeA')? 'background: #9D1E25' : 'background: #313D56';?>"><?php if($team_side=='typeA'): ?><?=$schedule->home;?><?php else: ?><?=$schedule->away;?><?php endif;?></h3>
+                <h3  style="<?=($team_side == 'typeA')? 'background: #9D1E25' : 'background: #313D56';?>"><?php if($team_side=='typeA'): ?><?=$schedule->home;?><?php else: ?><?=$schedule->away;?><?php endif;?></h3>
                 <div class="table02">
                     <ul>
-                        <?php if($team_side=='typeA'): ?>
-                            <?php foreach($line_up['hm'] as $item): ?>
-                                <?php if($item->position!='LIBERO'): ?>
-                                    <li class="hm" id="<?=$item->id;?>" value="<?=$item->no;?>" onclick="change_player(this, 'home', 'out')" style="box-sizing:border-box;"><span class="pp"><?=$item->name;?></span><span><?=$item->shirt_number;?></span><span style="margin-left:80px;text-align:left;"><?=$item->position;?></span></li>
-                                <?php endif; ?>
+                        <?php if($team_side == 'typeA'): ?>
+                            <?php foreach ($players['home'] as $player): ?>
+                                <li class="hm" id="<?=$player->id;?>" onclick="change_player(this, 'home', 'out')">
+                                    <span class="pp"><?=$player->name;?></span><span><?=$player->shirt_number;?></span><span style="margin-left:80px;text-align:left;"><?=$player->position;?></span>
+                                </li>
                             <?php endforeach; ?>
                         <?php else: ?>
-                            <?php foreach($line_up['am'] as $item): ?>
-                                <?php if($item->position!='LIBERO'): ?>
-                                    <li class="am" id="<?=$item->id;?>" value="<?=$item->no;?>" onclick="change_player(this, 'away', 'out')" style="box-sizing:border-box;"><span class="pp"><?=$item->name;?></span><span><?=$item->shirt_number;?></span><span style="margin-left:80px;text-align:left;"><?=$item->position;?></span></li>
-                                <?php endif; ?>
+                            <?php foreach ($players['away'] as $player): ?>
+                                <li class="am" id="<?=$player->id;?>" onclick="change_player(this, 'away', 'out')">
+                                    <span class="pp"><?=$player->name;?></span><span><?=$player->shirt_number;?></span><span style="margin-left:80px;text-align:left;"><?=$player->position;?></span>
+                                </li>
                             <?php endforeach; ?>
                         <?php endif; ?>
                     </ul>
                 </div>
             </div>
             <div class="">
-                <h3 style="<?=($team_side=='typeA')? 'background: #313D56' : 'background: #9D1E25';?>"><?php if($team_side=='typeA'): ?><?=$schedule->away;?><?php else: ?><?=$schedule->home;?><?php endif;?></h3>
+                <h3 style="<?=($team_side == 'typeA')? 'background: #313D56' : 'background: #9D1E25';?>"><?php if($team_side=='typeA'): ?><?=$schedule->away;?><?php else: ?><?=$schedule->home;?><?php endif;?></h3>
                 <div class="table02">
                     <ul>
-                        <?php if($team_side=='typeA'): ?>
-                            <?php foreach($line_up['am'] as $item): ?>
-                                <?php if($item->position!='LIBERO'): ?>
-                                    <li class="am" id="<?=$item->id;?>" value="<?=$item->no;?>" onclick="change_player(this, 'away', 'out')" style="box-sizing:border-box;"><span class="pp"><?=$item->name;?></span><span><?=$item->shirt_number;?></span><span style="margin-left: 80px; text-align: left;"><?=$item->position;?></span></li>
-                                <?php endif; ?>
+                        <?php if($team_side == 'typeA'): ?>
+                            <?php foreach ($players['away'] as $player): ?>
+                                <li class="am" id="<?=$player->id;?>" onclick="change_player(this, 'away', 'out')">
+                                    <span class="pp"><?=$player->name;?></span><span><?=$player->shirt_number;?></span><span style="margin-left:80px;text-align:left;"><?=$player->position;?></span>
+                                </li>
                             <?php endforeach; ?>
                         <?php else: ?>
-                            <?php foreach($line_up['hm'] as $item): ?>
-                                <?php if($item->position!='LIBERO'): ?>
-                                    <li class="hm" id="<?=$item->id;?>" value="<?=$item->no;?>" onclick="change_player(this, 'home', 'out')" style="box-sizing:border-box;"><span class="pp"><?=$item->name;?></span><span><?=$item->shirt_number;?></span><span style="margin-left:80px;text-align:left;"><?=$item->position;?></span></li>
-                                <?php endif; ?>
+                            <?php foreach ($players['home'] as $player): ?>
+                                <li class="hm" id="<?=$player->id;?>" onclick="change_player(this, 'home', 'out')">
+                                    <span class="pp"><?=$player->name;?></span><span><?=$player->shirt_number;?></span><span style="margin-left:80px;text-align:left;"><?=$player->position;?></span>
+                                </li>
                             <?php endforeach; ?>
                         <?php endif; ?>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="team1" style="box-sizing:border-box;margin-top:5px;height:38px;">
-                <div class="table02">
-                    <ul style="height:36px;">
-                        <?php if($team_side=='typeA'): ?>
-                            <?php foreach($line_up['hm'] as $item): ?>
-                                <?php if($item->position=='LIBERO'): ?>
-                                    <li class="hml" id="<?=$item->id;?>" value="<?=$item->no;?>" onclick="change_player(this, 'home', 'out');" style="background-color:white;color:black;text-align:left;line-height:38px;"><span class="pp"><?=$item->name;?></span><span><?=$item->shirt_number;?></span><span style="margin-left:80px; text-align:left;"><?=$item->position;?></span></li>
-                                <?php endif; ?>
-                            <?php endforeach; ?>
-                        <?php else: ?>
-                            <?php foreach($line_up['am'] as $item): ?>
-                                <?php if($item->position=='LIBERO'): ?>
-                                    <li class="aml" id="<?=$item->id;?>" value="<?=$item->no;?>" onclick="change_player(this, 'away', 'out')" style="background-color:white;color:black;text-align:left;line-height:38px;"><span class="pp"><?=$item->name;?></span><span><?=$item->shirt_number;?></span><span style="margin-left:80px;text-align:left;"><?=$item->position;?></span></li>
-                                <?php endif; ?>
-                            <?php endforeach; ?>
-                        <?php endif; ?>
-                    </ul>
-                </div>
-            </div>
-            <div class="" style="box-sizing:border-box;margin-top:5px;height:38px;">
-                <div class="table02">
-                    <ul style="height:36px;">
-                        <?php if($team_side=='typeA'): ?>
-                            <?php foreach($line_up['am'] as $item): ?>
-                                <?php if($item->position=='LIBERO'): ?>
-                                    <li class="aml" id="<?=$item->id;?>" value="<?=$item->no;?>" onclick="change_player(this, 'away', 'out');" style="background-color:white;color:black;text-align:left;line-height:38px;"><span class="pp"><?=$item->name;?></span><span><?=$item->shirt_number;?></span><span style="margin-left:80px;text-align:left;"><?=$item->position;?></span></li>
-                                <?php endif; ?>
-                            <?php endforeach; ?>
-                        <?php else: ?>
-                            <?php foreach($line_up['hm'] as $item): ?>
-                                <?php if($item->position=='LIBERO'): ?>
-                                    <li class="hml" id="<?=$item->id;?>" value="<?=$item->no;?>" onclick="change_player(this, 'home', 'out');" style="background-color:white;color:black;text-align:left;line-height:38px;"><span class="pp"><?=$item->name;?></span><span><?=$item->shirt_number;?></span><span style="margin-left:80px;text-align:left;"><?=$item->position;?></span></li>
-                                <?php endif; ?>
-                            <?php endforeach; ?>
-                        <?php endif; ?>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="team1" style="margin-top: 5px; background-color:rgb(216,216,216);">
-                <div class="table01">
-                    <ul>
-                        <?php if($team_side=='typeA'): ?>
-                            <?php foreach($line_up['hb'] as $item): ?>
-                                <li class="hb" id="<?=$item->id;?>" value="<?=$item->no;?>" onclick="change_player(this, 'home', 'in');"><span class="pp"><?=$item->name;?></span><span style="margin-left: 20px;"><?=$item->shirt_number;?></span><span style="margin-left: 80px; text-align: left;"><?=$item->position;?></span></li>
-                            <?php endforeach; ?>
-                        <?php else: ?>
-                            <?php foreach($line_up['ab'] as $item): ?>
-                                <li class="ab" id="<?=$item->id;?>" value="<?=$item->no;?>" onclick="change_player(this, 'away', 'in');"><span class="pp"><?=$item->name;?></span><span style="margin-left: 20px;"><?=$item->shirt_number;?></span><span style="margin-left: 80px; text-align: left;"><?=$item->position;?></span></li>
-                            <?php endforeach; ?>
-                        <?php endif;?>
-                    </ul>
-                </div>
-            </div>
-            <div class="" style="margin-top: 5px; background-color:rgb(216,216,216);">
-                <div class="table01">
-                    <ul>
-                        <?php if($team_side=='typeA'): ?>
-                            <?php foreach($line_up['ab'] as $item): ?>
-                                <li class="ab" id="<?=$item->id;?>" value="<?=$item->no;?>" onclick="change_player(this, 'away', 'in');"><span class="pp"><?=$item->name;?></span><span style="margin-left: 20px;"><?=$item->shirt_number;?></span><span style="margin-left: 80px; text-align: left;"><?=$item->position;?></span></li>
-                            <?php endforeach; ?>
-                        <?php else: ?>
-                            <?php foreach($line_up['hb'] as $item): ?>
-                                <li class="hb" id="<?=$item->id;?>" value="<?=$item->no;?>" onclick="change_player(this, 'home', 'in');"><span class="pp"><?=$item->name;?></span><span style="margin-left: 20px;"><?=$item->shirt_number;?></span><span style="margin-left: 80px; text-align: left;"><?=$item->position;?></span></li>
-                            <?php endforeach; ?>
-                        <?php endif;?>
                     </ul>
                 </div>
             </div>
         </div>
-        <?php if($team_side=='typeA'): ?>
+        <?php if($team_side == 'typeA'): ?>
             <img src="/public/lib/volleyball_image/left_side_home.png" width="387px" style="margin-top:7px;box-sizing:border-box;border:1px solid #4f5a63;<?php if($attack_side=='home') echo 'filter:none;';?>" class="home_side" onclick="attack_side_click(this);">
             <img src="/public/lib/volleyball_image/right_side_away.png" width="386px" style="margin-top:7px;box-sizing:border-box;border:1px solid #4f5a63;margin-left:2px;<?php if($attack_side=='away') echo 'filter:none;';?>" class="away_side" onclick="attack_side_click(this);">
         <?php else: ?>
@@ -278,9 +208,9 @@
                 <p>등번호 : <span id="home_in_shirt_number"></span></p>
                 <p>포지션 : <span id="home_in_position"></span></p>
                 <p>생년월일 : <span id="home_in_birth"></span></p>
-                <p>몸무게 : <span id="home_in_weight"></span></p>
-                <p>키 : <span id="home_in_height"></span></p>
-                <p>서전트점프 : <span id="home_in_sargent"></span></p>
+                <p>몸무게 : <span id="home_in_weight"></span>kg</p>
+                <p>키 : <span id="home_in_height"></span>cm</p>
+                <p>서전트점프 : <span id="home_in_sargent"></span>cm</p>
                 <p>경력 : <span id="home_in_begin_year"></span></p>
                 <p>국적 : <span id="home_in_country"></span></p>
                 <span style="position:absolute;top:10px;right:10px;"><button onclick="close_this_box(this, 'hb');"> 닫기 </button></span>
@@ -316,9 +246,9 @@
                 <p>등번호 : <span id="away_in_shirt_number"></span></p>
                 <p>포지션 : <span id="away_in_position"></span></p>
                 <p>생년월일 : <span id="away_in_birth"></span></p>
-                <p>몸무게 : <span id="away_in_weight"></span></p>
-                <p>키 : <span id="away_in_height"></span></p>
-                <p>서전트점프 : <span id="away_in_sargent"></span></p>
+                <p>몸무게 : <span id="away_in_weight"></span>kg</p>
+                <p>키 : <span id="away_in_height"></span>cm</p>
+                <p>서전트점프 : <span id="away_in_sargent"></span>cm</p>
                 <p>경력 : <span id="away_in_begin_year"></span></p>
                 <p>국적 : <span id="away_in_country"></span></p>
                 <span style="position:absolute;top:10px;right:10px;"><button onclick="close_this_box(this, 'ab');"> 닫기 </button></span>
@@ -392,6 +322,12 @@
     <label for="message_edited">메세지 : </label>
     <input type="text" name="message_edited" id="message_edited" class="text ui-widget-content ui-corner-all">
 </div>
+<div id="dialog-prompt" title="변경 버튼을 누르면 세트 스코어가 수정됩니다." style="display:none;">
+    <label for="home_set_score_edit">홈 점수&nbsp;&nbsp;&nbsp; : </label>
+    <input type="text" name="home_set_score_edit" id="home_set_score_edit" class="text ui-widget-content ui-corner-all" size="3"><br>
+    <label for="away_set_score_edit">원정 점수 : </label>
+    <input type="text" name="away_set_score_edit" id="away_set_score_edit" class="text ui-widget-content ui-corner-all" size="3"><br>
+</div>
 
 <script>
     function game_start() {
@@ -426,6 +362,16 @@
 
             side_sign_changer();
         } else if ('<?=$status;?>' === 'set') {
+            if(confirm('다시 경기중으로 바꾸시겠습니까?')) {
+                $.ajax({
+                    type: 'POST',
+                    url: '/volleyball/update_game_status_ajax',
+                    data: {schedule_no:<?=$schedule->no;?>, table:'schedule'},
+                    complete: function () {
+                        update_set_score();
+                    }
+                });
+            }
         } else {
             if('<?=$team_side;?>' === 'typeA') location.href='/volleyball/input/<?=$schedule->no;?>/<?=$set;?>?team_side=typeB';
             else location.href='/volleyball/input/<?=$schedule->no;?>/<?=$set;?>?team_side=typeA';
@@ -719,7 +665,6 @@
         let home_set_score=document.getElementById('home_set_score').children[0].textContent;
         let away_set_score=document.getElementById('away_set_score').children[0].textContent;
 
-        console.log(((home_set_score === '2' && win === 'home') || (away_set_score === '2' && win === 'away')));
         return ((home_set_score === '2' && win === 'home') || (away_set_score === '2' && win === 'away'));
     }
 
@@ -767,43 +712,7 @@
                                         url:'/volleyball/update_ajax',
                                         data:{table:'schedule', schedule_no:<?=$schedule->no;?>, 'status':'set'},
                                         complete: function() {
-                                            let all=[];
-                                            let hm=[];
-                                            let hb=[];
-                                            let am=[];
-                                            let ab=[];
-                                            let player=[];
-                                            for(let i=0; i<6; i++) {
-                                                player={'p_no':document.getElementsByClassName('table02')[0].children[0].children[i].value,'name':document.getElementsByClassName('table02')[0].children[0].children[i].children[0].textContent};
-                                                hm.push(player);
-                                            }
-                                            all.push(hm);
-                                            hm.push({'p_no':document.getElementsByClassName('table02')[2].children[0].children[0].value,'name':document.getElementsByClassName('table02')[2].children[0].children[0].children[0].textContent});
-                                            for(let j=0; j<6; j++) {
-                                                player={'p_no':document.getElementsByClassName('table01')[0].children[0].children[j].value,'name':document.getElementsByClassName('table01')[0].children[0].children[j].children[0].textContent};
-                                                hb.push(player);
-                                            }
-                                            all.push(hb);
-                                            for(let i=0; i<6; i++) {
-                                                player={'p_no':document.getElementsByClassName('table02')[1].children[0].children[i].value,'name':document.getElementsByClassName('table02')[1].children[0].children[i].children[0].textContent};
-                                                am.push(player);
-                                            }
-                                            all.push(am);
-                                            am.push({'p_no':document.getElementsByClassName('table02')[3].children[0].children[0].value,'name':document.getElementsByClassName('table02')[3].children[0].children[0].children[0].textContent});
-                                            for(let j=0; j<6; j++) {
-                                                player={'p_no':document.getElementsByClassName('table01')[0].children[0].children[j].value,'name':document.getElementsByClassName('table01')[0].children[0].children[j].children[0].textContent};
-                                                ab.push(player);
-                                            }
-                                            all.push(ab);
-
-                                            $.ajax({
-                                                type:'POST',
-                                                url:'/volleyball/insert_ajax',
-                                                data:{table:'line_up',schedule_no:<?=$schedule->no;?>, data:JSON.stringify(all)},
-                                                complete: function() {
-                                                    location.reload();
-                                                }
-                                            });
+                                            location.reload();
                                         }
                                     });
                                 }
@@ -966,20 +875,12 @@
     }
 
     function checker_controller() {
-        let home_major =('<?=$team_side;?>'==='typeA')? document.getElementsByClassName('table02')[0].children[0].children : document.getElementsByClassName('table02')[1].children[0].children;
-        let home_libero =('<?=$team_side;?>'==='typeA')? document.getElementsByClassName('table02')[2].children[0].children[0] : document.getElementsByClassName('table02')[3].children[0].children[0];
-        let home_minor =('<?=$team_side;?>'==='typeA')? document.getElementsByClassName('table01')[0].children[0].children : document.getElementsByClassName('table01')[1].children[0].children;
-        let away_major =('<?=$team_side;?>'==='typeA')? document.getElementsByClassName('table02')[1].children[0].children : document.getElementsByClassName('table02')[0].children[0].children;
-        let away_libero =('<?=$team_side;?>'==='typeA')? document.getElementsByClassName('table02')[3].children[0].children[0] : document.getElementsByClassName('table02')[2].children[0].children[0];
-        let away_minor =('<?=$team_side;?>'==='typeA')? document.getElementsByClassName('table01')[1].children[0].children : document.getElementsByClassName('table01')[0].children[0].children;
+        let home_major = document.getElementsByClassName('table02')[0].children[0].children;
+        let away_major = document.getElementsByClassName('table02')[1].children[0].children;
 
         /* ANOTHER AREA */
         if(prototype_player.hm==='x') for(let q=0; q<home_major.length; q++) home_major[q].style.backgroundColor='white';
-        if(prototype_player.hml==='x') home_libero.style.backgroundColor='white';
-        if(prototype_player.hb==='x') for(let z=0; z<home_minor.length; z++) home_minor[z].style.backgroundColor='#D3D2D3';
         if(prototype_player.am==='x') for(let s=0; s<away_major.length; s++) away_major[s].style.backgroundColor='white';
-        if(prototype_player.aml==='x') away_libero.style.backgroundColor='white';
-        if(prototype_player.ab==='x') for(let w=0; w<away_minor.length; w++) away_minor[w].style.backgroundColor='#D3D2D3';
 
         /* BUTTON */
         if((prototype_player.hm==='o' || prototype_player.hml==='o') && prototype_player.hb==='o') document.getElementById('home_player_change_button').style.display = 'inline';
@@ -988,33 +889,22 @@
 
     function change_player(e, home_away, in_or_out) {
         for (let u = 0; u < e.parentNode.children.length; u++) {
-            e.parentNode.children[u].style.backgroundColor = (in_or_out==='out') ? 'white' : '#D3D2D3';
+            e.parentNode.children[u].style.backgroundColor = 'white';
         }
         e.style.backgroundColor = '#FAF4C0';
 
-        if (e.className === 'hm') {
-            prototype_player.hm = 'o';
-            prototype_player.hml = 'x';
-            prototype_player.away = 'x';
-        } else if (e.className === 'hml') {
-            prototype_player.hml = 'o';
-            prototype_player.hm = 'x';
-            prototype_player.away = 'x';
-        } else if (e.className === 'hb') {
+        if(prototype_player.hm === 'o' && e.className === 'hm') {
             prototype_player.hb = 'o';
-            prototype_player.away = 'x';
-        } else if(e.className==='am') {
-            prototype_player.am='o';
-            prototype_player.aml='x';
-            prototype_player.away = 'o';
-        } else if(e.className==='aml') {
-            prototype_player.am='x';
-            prototype_player.aml='o';
-            prototype_player.away = 'o';
-        } else if(e.className==='ab') {
+            in_or_out = 'in';
+        } else if (prototype_player.am === 'o' && e.className === 'am') {
             prototype_player.ab = 'o';
-            prototype_player.away = 'o';
+            in_or_out = 'in';
+        } else if (e.className === 'hm') {
+            prototype_player.hm = 'o';
+        } else if(e.className === 'am') {
+            prototype_player.am = 'o';
         }
+
         checker_controller();
 
         let detail = [];
@@ -1066,109 +956,21 @@
     }
 
     function player_change(home_away) {
-        if(home_away==='home' && '<?=$team_side;?>'==='typeA') number=0;
-        else if(home_away==='away' && '<?=$team_side;?>'==='typeA') number=1;
-        else if(home_away==='home' && '<?=$team_side;?>'==='typeB') number=1;
-        else if(home_away==='away' && '<?=$team_side;?>'==='typeB') number=0;
-
-        /* MAJOR */
-        for (let h=0; h<document.getElementsByClassName('table02')[number].children[0].children.length; h++) {
-            if (document.getElementsByClassName('table02')[number].children[0].children[h].style.backgroundColor !== 'white') {
-                major_no=h;
-                major_player={
-                    id:document.getElementsByClassName('table02')[number].children[0].children[h].id,
-                    p_no:document.getElementsByClassName('table02')[number].children[0].children[h].value,
-                    name:document.getElementsByClassName('table02')[number].children[0].children[h].children[0].textContent,
-                    shirt_number:document.getElementsByClassName('table02')[number].children[0].children[h].children[1].textContent,
-                    position:document.getElementsByClassName('table02')[number].children[0].children[h].children[2].textContent
-                };
-            }
-        }
-        /* LIBERO */
-        if (document.getElementsByClassName('table02')[2].children[0].children[0].style.backgroundColor !== 'white') {
-            major_no=99;
-            major_player={
-                id:document.getElementsByClassName('table02')[2].children[0].children[0].id,
-                p_no:document.getElementsByClassName('table02')[2].children[0].children[0].value,
-                name:document.getElementsByClassName('table02')[2].children[0].children[0].children[0].textContent,
-                shirt_number:document.getElementsByClassName('table02')[2].children[0].children[0].children[1].textContent,
-                position:document.getElementsByClassName('table02')[2].children[0].children[0].children[2].textContent
-            };
-        } else if (document.getElementsByClassName('table02')[3].children[0].children[0].style.backgroundColor !== 'white') {
-            major_no=88;
-            major_player={
-                id:document.getElementsByClassName('table02')[3].children[0].children[0].id,
-                p_no:document.getElementsByClassName('table02')[3].children[0].children[0].value,
-                name:document.getElementsByClassName('table02')[3].children[0].children[0].children[0].textContent,
-                shirt_number:document.getElementsByClassName('table02')[3].children[0].children[0].children[1].textContent,
-                position:document.getElementsByClassName('table02')[3].children[0].children[0].children[2].textContent
-            };
-        }
-        /* BENCH */
-        for (let g=0; g<document.getElementsByClassName('table01')[number].children[0].children.length; g++) {
-            if (document.getElementsByClassName('table01')[number].children[0].children[g].style.backgroundColor !== 'rgb(211, 210, 211)') {
-                bench_no=g;
-                bench_player={
-                    id:document.getElementsByClassName('table01')[number].children[0].children[g].id,
-                    p_no:document.getElementsByClassName('table01')[number].children[0].children[g].value,
-                    name:document.getElementsByClassName('table01')[number].children[0].children[g].children[0].textContent,
-                    shirt_number:document.getElementsByClassName('table01')[number].children[0].children[g].children[1].textContent,
-                    position:document.getElementsByClassName('table01')[number].children[0].children[g].children[2].textContent
-                };
-            }
-        }
-
-        /* 선발 선수 교체 */
-        if (major_no === 99) {
-            document.getElementsByClassName('table02')[2].children[0].children[0].id = bench_player.id;
-            document.getElementsByClassName('table02')[2].children[0].children[0].p_no = bench_player.p_no;
-            document.getElementsByClassName('table02')[2].children[0].children[0].children[0].textContent = bench_player.name;
-            document.getElementsByClassName('table02')[2].children[0].children[0].children[1].textContent = bench_player.shirt_number;
-            document.getElementsByClassName('table02')[2].children[0].children[0].children[2].textContent = bench_player.position;
-        } else if (major_no === 88) {
-            document.getElementsByClassName('table02')[3].children[0].children[0].id = bench_player.id;
-            document.getElementsByClassName('table02')[3].children[0].children[0].p_no = bench_player.p_no;
-            document.getElementsByClassName('table02')[3].children[0].children[0].children[0].textContent = bench_player.name;
-            document.getElementsByClassName('table02')[3].children[0].children[0].children[1].textContent = bench_player.shirt_number;
-            document.getElementsByClassName('table02')[3].children[0].children[0].children[2].textContent = bench_player.position;
-        } else {
-            document.getElementsByClassName('table02')[number].children[0].children[major_no].id = bench_player.id;
-            document.getElementsByClassName('table02')[number].children[0].children[major_no].p_no = bench_player.p_no;
-            document.getElementsByClassName('table02')[number].children[0].children[major_no].children[0].textContent = bench_player.name;
-            document.getElementsByClassName('table02')[number].children[0].children[major_no].children[1].textContent = bench_player.shirt_number;
-            document.getElementsByClassName('table02')[number].children[0].children[major_no].children[2].textContent = bench_player.position;
-        }
-
-        /* 후보 선수 교체 */
-        document.getElementsByClassName('table01')[number].children[0].children[bench_no].id = major_player.id;
-        document.getElementsByClassName('table01')[number].children[0].children[bench_no].p_no = major_player.p_no;
-        document.getElementsByClassName('table01')[number].children[0].children[bench_no].children[0].textContent = major_player.name;
-        document.getElementsByClassName('table01')[number].children[0].children[bench_no].children[1].textContent = major_player.shirt_number;
-        document.getElementsByClassName('table01')[number].children[0].children[bench_no].children[2].textContent = major_player.position;
+        let bench_player_name = document.getElementById(home_away+'_out_name').textContent;
+        let major_player_name = document.getElementById(home_away+'_in_name').textContent;
 
         /* MESSAGE */
-        prototype.command='';
-        prototype.combo=0;
-        prototype.attack_side=home_away;
-        prototype.message=bench_player.name+' IN / '+major_player.name+' OUT';
-        prototype.type='player_change';
+        prototype.command = '';
+        prototype.combo = 0;
+        prototype.attack_side = home_away;
+        prototype.message = bench_player_name + ' IN / ' + major_player_name + ' OUT';
+        prototype.type = 'player_change';
         send_ajax('insert_event_ajax', JSON.stringify(prototype), false);
         insert_event('');
         prototype.rallying_no++;
 
-        /* BOX CLOSER */
+        /* BOX CLOSE */
         player_change_cancel();
-
-        $.ajax({
-            type: 'POST',
-            url: '/volleyball/player_change_ajax',
-            data: {
-                schedule_no:<?=$schedule->no;?>,
-                home_away: home_away,
-                major: JSON.stringify(major_player),
-                bench: JSON.stringify(bench_player)
-            }
-        });
     }
 
     function edit_event(obj) {
@@ -1183,9 +985,10 @@
 
                     let message = (obj.children[0].children[0].textContent === '' || obj.children[0].children[0].textContent === '득점 성공')? obj.children[2].children[0].textContent : obj.children[0].children[0].textContent;
                     let score = (obj.children[1].children.length === 0)? obj.children[1].textContent : obj.children[1].children[0].textContent;
+                    let score_splitted = score.split(':');
                     $('#message_edited').val(message);
-                    $('#home_score').val(score[0]);
-                    $('#away_score').val(score[2]);
+                    $('#home_score').val(score_splitted[0]);
+                    $('#away_score').val(score_splitted[1]);
 
                     update_event(obj);
                 },
@@ -1216,6 +1019,36 @@
                         type:'POST',
                         url:'/volleyball/update_event/'+table,
                         data:{id:obj.id, home_score:home_score, away_score:away_score, message:message},
+                        complete: function() {
+                            location.reload();
+                        }
+                    });
+                },
+                '취소': function() {
+                    $( this ).dialog( "close" );
+                }
+            }
+        });
+    }
+
+    function update_set_score() {
+        $('#home_set_score_edit').val(document.getElementById('home_set_score').children[0].textContent);
+        $('#away_set_score_edit').val(document.getElementById('away_set_score').children[0].textContent);
+
+        $( "#dialog-prompt" ).dialog({
+            resizable: false,
+            height: "auto",
+            width: 400,
+            modal: true,
+            buttons: {
+                '변경': function() {
+                    let home_score = $('#home_set_score_edit').val();
+                    let away_score = $('#away_set_score_edit').val();
+
+                    $.ajax({
+                        type:'POST',
+                        url:'/volleyball/update_set_score_ajax',
+                        data:{schedule_no:<?=$schedule->no;?>, home_score:home_score, away_score:away_score},
                         complete: function() {
                             location.reload();
                         }

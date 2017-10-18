@@ -83,14 +83,14 @@
         if(!isset($schedule->home))$home=''; elseif($schedule->home=='GS칼텍스') $home='GS 칼텍스'; else $home=$schedule->home;
         if(!isset($schedule->away))$away=''; elseif($schedule->away=='GS칼텍스') $away='GS 칼텍스'; else $away=$schedule->away;
 
-        $MINING->select('players.no,players.name,player_detail.shirt_number,player_detail.position');
+        $MINING->select('players.no, players.name, player_detail.shirt_number, player_detail.position, players.id');
         $MINING->where('useable', 'Y');
         $MINING->where('history', 'N');
         $MINING->where('team', $home);
         $MINING->join('player_detail', 'player_detail.id=players.id');
         $result['home']=$MINING->get('players')->result();
 
-        $MINING->select('players.no,players.name,player_detail.shirt_number,player_detail.position');
+        $MINING->select('players.no, players.name, player_detail.shirt_number, player_detail.position, players.id');
         $MINING->where('useable', 'Y');
         $MINING->where('history', 'N');
         $MINING->where('team', $away);
@@ -132,10 +132,20 @@
     function get_message($schedule, $set){
         $MINING=$this->get_mining_db();
 
+        $MINING->order_by('no', 'DESC');
         $MINING->order_by('score_no', 'DESC');
         $MINING->order_by('rallying_no', 'DESC');
 
         return $MINING->get_where('event', array('schedule_no'=>$schedule->no,'set'=>$set,'delete_yn'=>'N','type !='=>'notice'))->result();
+    }
+    function get_message_test($schedule, $set){
+        $MINING=$this->get_mining_db();
+
+        $MINING->order_by('no', 'DESC');
+        $MINING->order_by('score_no', 'DESC');
+        $MINING->order_by('rallying_no', 'DESC');
+
+        return $MINING->get_where('test_event', array('schedule_no'=>$schedule->no,'set'=>$set,'delete_yn'=>'N','type !='=>'notice'))->result();
     }
 
     function get_last_set($schedule){
@@ -305,6 +315,12 @@
         return $this->get_where_row('players', array('id'=>$id));
     }
 
+    function update_schedule_status($table, $schedule_no) {
+        $MINING=$this->get_mining_db();
+
+        $MINING->update($table, array('status'=>'ing'), array('no'=>$schedule_no));
+    }
+
     /* TEST */
     function get_last_set_test($schedule){
         if(sizeof($schedule)==0):
@@ -362,15 +378,6 @@
         endforeach;
 
         return $result;
-    }
-
-    function get_message_test($schedule, $set){
-        $MINING=$this->get_mining_db();
-
-        $MINING->order_by('score_no', 'DESC');
-        $MINING->order_by('rallying_no', 'DESC');
-
-        return $MINING->get_where('test_event', array('schedule_no'=>$schedule->no,'set'=>$set,'delete_yn'=>'N','type !='=>'notice'))->result();
     }
 
     function get_score_test($schedule_no, $last_set){
