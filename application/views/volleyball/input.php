@@ -291,20 +291,21 @@
             <a href="javascript:run_keymap(65);" class="btn1">공격 <span>(A)</span></a>
             <a href="javascript:run_keymap(83);" class="btn3">서브 <span>(S)</span></a>
             <a href="javascript:run_keymap(82);" class="btn3 ">리시브 <span>(R)</span></a>
-            <a href="javascript:run_keymap(68);" class="btn3 mr0">디그 <span>(D)</span></a>
+            <a href="javascript:run_keymap(69);" class="btn3 mr0">셋업 <span>(E)</span></a>
             <a href="javascript:run_keymap(66);" class="btn3">블로킹 <span>(B)</span></a>
             <a href="javascript:run_keymap(84);" class="btn3 ">터치아웃 <span>(T)</span></a>
-            <a href="javascript:run_keymap(86);" class="btn3 mr0">리바운드 <span>(V)</span></a>
+            <a href="javascript:run_keymap(68);" class="btn3 mr0">디그 <span>(D)</span></a>
             <a href="javascript:run_keymap(90);" class="btn1">성공 <span>(Z)</span></a>
             <span class="clear"></span>
         </div>
         <div class="gbox">
             <a href="javascript:run_keymap(81);" class="btn2">안정 <span>(Q)</span></a>
             <a href="javascript:run_keymap(87);" class="btn2 mr0">불안 <span>(W)</span></a>
-            <a href="javascript:run_keymap(69);" class="btn2">타임 <span>(E)</span></a>
-            <a href="javascript:run_keymap(71);" class="btn2 mr0">벌칙 <span>(G)</span></a>
-            <a href="javascript:run_keymap(67);" class="btn2">챌린지 <span>(C)</span></a>
+            <a href="javascript:run_keymap(72);" class="btn2">타임 <span>(H)</span></a>
             <a href="javascript:run_keymap(70);" class="btn2 mr0">범실 <span>(F)</span></a>
+            <a href="javascript:run_keymap(67);" class="btn3" style="width: 107px;">챌린지 <span>(C)</span></a>
+            <a href="javascript:run_keymap(86);" class="btn3">리바운드 <span>(V)</span></a>
+            <a href="javascript:run_keymap(71);" class="btn3 mr0" style="width: 107px;">벌칙 <span>(G)</span></a>
             <a href="javascript:run_keymap(88);" class="btn1">실패 <span>(X)</span></a>
             <span class="clear"></span>
         </div>
@@ -451,21 +452,21 @@
                 break;
 //          리시브
             case 82 :
-                message=(prototype.message==='리시브')? '리시브 볼 넘김':'리시브';
+                message=(prototype.message==='리시브')? '상대코트로 볼 넘김':'리시브';
                 prototype.command=key_code;
                 prototype.combo=0;
                 prototype.message=message;
-                prototype.type =(prototype.message==='리시브 볼 넘김')? 'message':'yet';
-                prototype.focus =(prototype.message==='리시브 볼 넘김')? 'T':'F';
+                prototype.type =(prototype.message==='상대코트로 볼 넘김')? 'message':'yet';
+                prototype.focus =(prototype.message==='상대코트로 볼 넘김')? 'T':'F';
                 prototype.point_str = '';
                 break;
 //          디그
             case 68 :
                 message='디그';
                 prototype.command=key_code;
-                prototype.combo=0;
+                prototype.combo=key_code;
                 prototype.message='디그';
-                prototype.type = 'yet';
+                prototype.type = 'message';
                 prototype.focus = 'F';
                 prototype.point_str = '';
                 break;
@@ -481,37 +482,37 @@
                 break;
 //          리바운드
             case 86 :
-                message='블로킹 리바운드';
-                prototype.command=key_code;
-                prototype.combo=1;
-                prototype.message='블로킹 리바운드';
+                message = '블로킹 리바운드';
+                prototype.command = key_code;
+                prototype.combo = 1;
+                prototype.message = '블로킹 리바운드';
                 prototype.type = 'message';
                 prototype.focus = 'F';
                 prototype.point_str = '';
                 break;
 //          터치 아웃
             case 84 :
-                message='터치 아웃';
-                prototype.command=key_code;
-                prototype.combo=1;
-                prototype.message='터치 아웃';
-                prototype.type='message';
-                prototype.focus='T';
+                message = '터치 아웃';
+                prototype.command = key_code;
+                prototype.combo = 1;
+                prototype.message = '터치 아웃';
+                prototype.type = 'message';
+                prototype.focus = 'T';
                 prototype.point_str = '';
                 break;
 //          벌칙
             case 71 :
                 message='벌칙';
-                prototype.command=key_code;
+                prototype.command = key_code;
                 prototype.combo=1;
                 prototype.message='벌칙';
                 prototype.focus='T';
                 prototype.type='message';
                 break;
 //          타임
-            case 69 :
+            case 72 :
                 message='타임';
-                prototype.command=key_code;
+                prototype.command = key_code;
                 prototype.combo=1;
                 prototype.message='타임';
                 prototype.type='message';
@@ -525,6 +526,16 @@
                 prototype.message = '범실';
                 prototype.type = 'message';
                 prototype.focus='T';
+                prototype.point_str = '';
+                break;
+//          셋업
+            case 69 :
+                message=(prototype.message==='셋업')? '페인트 공격 시도':'셋업';
+                prototype.command=key_code;
+                prototype.combo=0;
+                prototype.message=message;
+                prototype.type =(prototype.message==='페인트 공격 시도')? 'message':'yet';
+                prototype.focus =(prototype.message==='페인트 공격 시도')? 'T':'F';
                 prototype.point_str = '';
                 break;
 //          챌린지
@@ -546,6 +557,7 @@
             case 32 :
                 if(validate(prototype)) {
                     prototype.rallying_no++;
+                    match_game_stat();
                     insert_event(score_changer());
                     send_ajax('insert_event_ajax', JSON.stringify(prototype), true);
                     count_reset();
@@ -559,6 +571,29 @@
 
         document.getElementsByClassName('command')[0].children[1].children[0].textContent=message;
         if(prototype.attack_side!=undefined) document.getElementsByClassName('command')[0].children[1].children[0].className=prototype.attack_side;
+    }
+
+    function match_game_stat() {
+        let sv = 'x', bk = 'x', svf = 'x', flag = false;
+        if(prototype.message === '서브 득점 성공') sv = 'o', flag = true;
+        else if(prototype.message === '블로킹 득점 성공') bk = 'o', flag = true;
+        else if(prototype.message === '서브 실패') svf = 'o', flag = true;
+
+        if(flag) {
+            $.ajax({
+                type: 'POST',
+                url: '/volleyball/match_game_stat_ajax',
+                data: {
+                    schedule_no: <?=$schedule->no;?>,
+                    home: '<?=$schedule->home;?>',
+                    away: '<?=$schedule->away;?>',
+                    attack_side: prototype.attack_side,
+                    sv: sv,
+                    bk: bk,
+                    svf: svf
+                }
+            });
+        }
     }
 
     function combo_checker(key_code) {
@@ -583,6 +618,12 @@
                     message = '블로킹 득점 성공';
                     prototype.combo = key_code;
                     prototype.message = '블로킹 득점 성공';
+                    prototype.type = 'message';
+                    prototype.focus = 'F';
+                } else if(prototype.command === 69) {
+                    message = '페인트 공격 성공';
+                    prototype.combo = key_code;
+                    prototype.message = '페인트 공격 성공';
                     prototype.type = 'message';
                     prototype.focus = 'F';
                 }
@@ -624,11 +665,12 @@
                     prototype.combo = key_code;
                     prototype.message = '리시브 안정';
                     prototype.type = 'message';
-//              디그
-                } else if(prototype.command === 68) {
-                    message = '디그 안정';
+                }
+//              셋업
+                if(prototype.command === 69) {
+                    message = '셋업 안정';
                     prototype.combo = key_code;
-                    prototype.message = '디그 안정';
+                    prototype.message = '셋업 안정';
                     prototype.type = 'message';
                 }
                 break;
@@ -637,14 +679,15 @@
 //              리시브
                 if(prototype.command === 82) {
                     message = '리시브 불안';
-                    prototype.combo=key_code;
-                    prototype.message='리시브 불안';
-                    prototype.type = 'message';
-//              디그
-                } else if(prototype.command === 68) {
-                    message = '디그 불안';
                     prototype.combo = key_code;
-                    prototype.message = '디그 불안';
+                    prototype.message = '리시브 불안';
+                    prototype.type = 'message';
+                }
+//              셋업
+                if(prototype.command === 69) {
+                    message = '셋업 불안';
+                    prototype.combo = key_code;
+                    prototype.message = '셋업 불안';
                     prototype.type = 'message';
                 }
                 break;
@@ -1098,7 +1141,7 @@
         event_setter();
     });
 
-    window.onkeydown=function() {
+    window.onkeydown = function() {
         run_keymap();
     };
 </script>

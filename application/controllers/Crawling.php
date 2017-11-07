@@ -203,4 +203,33 @@ class Crawling extends CI_Controller{
 	    $this->player_detail();
 //	    $this->schedule(1);
     }
+
+    function schedule_team_id(){
+        $schedule = $this->volley_model->get('schedule');
+
+        foreach ($schedule as $index => $item) :
+            if($item->time !== '00:00:00'):
+                $home_id = $this->volley_model->get_where_row('team_info', array('s_name'=>$item->home))->id;
+                $away_id = $this->volley_model->get_where_row('team_info', array('s_name'=>$item->away))->id;
+
+                $this->volley_model->update('schedule', array('home_id'=>$home_id, 'away_id'=>$away_id), array('no'=>$item->no));
+            endif;
+        endforeach;
+    }
+
+    function match_player_stat_team_id(){
+        $match_player_stat = $this->volley_model->get('match_player_stat');
+
+        foreach ($match_player_stat as $index => $item) :
+            $team_id = $this->volley_model->get_where_row('team_info', array('s_name'=>$item->team_nm))->id;
+
+            $this->volley_model->update('match_player_stat', array('team_id'=>$team_id), array('idx'=>$item->idx));
+        endforeach;
+    }
+
+    function test() {
+        $source=$this->curl->simple_get('http://www.kovo.co.kr/media/popup_live.asp?season=014&g_part=201&r_round=1&g_num=27');
+
+        echo '<textarea>'.$source.'</textarea>';
+    }
 }

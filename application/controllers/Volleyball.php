@@ -339,4 +339,36 @@ class Volleyball extends CI_Controller{
     function update_game_status_ajax() {
         $this->volley_model->update_schedule_status($this->input->post('table'), $this->input->post('schedule_no'));
     }
+
+    function match_game_stat_ajax() {
+        $result['schedule_no'] = $this->input->post('schedule_no');
+        $result['home_id'] = $this->volley_model->get_where_row('team_info', array('s_name'=>$this->input->post('home')))->id;
+        $result['away_id'] = $this->volley_model->get_where_row('team_info', array('s_name'=>$this->input->post('away')))->id;
+
+        $match_stat = $this->volley_model->get_where_row('match_game_stat', array('schedule_no'=>$result['schedule_no']));
+        if($match_stat) :
+            $result['h_sv'] = $match_stat->h_sv;
+            $result['h_bk'] = $match_stat->h_bk;
+            $result['h_svf'] = $match_stat->h_svf;
+            $result['a_sv'] = $match_stat->a_sv;
+            $result['a_bk'] = $match_stat->a_bk;
+            $result['a_svf'] = $match_stat->a_svf;
+        else :
+            $result['h_sv'] = 0;
+            $result['h_bk'] = 0;
+            $result['h_svf'] = 0;
+            $result['a_sv'] = 0;
+            $result['a_bk'] = 0;
+            $result['a_svf'] = 0;
+        endif;
+
+        $home_away = ($this->input->post('attack_side') === 'home') ? 'h' : 'a';
+
+        if($this->input->post('sv') === 'o') $result[$home_away.'_sv']++;
+        if($this->input->post('bk') === 'o') $result[$home_away.'_bk']++;
+        if($this->input->post('svf') === 'o') $result[$home_away.'_svf']++;
+
+        if($match_stat) $this->volley_model->update('match_game_stat', $result, array('idx'=>$match_stat->idx));
+        else $this->volley_model->insert('match_game_stat', $result);
+    }
 }
