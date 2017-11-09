@@ -153,7 +153,7 @@
         <?php endif;?>
         <span style="position:absolute;left:600px;top:300px;<?=($status=='set')? 'display:inline':'display:none;';?>" id="vic_pic"><h2 style="position:absolute;left:200px;top:800px;color:white;font-size:300%;" id="home_word">경기 끝</h2><img src="/public/lib/volleyball_image/victory.png" width="386px"><button style="position:absolute;" onclick="document.getElementById('vic_pic').style.display='none';"> 닫기 </button></span>
 
-        <iframe src="http://www.kovo.co.kr/media/popup_result.asp?season=014&g_part=201&r_round=1&g_num=<?=$schedule->no;?>" class="frame" width="777" height="580" style="display:none;position:absolute;left:30px;top:175px;background-color:white;" frameborder='1' scrolling="yes" id="frame"></iframe>
+        <iframe src="http://www.kovo.co.kr/media/popup_live.asp?season=014&g_part=201&r_round=2&g_num=<?=$schedule->no;?>" class="frame" width="777" height="580" style="display:none;position:absolute;left:30px;top:175px;background-color:white;" frameborder='1' scrolling="yes" id="frame"></iframe>
         <div style="display:none;position:absolute;left:30px;top:518px;background-color:white;width:386px;height:233px;border:1px solid black;background-image:url(/public/lib/volleyball_image/simpan.png);background-size:contain;" id="challenge">
             <div style="margin:5%;">
                 <p style="color:white;">MESSAGE</p>
@@ -570,7 +570,7 @@
         }
 
         document.getElementsByClassName('command')[0].children[1].children[0].textContent=message;
-        if(prototype.attack_side!=undefined) document.getElementsByClassName('command')[0].children[1].children[0].className=prototype.attack_side;
+        if(prototype.attack_side != undefined) document.getElementsByClassName('command')[0].children[1].children[0].className=prototype.attack_side;
     }
 
     function match_game_stat() {
@@ -588,6 +588,28 @@
                     home: '<?=$schedule->home;?>',
                     away: '<?=$schedule->away;?>',
                     attack_side: prototype.attack_side,
+                    sv: sv,
+                    bk: bk,
+                    svf: svf
+                }
+            });
+        }
+    }
+    function del_match_game_stat(message, attack_side) {
+        let sv = 'x', bk = 'x', svf = 'x', flag = false;
+        if(message === '서브 득점 성공') sv = 'o', flag = true;
+        else if(message === '블로킹 득점 성공') bk = 'o', flag = true;
+        else if(message === '서브 실패') svf = 'o', flag = true;
+
+        if(flag) {
+            $.ajax({
+                type: 'POST',
+                url: '/volleyball/del_match_game_stat_ajax',
+                data: {
+                    schedule_no: <?=$schedule->no;?>,
+                    home: '<?=$schedule->home;?>',
+                    away: '<?=$schedule->away;?>',
+                    attack_side: attack_side,
                     sv: sv,
                     bk: bk,
                     svf: svf
@@ -1036,6 +1058,13 @@
                     update_event(obj);
                 },
                 '삭제': function() {
+                    if(obj.children[0].children[0].textContent === '서브 득점 성공') del_match_game_stat('서브 득점 성공', 'home');
+                    else if(obj.children[0].children[0].textContent === '블로킹 득점 성공') del_match_game_stat('블로킹 득점 성공', 'home');
+                    else if(obj.children[0].children[0].textContent === '서브 실패') del_match_game_stat('서브 실패', 'home');
+                    else if(obj.children[2].children[0].textContent === '서브 득점 성공') del_match_game_stat('서브 득점 성공', 'away');
+                    else if(obj.children[2].children[0].textContent === '블로킹 득점 성공') del_match_game_stat('블로킹 득점 성공', 'away');
+                    else if(obj.children[2].children[0].textContent === '서브 실패') del_match_game_stat('서브 실패', 'away');
+
                     send_ajax('del_event_ajax', obj.id, 're');
                 },
                 '닫기': function() {

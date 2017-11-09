@@ -141,60 +141,60 @@ class Crawling extends CI_Controller{
         if($all_or_one != 'all') echo '<script>location.replace("/volleyball/lineup_test/M?date='.date('Y-m-d').'")</script>';
     }
 
-    function schedule($season_no){
-	    $data=$this->volley_model->get_where_row('season', array('no'=>$season_no));
+    function schedule(){
+        $this->load->library('simple_html_dom');
 
-	    if(sizeof($data) > 0):
-            $season_date=date('Y-m', strtotime($data->start_dt));
-            $end_date=date('Y-m', strtotime($data->end_dt.'+1 month'));
+        $data = $this->volley_model->get_where_row('season_info_master', array('no'=>2));
+
+        if(sizeof($data) > 0):
+            $season_date = date('Y-m', strtotime($data->start_dt));
+            $end_date = date('Y-m', strtotime($data->end_dt.'+1 month'));
 
             while(TRUE):
-                $date_static='';
-                $source=$this->curl->simple_get('http://www.kovo.co.kr/game/v-league/11110_schedule_list.asp?season='.$data->season_num.'&yymm='.$season_date);
+                $html = $this->curl->simple_get('http://www.kovo.co.kr/game/v-league/11110_schedule_list.asp?season='.$data->season_num.'&yymm='.$season_date);
+                $dom = $this->simple_html_dom->load($html);
+                $table = $dom->find('table.lst_schedule', 0);
+                $tr = $table->find('tr');
 
-                if($source!=''):
-                    $exp_tbody=explode('<tbody>', $source);
-                    $exp=explode('</tbody>', $exp_tbody[3]);
-                    $exp_tr=explode('</tr>', $exp[0]);
-                    foreach($exp_tr as $item):
-                        $result=array('season'=>$season_no);
-                        if(strlen($item) > 188):
-                            $exp_td=explode('<td>', $item);
+                $date = '';
+                foreach ($tr as $item) :
+                    $td = $item->find('td');
+                    if(sizeof($td) > 1) :
+                        if($td[2]->plaintext !== '경기가 없습니다.') :
+                            $result['season_no'] = $data->no;
+                            $result['sex'] = ($td[2]->plaintext === '남자')? 'M' : 'W';
+                            $exp_date = explode(' ', $td[0]->plaintext);
+                            if(isset($exp_date[1])) $date = $season_date.'-'.$exp_date[1];
+                            $result['date'] = $date;
+                            $result['time'] = $td[5]->plaintext;
 
-                            /* DATE */
-                            $date=strip_tags(preg_replace("/\s+/", "", $exp_td[0]));
-                            $exp_date=explode('(', $date);
-                            if($exp_date[0]!='') $date_static=$exp_date[0];
-                            $explode_date=explode('.', $date_static);
-                            $result['date']=$season_date.'-'.$explode_date[1];
+                            $exp_home = explode('&nbsp;&nbsp;', $td[3]->plaintext);
+                            $home_id = $this->volley_model->get_where_row('team_info', array('s_name'=>$exp_home[0]));
+                            $result['home_id'] = ($home_id) ? $home_id->id : '';
+                            $result['home'] = $exp_home[0];
+                            $exp_score = explode(' ', $exp_home[1]);
+                            $result['home_score'] = (isset($exp_score[0])) ? $exp_score[0] : '';
 
-                            if(sizeof($exp_td) > 2):
-                                $exp_nbsp=explode('&nbsp;&nbsp;', $exp_td[2]);
-                                if(sizeof($exp_nbsp) > 1):
-                                    $exp_home=explode('<td class="tright">', $exp_nbsp[0]);
-                                    $result['home']=$exp_home[1];
-                                    $result['away']=strip_tags(preg_replace("/\s+/", "", $exp_nbsp[3]));
-                                    $exp_score=explode(':&nbsp;', strip_tags(preg_replace("/\s+/", "", $exp_nbsp[1])));
-                                    $result['home_score']=(isset($exp_score[0]))? $exp_score[0] : 0;
-                                    $result['away_score']=(isset($exp_score[1]))? $exp_score[1] : 0;
-                                    $result['time']=str_replace('</td>', '', trim($exp_td[3]));
-                                    $result['stadium']=str_replace('</td>', '', trim($exp_td[4]));
-                                    $result['status']='ready';
-                                    $explode_sex=explode('</td>', $exp_td[2]);
-                                    $result['sex']=($explode_sex[0]=='남자')? 'M' : 'W';
+                            $exp_away = explode('&nbsp;&nbsp;', $td[4]->plaintext);
+                            $away = $exp_away[sizeof($exp_away)-1];
+                            $away_id = $this->volley_model->get_where_row('team_info', array('s_name'=>$away));
+                            $result['away_id'] = ($away_id) ? $away_id->id : '';
+                            $result['away'] = $away;
+                            $result['away_score'] = str_replace("&nbsp;", "", $exp_away[0]);
 
-                                    $this->volley_model->insert_or_update('schedule', $result, array('date'=>$result['date'], 'away'=>$result['away']));
-                                endif;
-                            endif;
+                            $result['stadium'] = $td[6]->plaintext;
+                            $result['status'] = ($result['away_score'] === '') ? 'ready' : 'set';
+                            $result['lcd'] = '101';
+                            $result['scd'] = '002';
+
+                            $this->volley_model->insert('schedule', $result);
                         endif;
-                    endforeach;
-                endif;
+                    endif;
+                endforeach;
 
-                $season_date=date('Y-m', strtotime($season_date.'+1 month'));
-                if($season_date==$end_date) break;
+                $season_date = date('Y-m', strtotime($season_date.'+1 month'));
+                if($season_date == $end_date) break;
             endwhile;
-        else:
-            echo 'MAYBE, SEASON_NO WAS NOT CORRECT.';
         endif;
     }
 
@@ -227,9 +227,44 @@ class Crawling extends CI_Controller{
         endforeach;
     }
 
-    function test() {
-        $source=$this->curl->simple_get('http://www.kovo.co.kr/media/popup_live.asp?season=014&g_part=201&r_round=1&g_num=27');
+    function match_game_stat(){
+        $schedule = $this->volley_model->get_where('schedule', array('status'=>'set'));
 
-        echo '<textarea>'.$source.'</textarea>';
+        foreach ($schedule as $key => $item) :
+            $event = $this->volley_model->get_where('event', array('schedule_no'=>$item->no, 'type'=>'message', 'delete_yn'=>'N'));
+            foreach ($event as $keys => $items) :
+                if($items->message === '서브 득점 성공' || $items->message === '블로킹 득점 성공' || $items->message === '서브 실패') :
+                    $result['schedule_no'] = $item->no;
+                    $result['home_id'] = $item->home_id;
+                    $result['away_id'] = $item->away_id;
+
+                    $match_stat = $this->volley_model->get_where_row('match_game_stat', array('schedule_no'=>$item->no));
+                    if($match_stat) :
+                        $result['h_sv'] = $match_stat->h_sv;
+                        $result['h_bk'] = $match_stat->h_bk;
+                        $result['h_svf'] = $match_stat->h_svf;
+                        $result['a_sv'] = $match_stat->a_sv;
+                        $result['a_bk'] = $match_stat->a_bk;
+                        $result['a_svf'] = $match_stat->a_svf;
+                    else :
+                        $result['h_sv'] = 0;
+                        $result['h_bk'] = 0;
+                        $result['h_svf'] = 0;
+                        $result['a_sv'] = 0;
+                        $result['a_bk'] = 0;
+                        $result['a_svf'] = 0;
+                    endif;
+
+                    $h_a = ($items->attack_side === 'home') ? 'h' : 'a';
+
+                    if($items->message === '서브 득점 성공') $result[$h_a.'_sv']++;
+                    if($items->message === '블로킹 득점 성공') $result[$h_a.'_bk']++;
+                    if($items->message === '서브 실패') $result[$h_a.'_svf']++;
+
+                    if($match_stat) $this->volley_model->update('match_game_stat', $result, array('idx'=>$match_stat->idx));
+                    else $this->volley_model->insert('match_game_stat', $result);
+                endif;
+            endforeach;
+        endforeach;
     }
 }

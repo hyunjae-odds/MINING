@@ -557,7 +557,6 @@
             case 32 :
                 if(validate(prototype)) {
                     prototype.rallying_no++;
-                    match_game_stat();
                     insert_event(score_changer());
                     send_ajax('insert_test_event_ajax', JSON.stringify(prototype), true);
                     count_reset();
@@ -571,29 +570,6 @@
 
         document.getElementsByClassName('command')[0].children[1].children[0].textContent=message;
         if(prototype.attack_side!=undefined) document.getElementsByClassName('command')[0].children[1].children[0].className=prototype.attack_side;
-    }
-
-    function match_game_stat() {
-        let sv = 'x', bk = 'x', svf = 'x', flag = false;
-        if(prototype.message === '서브 득점 성공') sv = 'o', flag = true;
-        else if(prototype.message === '블로킹 득점 성공') bk = 'o', flag = true;
-        else if(prototype.message === '서브 실패') svf = 'o', flag = true;
-
-        if(flag) {
-            $.ajax({
-                type: 'POST',
-                url: '/volleyball/match_game_stat_ajax',
-                data: {
-                    schedule_no: <?=$schedule->no;?>,
-                    home: '<?=$schedule->home;?>',
-                    away: '<?=$schedule->away;?>',
-                    attack_side: prototype.attack_side,
-                    sv: sv,
-                    bk: bk,
-                    svf: svf
-                }
-            });
-        }
     }
 
     function combo_checker(key_code) {
