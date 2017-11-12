@@ -145,57 +145,56 @@ class Crawling extends CI_Controller{
         $this->load->library('simple_html_dom');
 
         $data = $this->volley_model->get_where_row('season_info_master', array('no'=>2));
+        $season_date = date('Y-m', strtotime($data->start_dt));
+        $end_date = date('Y-m', strtotime($data->end_dt.'+1 month'));
 
-        if(sizeof($data) > 0):
-            $season_date = date('Y-m', strtotime($data->start_dt));
-            $end_date = date('Y-m', strtotime($data->end_dt.'+1 month'));
+        while(TRUE):
+            $html = $this->curl->simple_get('http://www.kovo.co.kr/game/v-league/11110_schedule_list.asp?season='.$data->season_num.'&yymm='.$season_date);
+            $dom = $this->simple_html_dom->load($html);
+            $table = $dom->find('table.lst_schedule', 0);
+            $tr = $table->find('tr');
 
-            while(TRUE):
-                $html = $this->curl->simple_get('http://www.kovo.co.kr/game/v-league/11110_schedule_list.asp?season='.$data->season_num.'&yymm='.$season_date);
-                $dom = $this->simple_html_dom->load($html);
-                $table = $dom->find('table.lst_schedule', 0);
-                $tr = $table->find('tr');
+            $date = '';
+            foreach ($tr as $item) :
+                $td = $item->find('td');
+                if(sizeof($td) > 1) :
+                    if($td[2]->plaintext !== '경기가 없습니다.') :
+                        $result['season_no'] = $data->no;
+                        $result['sex'] = ($td[2]->plaintext === '남자')? 'M' : 'W';
+                        $exp_date = explode(' ', $td[0]->plaintext);
+                        if(isset($exp_date[1])) $date = $season_date.'-'.$exp_date[1];
+                        $result['date'] = $date;
+                        $result['time'] = $td[5]->plaintext;
+                        $exp_round = explode(' ', $td[8]->plaintext);
+                        $result['round'] = substr($exp_round[1], 0, 1);
 
-                $date = '';
-                foreach ($tr as $item) :
-                    $td = $item->find('td');
-                    if(sizeof($td) > 1) :
-                        if($td[2]->plaintext !== '경기가 없습니다.') :
-                            $result['season_no'] = $data->no;
-                            $result['sex'] = ($td[2]->plaintext === '남자')? 'M' : 'W';
-                            $exp_date = explode(' ', $td[0]->plaintext);
-                            if(isset($exp_date[1])) $date = $season_date.'-'.$exp_date[1];
-                            $result['date'] = $date;
-                            $result['time'] = $td[5]->plaintext;
+                        $exp_home = explode('&nbsp;&nbsp;', $td[3]->plaintext);
+                        $home_id = $this->volley_model->get_where_row('team_info', array('s_name'=>$exp_home[0]));
+                        $result['home_id'] = ($home_id) ? $home_id->id : '';
+                        $result['home'] = $exp_home[0];
+                        $exp_score = explode(' ', $exp_home[1]);
+                        $result['home_score'] = (isset($exp_score[0])) ? $exp_score[0] : '';
 
-                            $exp_home = explode('&nbsp;&nbsp;', $td[3]->plaintext);
-                            $home_id = $this->volley_model->get_where_row('team_info', array('s_name'=>$exp_home[0]));
-                            $result['home_id'] = ($home_id) ? $home_id->id : '';
-                            $result['home'] = $exp_home[0];
-                            $exp_score = explode(' ', $exp_home[1]);
-                            $result['home_score'] = (isset($exp_score[0])) ? $exp_score[0] : '';
+                        $exp_away = explode('&nbsp;&nbsp;', $td[4]->plaintext);
+                        $away = $exp_away[sizeof($exp_away)-1];
+                        $away_id = $this->volley_model->get_where_row('team_info', array('s_name'=>$away));
+                        $result['away_id'] = ($away_id) ? $away_id->id : '';
+                        $result['away'] = $away;
+                        $result['away_score'] = str_replace("&nbsp;", "", $exp_away[0]);
 
-                            $exp_away = explode('&nbsp;&nbsp;', $td[4]->plaintext);
-                            $away = $exp_away[sizeof($exp_away)-1];
-                            $away_id = $this->volley_model->get_where_row('team_info', array('s_name'=>$away));
-                            $result['away_id'] = ($away_id) ? $away_id->id : '';
-                            $result['away'] = $away;
-                            $result['away_score'] = str_replace("&nbsp;", "", $exp_away[0]);
+                        $result['stadium'] = $td[6]->plaintext;
+                        $result['status'] = ($result['away_score'] === '') ? 'ready' : 'set';
+                        $result['lcd'] = '101';
+                        $result['scd'] = '002';
 
-                            $result['stadium'] = $td[6]->plaintext;
-                            $result['status'] = ($result['away_score'] === '') ? 'ready' : 'set';
-                            $result['lcd'] = '101';
-                            $result['scd'] = '002';
-
-                            $this->volley_model->insert('schedule', $result);
-                        endif;
+                        $this->volley_model->insert('schedule', $result);
                     endif;
-                endforeach;
+                endif;
+            endforeach;
 
-                $season_date = date('Y-m', strtotime($season_date.'+1 month'));
-                if($season_date == $end_date) break;
-            endwhile;
-        endif;
+            $season_date = date('Y-m', strtotime($season_date.'+1 month'));
+            if($season_date == $end_date) break;
+        endwhile;
     }
 
     function do_crawling_daily(){

@@ -403,4 +403,12 @@ class Volleyball extends CI_Controller{
         if($match_stat) $this->volley_model->update('match_game_stat', $result, array('idx'=>$match_stat->idx));
         else $this->volley_model->insert('match_game_stat', $result);
     }
+
+    function change_set_score_ajax() {
+        $home_away = $this->input->post('home_away');
+        $set_score = $this->input->post('set_score');
+        $schedule_no = $this->input->post('schedule_no');
+
+        $this->volley_model->update('schedule', array($home_away.'_score'=>$set_score), array('no'=>$schedule_no));
+    }
 }

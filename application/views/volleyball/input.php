@@ -91,14 +91,14 @@
                 <?php for($i=0; $i<sizeof($score); $i++): ?><td id="home_<?=$i+1;?>"><?=$score[$i]->home_score; $home_total+=$score[$i]->home_score?></td><?php endfor; ?>
                 <?php for($i=0; $i<5-sizeof($score); $i++): ?><td id="home_<?=sizeof($score)+$i+1;?>"></td><?php endfor; ?>
                 <td id="home_total"><?=$home_total;?></td>
-                <td id="home_set_score"><span class="red"><?=$schedule->home_score;?></span></td>
+                <td id="home_set_score"><span class="red"><a href="javascript:change_set_score('home');"><?=$schedule->home_score;?></a></span></td>
             </tr>
             <tr>
                 <td><?=$schedule->away;?></td>
                 <?php for($i=0; $i<sizeof($score); $i++): ?><td id="away_<?=$i+1;?>"><?=$score[$i]->away_score; $away_total+=$score[$i]->away_score?></td><?php endfor; ?>
                 <?php for($i=0; $i<5-sizeof($score); $i++): ?><td id="away_<?=sizeof($score)+$i+1;?>"></td><?php endfor; ?>
                 <td id="away_total"><?=$away_total;?></td>
-                <td id="away_set_score"><span class="red"><?=$schedule->away_score;?></span></td>
+                <td id="away_set_score"><span class="red"><a href="javascript:change_set_score('away');"><?=$schedule->away_score;?></a></span></td>
             </tr>
         </table>
 
@@ -153,7 +153,7 @@
         <?php endif;?>
         <span style="position:absolute;left:600px;top:300px;<?=($status=='set')? 'display:inline':'display:none;';?>" id="vic_pic"><h2 style="position:absolute;left:200px;top:800px;color:white;font-size:300%;" id="home_word">경기 끝</h2><img src="/public/lib/volleyball_image/victory.png" width="386px"><button style="position:absolute;" onclick="document.getElementById('vic_pic').style.display='none';"> 닫기 </button></span>
 
-        <iframe src="http://www.kovo.co.kr/media/popup_live.asp?season=014&g_part=201&r_round=2&g_num=<?=$schedule->no;?>" class="frame" width="777" height="580" style="display:none;position:absolute;left:30px;top:175px;background-color:white;" frameborder='1' scrolling="yes" id="frame"></iframe>
+        <iframe src="http://www.kovo.co.kr/media/popup_live.asp?season=014&g_part=201&r_round=<?=$schedule->round;?>&g_num=<?=$schedule->no;?>" class="frame" width="777" height="580" style="display:none;position:absolute;left:30px;top:175px;background-color:white;" frameborder='1' scrolling="yes" id="frame"></iframe>
         <div style="display:none;position:absolute;left:30px;top:518px;background-color:white;width:386px;height:233px;border:1px solid black;background-image:url(/public/lib/volleyball_image/simpan.png);background-size:contain;" id="challenge">
             <div style="margin:5%;">
                 <p style="color:white;">MESSAGE</p>
@@ -328,6 +328,10 @@
     <input type="text" name="home_set_score_edit" id="home_set_score_edit" class="text ui-widget-content ui-corner-all" size="3"><br>
     <label for="away_set_score_edit">원정 점수 : </label>
     <input type="text" name="away_set_score_edit" id="away_set_score_edit" class="text ui-widget-content ui-corner-all" size="3"><br>
+</div>
+<div id="dialog-score" title="변경 버튼을 누르면 세트 스코어가 수정됩니다." style="display:none;">
+    <label for="set_score_edit">SET&nbsp;&nbsp;&nbsp; : </label>
+    <input type="text" name="set_score_edit" id="set_score_edit" class="text ui-widget-content ui-corner-all" size="3"><br>
 </div>
 
 <script>
@@ -1107,7 +1111,7 @@
         $('#home_set_score_edit').val(document.getElementById('home_set_score').children[0].textContent);
         $('#away_set_score_edit').val(document.getElementById('away_set_score').children[0].textContent);
 
-        $( "#dialog-prompt" ).dialog({
+        $("#dialog-prompt").dialog({
             resizable: false,
             height: "auto",
             width: 400,
@@ -1121,6 +1125,34 @@
                         type:'POST',
                         url:'/volleyball/update_set_score_ajax',
                         data:{schedule_no:<?=$schedule->no;?>, home_score:home_score, away_score:away_score},
+                        complete: function() {
+                            location.reload();
+                        }
+                    });
+                },
+                '취소': function() {
+                    $( this ).dialog( "close" );
+                }
+            }
+        });
+    }
+
+    function change_set_score(home_away) {
+        let cur_set_score = (home_away === 'home') ? document.getElementById('home_set_score').children[0].textContent : document.getElementById('away_set_score').children[0].textContent;
+        $('#set_score_edit').val(cur_set_score);
+
+        $("#dialog-score").dialog({
+            resizable: false,
+            height: "auto",
+            width: 400,
+            modal: true,
+            buttons: {
+                '변경': function() {
+                    let set_score = $('#set_score_edit').val();
+                    $.ajax({
+                        type:'POST',
+                        url:'/volleyball/change_set_score_ajax',
+                        data:{schedule_no:<?=$schedule->no;?>, set_score:set_score, home_away:home_away},
                         complete: function() {
                             location.reload();
                         }
